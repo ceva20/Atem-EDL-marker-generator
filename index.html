@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V2.8.1</title>
+  <title>V2.8.2</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -203,6 +203,12 @@
         document.getElementById('stopTimecodeButton').disabled = false;
       }
     }
+    function stopTimecode() {
+  isRunningTimecode = false;
+  document.getElementById('startTimecodeButton').disabled = false;
+  document.getElementById('stopTimecodeButton').disabled = true;
+}
+
 
     function updateTimecode() {
       if (!isRunningTimecode) return;
@@ -384,8 +390,7 @@ setTimeout(() => {
 
   edlButton.disabled = false;
   edlButton.innerText = 'Scarica EDL';
-}, 300); // <-- questa graffa chiude setTimeout
-}
+}, 300); }
 
     
    
