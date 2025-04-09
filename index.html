@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V2.7</title>
+  <title>V2.8</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -90,6 +90,15 @@
 }
 .timer-box.paused {
   background-color: #6c757d;
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.timer-box.blinking {
+  animation: pulse 1s infinite;
 }
 
   </style>
@@ -212,12 +221,16 @@
     clearInterval(timerInterval);
     timerInterval = null;
     timerBox.classList.add('paused');
+timerBox.classList.remove('blinking');
+
   } else {
     timerInterval = setInterval(() => {
       timerSeconds++;
       updateTimerDisplay();
     }, 1000);
     timerBox.classList.remove('paused');
+timerBox.classList.add('blinking');
+
   }
 }
 
@@ -233,6 +246,7 @@
 
   // resetta il colore del timer
   document.getElementById('timer').classList.add('paused');
+document.getElementById('timer').classList.remove('blinking');
 
   document.getElementById('startTimecodeButton').disabled = false;
   document.getElementById('stopTimecodeButton').disabled = true;
@@ -358,15 +372,23 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
       const projectName = document.getElementById('projectName').value.trim().replace(/\s+/g, '_') || 'SenzaNome';
      const filename = `${formattedDate}_${projectName}.edl`;
       const blob = new Blob([completeText], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-      link.click();
-    }
+     const edlButton = document.querySelector('#fileButtonContainer button');
+edlButton.disabled = true;
+edlButton.innerText = 'Generazione...';
+
+setTimeout(() => {
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+
+  edlButton.disabled = false;
+  edlButton.innerText = 'Scarica EDL';
+}, 300); // leggerissimo delay per UI feedback
+
     
    
 document.addEventListener('DOMContentLoaded', () => {
-  // rimuovi resetTimecode() se vuoi che il timer parta da dove era
   // resetTimecode();
 
   document.getElementById('startTimecodeButton').addEventListener('click', startTimecode);
@@ -374,8 +396,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('resetButton').addEventListener('click', resetTimecode);
   document.getElementById('copyButton').addEventListener('click', copyTimecode);
   document.getElementById('timer').addEventListener('click', toggleTimer);
+  document.querySelector('#fileButtonContainer button').addEventListener('click', downloadEDL); // ✅ questa è la riga da aggiungere
 
-  // colore iniziale del timer
   document.getElementById('timer').classList.add('paused');
 
   document.querySelectorAll('.button-container button').forEach(button => {
