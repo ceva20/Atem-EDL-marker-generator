@@ -1,1 +1,103 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin-top: 50px;
+}
 
+#timecode {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+#timer {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.button-container {
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  margin: 5px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ccc;
+}
+
+.copy-alert {
+  margin-top: 10px;
+  color: green;
+}
+
+#timecodeOutput {
+  margin-top: 20px;
+  font-size: 1.2em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-align: left;
+  width: 80%;
+  height: 300px;
+  margin: 20px auto;
+  border: 2px solid #ccc;
+  padding: 10px;
+  overflow-y: scroll;
+  background-color: #f9f9f9;
+}
+
+#timecodeOutput[contenteditable="true"] {
+  outline: none;
+}
+
+#fileButtonContainer {
+  margin-top: 20px;
+  text-align: right;
+}
+
+#fileButtonContainer button {
+  font-size: 1em;
+}
+
+#textInputContainer {
+  margin-top: 20px;
+}
+
+#textInputContainer textarea {
+  width: 60%;
+  height: 100px;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+}
+
+#customTimecodeContainer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#customTimecodeContainer input[type="text"] {
+  width: 150px;
+  padding: 5px;
+  margin-left: 10px;
+}
+
+#customTimecodeContainer label {
+  font-size: 1em;
+  margin-right: 10px;
+}
+
+#timecodeWarning {
+  color: red;
+  font-size: 0.9em;
+  display: none;
+}
+
+.rumore { color: purple; font-weight: bold; }
+.pausa { color: skyblue; font-weight: bold; }
+.ripete { color: red; font-weight: bold; }
+.In, .Out { color: chocolate; font-weight: bold; }
