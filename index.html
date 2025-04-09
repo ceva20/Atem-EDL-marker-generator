@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timecode con Funzionalità Avanzate</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #timecode {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        #timer {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+        }
+
+        .copy-alert {
+            margin-top: 10px;
+            color: green;
+        }
+
+        #timecodeOutput {
+            margin-top: 20px;
+            font-size: 1.2em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            text-align: left;
+            width: 80%;
+            height: 300px;
+            margin: 20px auto;
+            border: 2px solid #ccc;
+            padding: 10px;
+            overflow-y: scroll;
+            background-color: #f9f9f9;
+        }
+
+        #timecodeOutput[contenteditable="true"] {
+            outline: none;
+        }
+
+        #fileButtonContainer {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        #fileButtonContainer button {
+            font-size: 1em;
+        }
+
+        #textInputContainer {
+            margin-top: 20px;
+        }
+
+        #textInputContainer textarea {
+            width: 60%;
+            height: 100px;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+        }
+
+        #customTimecodeContainer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #customTimecodeContainer input[type="text"] {
+            width: 150px;
+            padding: 5px;
+            margin-left: 10px;
+        }
+
+        #customTimecodeContainer label {
+            font-size: 1em;
+            margin-right: 10px;
+        }
+
+        #timecodeWarning {
+            color: red;
+            font-size: 0.9em;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="timecode">00:00:00:00</div>
+    <div id="timer">00:00</div>
+
+    <div class="button-container">
+        <button id="startTimecodeButton" onclick="startTimecode()">Start Timecode</button>
+        <button id="startTimerButton" onclick="startTimer()">Start Timer</button>
+        <button id="stopTimecodeButton" onclick="stopTimecode()" disabled>Stop Timecode</button>
+        <button id="stopTimerButton" onclick="stopTimer()">Stop Timer</button>
+        <button id="resetButton" onclick="resetTimecode()">Reset</button>
+        <button id="copyButton" onclick="copyTimecode()">Copy</button>
+    </div>
+
+    <div class="button-container">
+        <button onclick="generateFormattedText('rumore')">Rumore</button>
+        <button onclick="generateFormattedText('pausa')">Pausa</button>
+        <button onclick="generateFormattedText('ripete')">Ripete</button>
+        <button onclick="generateFormattedText('In')">In</button>
+        <button onclick="generateFormattedText('Out')">Out</button>
+    </div>
+
+    <div id="copyAlert" class="copy-alert" style="display: none;">
+        Timecode copiato negli appunti!
+    </div>
+
+    <div id="textInputContainer">
+        <label for="projectName">Inserisci il nome del progetto:</label><br>
+        <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
+    </div>
+
+    <div id="customTimecodeContainer">
+        <label for="customMessage">Messaggio personalizzato:</label>
+        <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
+        <input type="checkbox" id="useCustomTimecode" onclick="toggleCustomTimecodeInput()">
+        <label for="useCustomTimecode">Usa timecode personalizzato</label>
+        <input type="text" id="customTimecode" placeholder="MM.SS (es: 01.15)" disabled>
+        <button onclick="addCustomMessage()">Aggiungi</button>
+    </div>
+
+    <div id="timecodeWarning">Formato timecode non valido. Usa MM.SS (es: 01.15).</div>
+
+    <div id="timecodeOutput" contenteditable="true"></div>
+
+    <div id="fileButtonContainer">
+        <button onclick="downloadEDL()">Scarica EDL</button>
+    </div>
+
+    <script>
+        let timeInSeconds = 0;
+        let timerSeconds = 0;
+        let isRunningTimecode = false;
+        let timerInterval;
+        let counter = 2;
+        let lastUpdateTime;
+
+        const frameRate = 25;
+
+        function formatTimecode(totalFrames) {
+            const hours = String(Math.floor(totalFrames / (frameRate * 3600))).padStart(2, '0');
+            const minutes = String(Math.floor((totalFrames % (frameRate * 3600)) / (frameRate * 60))).padStart(2, '0');
+            const seconds = String(Math.floor((totalFrames % (frameRate * 60)) / frameRate)).padStart(2, '0');
+            const frames = String(totalFrames % frameRate).padStart(2, '0');
+            return `${hours}:${minutes}:${seconds}:${frames}`;
+        }
+
+        function formatTimer(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function startTimecode() {
+            const projectName = document.getElementById('projectName').value.trim();
+            if (!projectName) {
+                alert('Inserisci il nome del progetto prima di avviare il timecode.');
+                return;
+            }
+
+            if (!isRunningTimecode) {
+                isRunningTimecode = true;
+                lastUpdateTime = Date.now();
+                requestAnimationFrame(updateTimecode);
+                document.getElementById('startTimecodeButton').disabled = true;
+                document.getElementById('stopTimecodeButton').disabled = false;
+            }
+        }
+
+        function updateTimecode() {
+            if (!isRunningTimecode) return;
+
+            const now = Date.now();
+            const elapsed = now - lastUpdateTime;
+            lastUpdateTime = now;
+
+            timeInSeconds += elapsed / 1000;
+            updateTimecodeDisplay();
+
+            requestAnimationFrame(updateTimecode);
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timerSeconds++;
+                updateTimerDisplay();
+            }, 1000);
+
+            document.getElementById('startTimerButton').disabled = true;
+            document.getElementById('stopTimerButton').disabled = false;
+        }
+
+        function stopTimecode() {
+            isRunningTimecode = false;
+            document.getElementById('startTimecodeButton').disabled = false;
+            document.getElementById('stopTimecodeButton').disabled = true;
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            timerSeconds = 0;
+            updateTimerDisplay();
+            document.getElementById('startTimerButton').disabled = false;
+            document.getElementById('stopTimerButton').disabled = true;
+        }
+
+        function resetTimecode() {
+            isRunningTimecode = false;
+            clearInterval(timerInterval);
+            timeInSeconds = 0;
+            timerSeconds = 0;
+
+            updateTimecodeDisplay();
+            updateTimerDisplay();
+
+            document.getElementById('startTimecodeButton').disabled = false;
+            document.getElementById('stopTimecodeButton').disabled = true;
+            document.getElementById('startTimerButton').disabled = false;
+            document.getElementById('stopTimerButton').disabled = true;
+
+            document.getElementById('timecodeOutput').innerText =
+                `001  C  V  00:00:00:00  00:00:00:00  00:00:00:00  00:00:00:00\n\n` +
+                `Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink |M:Edizione |D:0\n\n`;
+            document.getElementById('customMessage').value = '';
+            document.getElementById('customTimecode').value = '';
+            counter = 2;
+        }
+
+        function updateTimecodeDisplay() {
+            const totalFrames = Math.floor(timeInSeconds * frameRate);
+            document.getElementById('timecode').innerText = formatTimecode(totalFrames);
+        }
+
+        function updateTimerDisplay() {
+            document.getElementById('timer').innerText = formatTimer(timerSeconds);
+        }
+
+        function validateCustomTimecode(input) {
+            const regex = /^\d{1,2}\.\d{1,2}$/;
+            return regex.test(input);
+        }
+
+        function parseCustomTimecode(input) {
+            const [minutes, seconds] = input.split('.').map(Number);
+            return (minutes * 60) + seconds;
+        }
+
+        function addCustomMessage() {
+            const customMessage = document.getElementById('customMessage').value.trim();
+            const useCustomTimecode = document.getElementById('useCustomTimecode').checked;
+            const customTimecodeInput = document.getElementById('customTimecode').value.trim();
+            const warning = document.getElementById('timecodeWarning');
+
+            let markerTimeSeconds;
+
+            if (useCustomTimecode) {
+                if (!validateCustomTimecode(customTimecodeInput)) {
+                    warning.style.display = 'block';
+                    return;
+                } else {
+                    warning.style.display = 'none';
+                    markerTimeSeconds = parseCustomTimecode(customTimecodeInput);
+
+                    if (markerTimeSeconds > timerSeconds) {
+                        alert('Il valore inserito supera il tempo attuale del timer.');
+                        return;
+                    }
+                }
+            } else {
+                markerTimeSeconds = timerSeconds;
+            }
+
+            if (!customMessage) {
+                alert('Il messaggio personalizzato non può essere vuoto.');
+                return;
+            }
+
+            const correspondingTimecodeFrames = Math.floor((timeInSeconds - (timerSeconds - markerTimeSeconds)) * frameRate);
+            const timecodeText = formatTimecode(correspondingTimecodeFrames);
+            const sequenceNumber = String(counter).padStart(3, '0');
+            const formattedText = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${customMessage} |C:ResolveColorBlue |M:Edizione |D:0\n`;
+
+            const outputBox = document.getElementById('timecodeOutput');
+            outputBox.innerText += formattedText + '\n\n';
+            outputBox.scrollTop = outputBox.scrollHeight;
+
+            document.getElementById('customMessage').value = '';
+            document.getElementById('customTimecode').value = '';
+            counter++;
+        }
+
+        function generateFormattedText(label) {
+            const timecodeText = formatTimecode(Math.floor(timeInSeconds * frameRate));
+            const sequenceNumber = String(counter).padStart(3, '0');
+            const formattedText = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${getLabelForButton(label)} |C:ResolveColor${getColorForLabel(label)} |M:Edizione |D:0\n`;
+
+            const outputBox = document.getElementById('timecodeOutput');
+            outputBox.innerText += formattedText + '\n\n';
+            outputBox.scrollTop = outputBox.scrollHeight;
+            counter++;
+        }
+
+        function getLabelForButton(label) {
+            const labelMap = {
+                'pausa': 'Pausa',
+                'rumore': 'Rumore',
+                'ripete': 'Ripete',
+                'In': 'In',
+                'Out': 'Out'
+            };
+            return labelMap[label] || 'Messaggio';
+        }
+
+        function getColorForLabel(label) {
+            const colorMap = {
+                'pausa': 'Sky',
+                'rumore': 'Purple',
+                'ripete': 'Red',
+                'In': 'Cream',
+                'Out': 'Cream'
+            };
+            return colorMap[label] || 'Sky';
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && document.activeElement.id === 'customMessage') {
+                event.preventDefault();
+                addCustomMessage();
+            }
+        });
+
+        function downloadEDL() {
+            const outputText = document.getElementById('timecodeOutput').innerText;
+            const headerText = `TITLE: Edizione\nFCM: NON DROP FRAME\n\n`;
+            const completeText = headerText + outputText + '\n\n';
+
+            const blob = new Blob([completeText], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Edizione.edl`;
+            link.click();
+        }
+
+        window.onload = () => {
+            resetTimecode();
+        };
+    </script>
+
+</body>
+</html>
