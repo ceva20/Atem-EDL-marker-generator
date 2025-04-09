@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V2.5</title>
+  <title>V2.6</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -76,6 +76,22 @@
     .pausa { color: steelblue; font-weight: bold; }
     .ripete { color: red; font-weight: bold; }
     .In, .Out { color: chocolate; font-weight: bold; }
+
+    .timer-box {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #28a745;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.timer-box.paused {
+  background-color: #6c757d;
+}
+
   </style>
 </head>
 <body>
@@ -102,13 +118,12 @@
 
 
   <div id="timecode">00:00:00:00</div>
-  <div id="timer">00:00</div>
+  <div id="timer" class="timer-box">00:00</div>
+
 
   <div class="button-container">
     <button id="startTimecodeButton">Start Timecode</button>
-    <button id="startTimerButton">Start Timer</button>
     <button id="stopTimecodeButton" disabled="">Stop Timecode</button>
-    <button id="stopTimerButton">Stop Timer</button>
     <button id="resetButton">Reset</button>
     <button id="copyButton">Copy</button>
   </div>
@@ -190,27 +205,27 @@
       requestAnimationFrame(updateTimecode);
     }
 
-    function startTimer() {
-      timerInterval = setInterval(() => {
-        timerSeconds++;
-        updateTimerDisplay();
-      }, 1000);
-      document.getElementById('startTimerButton').disabled = true;
-      document.getElementById('stopTimerButton').disabled = false;
-    }
+   function toggleTimer() {
+  const timerBox = document.getElementById('timer');
+
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerBox.classList.add('paused');
+  } else {
+    timerInterval = setInterval(() => {
+      timerSeconds++;
+      updateTimerDisplay();
+    }, 1000);
+    timerBox.classList.remove('paused');
+  }
+}
+
 
     function stopTimecode() {
       isRunningTimecode = false;
       document.getElementById('startTimecodeButton').disabled = false;
       document.getElementById('stopTimecodeButton').disabled = true;
-    }
-
-    function stopTimer() {
-      clearInterval(timerInterval);
-      timerSeconds = 0;
-      updateTimerDisplay();
-      document.getElementById('startTimerButton').disabled = false;
-      document.getElementById('stopTimerButton').disabled = true;
     }
 
     function resetTimecode() {
@@ -357,10 +372,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('startTimecodeButton').addEventListener('click', startTimecode);
   document.getElementById('stopTimecodeButton').addEventListener('click', stopTimecode);
-  document.getElementById('startTimerButton').addEventListener('click', startTimer);
-  document.getElementById('stopTimerButton').addEventListener('click', stopTimer);
   document.getElementById('resetButton').addEventListener('click', resetTimecode);
   document.getElementById('copyButton').addEventListener('click', copyTimecode);
+  document.getElementById('timer').addEventListener('click', toggleTimer);
+
 
   document.querySelectorAll('.button-container button').forEach(button => {
     const label = button.innerText.trim();
