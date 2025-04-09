@@ -1,7 +1,7 @@
 <html lang="it"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V2.2</title>
+  <title>V2.3</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -77,6 +77,29 @@
 </head>
 <body>
 
+  <!-- DATE BOX -->
+  <div style="margin: 20px 0;">
+    <div id="todayDate" style="
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #e0f0ff;
+      color: #003366;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    ">Data odierna: 240409</div>
+  </div>
+
+
+  <div id="textInputContainer">
+    <label for="projectName">Inserisci il nome del progetto:</label><br>
+    <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
+    <div id="filePreview" style="margin-top: 5px; font-size: 0.9em; color: gray;"></div>
+  </div>
+
+
+
   <div id="timecode">00:00:00:00</div>
   <div id="timer">00:00</div>
 
@@ -109,12 +132,6 @@
       font-weight: bold;
       box-shadow: 0 0 4px rgba(0,0,0,0.1);
     ">Data odierna: 250409</div>
-  </div>
-
-  <div id="textInputContainer">
-    <label for="projectName">Inserisci il nome del progetto:</label><br>
-    <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
-    <div id="filePreview" style="margin-top: 5px; font-size: 0.9em; color: gray;"></div>
   </div>
 
   <div id="customTimecodeContainer">
