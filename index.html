@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V2.6</title>
+  <title>V2.7</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -222,24 +222,22 @@
 }
 
 
-    function stopTimecode() {
-      isRunningTimecode = false;
-      document.getElementById('startTimecodeButton').disabled = false;
-      document.getElementById('stopTimecodeButton').disabled = true;
-    }
+   function resetTimecode() {
+  isRunningTimecode = false;
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timeInSeconds = 0;
+  timerSeconds = 0;
+  updateTimecodeDisplay();
+  updateTimerDisplay();
 
-    function resetTimecode() {
-      isRunningTimecode = false;
-      clearInterval(timerInterval);
-      timeInSeconds = 0;
-      timerSeconds = 0;
-      updateTimecodeDisplay();
-      updateTimerDisplay();
-      document.getElementById('startTimecodeButton').disabled = false;
-      document.getElementById('stopTimecodeButton').disabled = true;
-      document.getElementById('startTimerButton').disabled = false;
-      document.getElementById('stopTimerButton').disabled = true;
-      document.getElementById('timecodeOutput').innerText = `
+  // resetta il colore del timer
+  document.getElementById('timer').classList.add('paused');
+
+  document.getElementById('startTimecodeButton').disabled = false;
+  document.getElementById('stopTimecodeButton').disabled = true;
+
+  document.getElementById('timecodeOutput').innerText = `
 TITLE: Edizione
 FCM: NON DROP FRAME
 
@@ -249,11 +247,11 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
 
 `;
 
+  document.getElementById('customMessage').value = '';
+  document.getElementById('customTimecode').value = '';
+  counter = 2;
+}
 
-      document.getElementById('customMessage').value = '';
-      document.getElementById('customTimecode').value = '';
-      counter = 2;
-    }
 
     function updateTimecodeDisplay() {
       const totalFrames = Math.floor(timeInSeconds * frameRate);
@@ -368,14 +366,17 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
     
    
 document.addEventListener('DOMContentLoaded', () => {
-  resetTimecode();
+  // rimuovi resetTimecode() se vuoi che il timer parta da dove era
+  // resetTimecode();
 
-    document.getElementById('startTimecodeButton').addEventListener('click', startTimecode);
+  document.getElementById('startTimecodeButton').addEventListener('click', startTimecode);
   document.getElementById('stopTimecodeButton').addEventListener('click', stopTimecode);
   document.getElementById('resetButton').addEventListener('click', resetTimecode);
   document.getElementById('copyButton').addEventListener('click', copyTimecode);
   document.getElementById('timer').addEventListener('click', toggleTimer);
 
+  // colore iniziale del timer
+  document.getElementById('timer').classList.add('paused');
 
   document.querySelectorAll('.button-container button').forEach(button => {
     const label = button.innerText.trim();
@@ -387,15 +388,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('useCustomTimecode').addEventListener('change', toggleCustomTimecodeInput);
   document.querySelector('#customTimecodeContainer button').addEventListener('click', addCustomMessage);
 
-
   const date = new Date();
   const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
-document.getElementById('projectName').focus();
+  document.getElementById('projectName').focus();
 
   const todayDiv = document.getElementById('todayDate');
   if (todayDiv) {
     todayDiv.innerText = `Data odierna: ${formattedDate}`;
-
   }
 
   document.getElementById('projectName').addEventListener('input', () => {
@@ -403,10 +402,10 @@ document.getElementById('projectName').focus();
     const preview = document.getElementById('filePreview');
     if (preview) {
       preview.innerText = `Il file si chiamerà: ${formattedDate}_${name}.edl`;
-
     }
   });
 });
+
 
 
 
