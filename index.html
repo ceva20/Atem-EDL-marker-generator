@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V2.4</title>
+  <title>V2.5</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -354,6 +354,24 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
    
 document.addEventListener('DOMContentLoaded', () => {
   resetTimecode();
+
+    document.getElementById('startTimecodeButton').addEventListener('click', startTimecode);
+  document.getElementById('stopTimecodeButton').addEventListener('click', stopTimecode);
+  document.getElementById('startTimerButton').addEventListener('click', startTimer);
+  document.getElementById('stopTimerButton').addEventListener('click', stopTimer);
+  document.getElementById('resetButton').addEventListener('click', resetTimecode);
+  document.getElementById('copyButton').addEventListener('click', copyTimecode);
+
+  document.querySelectorAll('.button-container button').forEach(button => {
+    const label = button.innerText.trim();
+    if (['Rumore', 'Pausa', 'Ripete', 'In', 'Out'].includes(label)) {
+      button.addEventListener('click', () => generateFormattedText(label));
+    }
+  });
+
+  document.getElementById('useCustomTimecode').addEventListener('change', toggleCustomTimecodeInput);
+  document.querySelector('#customTimecodeContainer button').addEventListener('click', addCustomMessage);
+
 
   const date = new Date();
   const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
