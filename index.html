@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V5.0</title>
+  <title>V5.1</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -189,7 +189,6 @@ const elements = {
     let isRunningTimecode = false;
     let timerInterval;
     let counter = 2;
-    let edlContent = initialOutputText;
     let lastUpdateTime;
     const frameRate = 25;
 
@@ -260,6 +259,7 @@ const elements = {
 }
 
 const initialOutputText = `
+
 TITLE: Edizione
 FCM: NON DROP FRAME
 
@@ -267,7 +267,7 @@ FCM: NON DROP FRAME
 
 Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink |M:Edizione |D:0
 `;
-
+ let edlContent = initialOutputText;
 
    function resetTimecode() {
   isRunningTimecode = false;
