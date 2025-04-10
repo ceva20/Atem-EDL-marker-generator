@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V6.4.3</title>
+  <title>V7</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -128,6 +128,10 @@
 
   <div id="timecode">00:00:00:00</div>
   <div id="timer" class="timer-box">00:00</div>
+  <button id="stopTimerButton" title="Stop Timer" style="margin-left: 10px; font-size: 1.4em;">
+  &#9632;
+</button>
+
 
 
   <div class="button-container">
@@ -260,6 +264,18 @@ const elements = {
     timerBox.classList.remove('paused');
     timerBox.classList.add('blinking');
   }
+}
+    function stopAndResetTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+
+  timerSeconds = 0;
+  updateTimerDisplay();
+
+  elements.timer.classList.add('paused');
+  elements.timer.classList.remove('blinking');
 }
 
 const initialOutputText = `
@@ -493,6 +509,8 @@ function clearHistory() {
   elements.copyBtn.addEventListener('click', copyTimecode);
   elements.timer.addEventListener('click', toggleTimer);
   elements.fileBtn.addEventListener('click', downloadEDL);
+      document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
+
   document.querySelector('#customTimecodeContainer').addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault();
