@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V2.8.2</title>
+  <title>V3.0</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -270,6 +270,8 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
   document.getElementById('customMessage').value = '';
   document.getElementById('customTimecode').value = '';
   counter = 2;
+     localStorage.removeItem('savedEDL');
+
 }
 
 
@@ -300,6 +302,7 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
       const useCustomTimecode = document.getElementById('useCustomTimecode').checked;
       const customTimecodeInput = document.getElementById('customTimecode').value.trim();
       const warning = document.getElementById('timecodeWarning');
+      
 
       let markerTimeSeconds;
       if (useCustomTimecode) {
@@ -337,21 +340,32 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
       document.getElementById('customMessage').value = '';
       document.getElementById('customTimecode').value = '';
       counter++;
-    }
+        outputBox.scrollTop = outputBox.scrollHeight;
+  counter++;
 
-    function generateFormattedText(label) {
-      const timecodeText = formatTimecode(Math.floor(timeInSeconds * frameRate));
-      const sequenceNumber = String(counter).padStart(3, '0');
-      const formattedText = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${label} |C:ResolveColor${getColorForLabel(label)} |M:Edizione |D:0\n`;
+  saveToLocalStorage(); // Salva anche qui
 
-      const outputBox = document.getElementById('timecodeOutput');
-      const span = document.createElement('span');
-      span.innerText = formattedText + '\n\n';
-      span.classList.add(label);
-      outputBox.appendChild(span);
-      outputBox.scrollTop = outputBox.scrollHeight;
-      counter++;
+    
     }
+   
+   function generateFormattedText(label) {
+  const timecodeText = formatTimecode(Math.floor(timeInSeconds * frameRate));
+  const sequenceNumber = String(counter).padStart(3, '0');
+  const formattedText = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${label} |C:ResolveColor${getColorForLabel(label)} |M:Edizione |D:0\n`;
+
+  const outputBox = document.getElementById('timecodeOutput');
+  const span = document.createElement('span');
+  span.innerText = formattedText + '\n\n';
+  span.classList.add(label);
+  outputBox.appendChild(span);
+  outputBox.scrollTop = outputBox.scrollHeight;
+  counter++;
+
+  saveToLocalStorage(); // Salva dopo ogni aggiunta
+}
+    function saveToLocalStorage() {
+  localStorage.setItem('savedEDL', document.getElementById('timecodeOutput').innerText);
+}
 
     function getColorForLabel(label) {
       const map = { pausa: 'Sky', rumore: 'Purple', ripete: 'Red', In: 'Cream', Out: 'Cream' };
@@ -390,13 +404,23 @@ setTimeout(() => {
 
   edlButton.disabled = false;
   edlButton.innerText = 'Scarica EDL';
-}, 300); }
+}, 300);
+    localStorage.removeItem('savedEDL');
+}
 
     
    
 document.addEventListener('DOMContentLoaded', () => {
   // resetTimecode();
-
+const savedEDL = localStorage.getItem('savedEDL');
+if (savedEDL) {
+  const shouldRestore = confirm("Hai un EDL non salvato. Vuoi recuperarlo?");
+  if (shouldRestore) {
+    document.getElementById('timecodeOutput').innerText = savedEDL;
+  } else {
+    localStorage.removeItem('savedEDL');
+  }
+}
   document.getElementById('startTimecodeButton').addEventListener('click', startTimecode);
   document.getElementById('stopTimecodeButton').addEventListener('click', stopTimecode);
   document.getElementById('resetButton').addEventListener('click', resetTimecode);
