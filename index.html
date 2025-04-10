@@ -308,14 +308,6 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
       elements.timer.innerText = formatTimer(timerSeconds);
     }
 
-    
-
-    function parseCustomTimecode(input) {
-      const [minutes, seconds] = input.split('.').map(Number);
-      return (minutes * 60) + seconds;
-    }
-
-   
 
    function addCustomMessage() {
   const customMessage = elements.customMessage.value.trim();
