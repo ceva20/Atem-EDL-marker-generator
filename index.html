@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V5.2</title>
+  <title>V6.2</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -163,6 +163,11 @@
   <div id="fileButtonContainer">
     <button>Scarica EDL</button>
   </div>
+  
+   <div id="historyContainer" style="margin-top: 40px; text-align: left;">
+  <h3>Cronologia EDL generati</h3>
+  <ul id="edlHistory" style="list-style: none; padding: 0;"></ul>
+</div>
 
   <script>
     // Elementi DOM riutilizzati spesso
@@ -436,58 +441,8 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
   clearLocalStorage();  // ✅ uso coerente
      saveToHistory(filename, completeText);
 
-}
-
-renderHistory();
-
-    
+}  
    
-document.addEventListener('DOMContentLoaded', () => {
-  resetTimecode();
-  restoreFromLocalStorage();
-
-  elements.startBtn.addEventListener('click', startTimecode);
-  elements.stopBtn.addEventListener('click', stopTimecode);
-  elements.resetBtn.addEventListener('click', resetTimecode);
-  elements.copyBtn.addEventListener('click', copyTimecode);
-  elements.timer.addEventListener('click', toggleTimer);
-  elements.fileBtn.addEventListener('click', downloadEDL);
-  elements.useCustomTimecode.addEventListener('change', toggleCustomTimecodeInput);
-  document.querySelector('#customTimecodeContainer button').addEventListener('click', addCustomMessage);
-
-  document.querySelectorAll('.button-container button').forEach(button => {
-    const label = button.innerText.trim();
-    if (['Rumore', 'Pausa', 'Ripete', 'In', 'Out'].includes(label)) {
-      button.addEventListener('click', () => generateFormattedText(label));
-    }
-  });
-
-  elements.projectName.addEventListener('input', updateFilePreview);
-
-  elements.customMessage.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      document.querySelector('#customTimecodeContainer button').click();
-    }
-  });
-
-  // ✅ Mostra la data e imposta il focus sul campo progetto
-  const date = new Date();
-  const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
-  elements.projectName.focus();
-
-  const todayDiv = document.getElementById('todayDate');
-  console.log("todayDiv è:", todayDiv);
-
-  if (todayDiv) {
-    todayDiv.innerText = `Data odierna: ${formattedDate}`;
-  }
-});
-
-
-
- 
-
     function setButtonState(isRunning) {
   elements.startBtn.disabled = isRunning;
   elements.stopBtn.disabled = !isRunning;
@@ -546,6 +501,48 @@ function clearLocalStorage() {
     historyList.appendChild(li);
   });
 }
+    document.addEventListener('DOMContentLoaded', () => {
+  resetTimecode();
+  restoreFromLocalStorage();
+
+  elements.startBtn.addEventListener('click', startTimecode);
+  elements.stopBtn.addEventListener('click', stopTimecode);
+  elements.resetBtn.addEventListener('click', resetTimecode);
+  elements.copyBtn.addEventListener('click', copyTimecode);
+  elements.timer.addEventListener('click', toggleTimer);
+  elements.fileBtn.addEventListener('click', downloadEDL);
+  elements.useCustomTimecode.addEventListener('change', toggleCustomTimecodeInput);
+  document.querySelector('#customTimecodeContainer button').addEventListener('click', addCustomMessage);
+
+  document.querySelectorAll('.button-container button').forEach(button => {
+    const label = button.innerText.trim();
+    if (['Rumore', 'Pausa', 'Ripete', 'In', 'Out'].includes(label)) {
+      button.addEventListener('click', () => generateFormattedText(label));
+    }
+  });
+
+  elements.projectName.addEventListener('input', updateFilePreview);
+
+  elements.customMessage.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.querySelector('#customTimecodeContainer button').click();
+    }
+  });
+
+  // ✅ Mostra la data e imposta il focus sul campo progetto
+  const date = new Date();
+  const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
+  elements.projectName.focus();
+
+  const todayDiv = document.getElementById('todayDate');
+  if (todayDiv) {
+    todayDiv.innerText = `Data odierna: ${formattedDate}`;
+  }
+
+  // ✅ Mostra la cronologia EDL generati
+  renderHistory();
+});
 
 
 
@@ -554,10 +551,7 @@ function clearLocalStorage() {
 
   
   </script>
-  <div id="historyContainer" style="margin-top: 40px; text-align: left;">
-  <h3>Cronologia EDL generati</h3>
-  <ul id="edlHistory" style="list-style: none; padding: 0;"></ul>
-</div>
+ 
 
 </body>
 </html>
