@@ -151,13 +151,10 @@
   <div id="customTimecodeContainer">
     <label for="customMessage">Messaggio personalizzato:</label>
     <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
-    <input type="checkbox" id="useCustomTimecode">
-    <label for="useCustomTimecode">Usa timecode personalizzato</label>
-    <input type="text" id="customTimecode" placeholder="MM.SS (es: 01.15)" disabled="">
-    <button>Aggiungi</button>
+    <button id="addCustomMessageButton">Aggiungi messaggio</button>
+
   </div>
 
-  <div id="timecodeWarning">Formato timecode non valido. Usa MM.SS (es: 01.15).</div>
   <div id="timecodeOutput" contenteditable="true"></div>
 
   <div id="fileButtonContainer">
@@ -185,10 +182,7 @@ const elements = {
   timecode: document.getElementById('timecode'),
   outputBox: document.getElementById('timecodeOutput'),
   customMessage: document.getElementById('customMessage'),
-  customTimecode: document.getElementById('customTimecode'),
-  useCustomTimecode: document.getElementById('useCustomTimecode'),
-  warning: document.getElementById('timecodeWarning'),
-  fileBtn: document.querySelector('#fileButtonContainer button'),
+    fileBtn: document.querySelector('#fileButtonContainer button'),
   projectName: document.getElementById('projectName'),
   preview: document.getElementById('filePreview'),
 };
@@ -314,47 +308,24 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
       elements.timer.innerText = formatTimer(timerSeconds);
     }
 
-    function validateCustomTimecode(input) {
-      return /^\d{1,2}\.\d{1,2}$/.test(input);
-    }
+    
 
     function parseCustomTimecode(input) {
       const [minutes, seconds] = input.split('.').map(Number);
       return (minutes * 60) + seconds;
     }
 
-    function toggleCustomTimecodeInput() {
-      elements.customTimecode.disabled = !elements.useCustomTimecode.checked;
-    }
+   
 
    function addCustomMessage() {
   const customMessage = elements.customMessage.value.trim();
-  const useCustomTimecode = elements.useCustomTimecode.checked;
-  const customTimecodeInput = elements.customTimecode.value.trim();
-  const warning = elements.warning;
-
-  let markerTimeSeconds;
-  if (useCustomTimecode) {
-    if (!validateCustomTimecode(customTimecodeInput)) {
-      warning.style.display = 'block';
-      return;
-    }
-    warning.style.display = 'none';
-    markerTimeSeconds = parseCustomTimecode(customTimecodeInput);
-    if (markerTimeSeconds > timerSeconds) {
-      alert('Il valore inserito supera il tempo attuale del timer.');
-      return;
-    }
-  } else {
-    markerTimeSeconds = timerSeconds;
-  }
 
   if (!customMessage) {
     alert('Il messaggio personalizzato non può essere vuoto.');
     return;
   }
 
-  const correspondingTimecodeFrames = Math.floor((timeInSeconds - (timerSeconds - markerTimeSeconds)) * frameRate);
+  const correspondingTimecodeFrames = Math.floor(timeInSeconds * frameRate);
   const timecodeText = formatTimecode(correspondingTimecodeFrames);
   const sequenceNumber = String(counter).padStart(3, '0');
 
@@ -364,18 +335,15 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
   // Riga completa per il file EDL
   const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${customMessage} |C:ResolveColorBlue |M:Edizione |D:0\n`;
 
-  // Mostra solo la riga semplice
   elements.outputBox.innerText += simpleLine + '\n';
-
-  // Aggiungi alla variabile per l'esportazione
   edlContent += edlLine + '\n';
 
   elements.customMessage.value = '';
-  elements.customTimecode.value = '';
   counter++;
 
   saveToLocalStorage();
 }
+
 
    
   function generateFormattedText(label) {
@@ -534,8 +502,13 @@ function clearHistory() {
   elements.copyBtn.addEventListener('click', copyTimecode);
   elements.timer.addEventListener('click', toggleTimer);
   elements.fileBtn.addEventListener('click', downloadEDL);
-  elements.useCustomTimecode.addEventListener('change', toggleCustomTimecodeInput);
-  document.querySelector('#customTimecodeContainer button').addEventListener('click', addCustomMessage);
+  document.querySelector('#customTimecodeContainer').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    addCustomMessage();
+  }
+});
+
 
   document.querySelectorAll('.button-container button').forEach(button => {
     const label = button.innerText.trim();
@@ -566,6 +539,7 @@ function clearHistory() {
   // ✅ Mostra la cronologia EDL generati
   renderHistory();
       document.getElementById('clearHistoryButton').addEventListener('click', clearHistory);
+document.getElementById('addCustomMessageButton').addEventListener('click', addCustomMessage);
 
 });
 
