@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V3.1</title>
+  <title>V4.1</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -165,6 +165,25 @@
   </div>
 
   <script>
+    // Elementi DOM riutilizzati spesso
+const elements = {
+  startBtn: document.getElementById('startTimecodeButton'),
+  stopBtn: document.getElementById('stopTimecodeButton'),
+  resetBtn: document.getElementById('resetButton'),
+  copyBtn: document.getElementById('copyButton'),
+  timer: document.getElementById('timer'),
+  timecode: document.getElementById('timecode'),
+  outputBox: document.getElementById('timecodeOutput'),
+  customMessage: document.getElementById('customMessage'),
+  customTimecode: document.getElementById('customTimecode'),
+  useCustomTimecode: document.getElementById('useCustomTimecode'),
+  warning: document.getElementById('timecodeWarning'),
+  fileBtn: document.querySelector('#fileButtonContainer button'),
+  projectName: document.getElementById('projectName'),
+  preview: document.getElementById('filePreview'),
+};
+
+
     let timeInSeconds = 0;
     let timerSeconds = 0;
     let isRunningTimecode = false;
@@ -190,7 +209,8 @@
     }
 
     function startTimecode() {
-      const projectName = document.getElementById('projectName').value.trim();
+      const projectName = elements.projectName.value.trim();
+
       if (!projectName) {
         alert('Inserisci il nome del progetto prima di avviare il timecode.');
         return;
@@ -199,15 +219,15 @@
         isRunningTimecode = true;
         lastUpdateTime = Date.now();
         requestAnimationFrame(updateTimecode);
-        document.getElementById('startTimecodeButton').disabled = true;
-        document.getElementById('stopTimecodeButton').disabled = false;
+       setButtonState(true);
+
       }
     }
-    function stopTimecode() {
+   function stopTimecode() {
   isRunningTimecode = false;
-  document.getElementById('startTimecodeButton').disabled = false;
-  document.getElementById('stopTimecodeButton').disabled = true;
+  setButtonState(false);  // ✅ Corretto
 }
+
 
 
     function updateTimecode() {
@@ -220,25 +240,32 @@
       requestAnimationFrame(updateTimecode);
     }
 
-   function toggleTimer() {
-  const timerBox = document.getElementById('timer');
+  function toggleTimer() {
+  const timerBox = elements.timer;  // ✅ uso coerente dell'oggetto elements
 
   if (timerInterval) {
     clearInterval(timerInterval);
     timerInterval = null;
     timerBox.classList.add('paused');
-timerBox.classList.remove('blinking');
-
+    timerBox.classList.remove('blinking');
   } else {
     timerInterval = setInterval(() => {
       timerSeconds++;
       updateTimerDisplay();
     }, 1000);
     timerBox.classList.remove('paused');
-timerBox.classList.add('blinking');
-
+    timerBox.classList.add('blinking');
   }
 }
+
+const initialOutputText = `
+TITLE: Edizione
+FCM: NON DROP FRAME
+
+001  C  V  00:00:00:00  00:00:00:00  00:00:00:00  00:00:00:00
+
+Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink |M:Edizione |D:0
+`;
 
 
    function resetTimecode() {
@@ -250,38 +277,28 @@ timerBox.classList.add('blinking');
   updateTimecodeDisplay();
   updateTimerDisplay();
 
-  // resetta il colore del timer
-  document.getElementById('timer').classList.add('paused');
-document.getElementById('timer').classList.remove('blinking');
+  elements.timer.classList.add('paused');
+  elements.timer.classList.remove('blinking');
 
-  document.getElementById('startTimecodeButton').disabled = false;
-  document.getElementById('stopTimecodeButton').disabled = true;
+  setButtonState(false);
 
-  document.getElementById('timecodeOutput').innerText = `
-TITLE: Edizione
-FCM: NON DROP FRAME
+  elements.outputBox.innerText = initialOutputText;
 
-001  C  V  00:00:00:00  00:00:00:00  00:00:00:00  00:00:00:00
-
-Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink |M:Edizione |D:0
-
-`;
-
-  document.getElementById('customMessage').value = '';
-  document.getElementById('customTimecode').value = '';
+  elements.customMessage.value = '';
+  elements.customTimecode.value = '';
   counter = 2;
-     localStorage.removeItem('savedEDL');
 
+  clearLocalStorage();  // ✅ usa sempre questa funzione
 }
 
 
     function updateTimecodeDisplay() {
       const totalFrames = Math.floor(timeInSeconds * frameRate);
-      document.getElementById('timecode').innerText = formatTimecode(totalFrames);
+      elements.timecode.innerText = formatTimecode(totalFrames);
     }
 
     function updateTimerDisplay() {
-      document.getElementById('timer').innerText = formatTimer(timerSeconds);
+      elements.timer.innerText = formatTimer(timerSeconds);
     }
 
     function validateCustomTimecode(input) {
@@ -294,14 +311,14 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
     }
 
     function toggleCustomTimecodeInput() {
-      document.getElementById('customTimecode').disabled = !document.getElementById('useCustomTimecode').checked;
+      elements.customTimecode.disabled = !elements.useCustomTimecode.checked;
     }
 
     function addCustomMessage() {
-      const customMessage = document.getElementById('customMessage').value.trim();
-      const useCustomTimecode = document.getElementById('useCustomTimecode').checked;
-      const customTimecodeInput = document.getElementById('customTimecode').value.trim();
-      const warning = document.getElementById('timecodeWarning');
+      const customMessage = elements.customMessage.value.trim();
+      const useCustomTimecode = elements.useCustomTimecode.checked;
+      const customTimecodeInput = elements.customTimecode.value.trim();
+      const warning = elements.warning;
       
 
       let markerTimeSeconds;
@@ -331,13 +348,13 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
       const formattedText = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${customMessage} |C:ResolveColorBlue |M:Edizione |D:0\n`;
 
 
-      const outputBox = document.getElementById('timecodeOutput');
+      const outputBox = elements.outputBox;
        outputBox.innerText += formattedText + '\n\n';
 
       outputBox.scrollTop = outputBox.scrollHeight;
 
-      document.getElementById('customMessage').value = '';
-      document.getElementById('customTimecode').value = '';
+      elements.customMessage.value = '';
+      elements.customTimecode.value = '';
       counter++;
   
  
@@ -351,7 +368,7 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
   const sequenceNumber = String(counter).padStart(3, '0');
   const formattedText = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${label} |C:ResolveColor${getColorForLabel(label)} |M:Edizione |D:0\n`;
 
-  const outputBox = document.getElementById('timecodeOutput');
+  const outputBox = elements.outputBox;
  
   outputBox.innerText += formattedText + '\n\n';
 
@@ -361,7 +378,7 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
   saveToLocalStorage(); // Salva dopo ogni aggiunta
 }
     function saveToLocalStorage() {
-  localStorage.setItem('savedEDL', document.getElementById('timecodeOutput').innerText);
+  localStorage.setItem('savedEDL', elements.outputBox.innerText);
 }
 
     function getColorForLabel(label) {
@@ -370,7 +387,7 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
     }
 
     function copyTimecode() {
-      const outputText = document.getElementById('timecodeOutput').innerText;
+      const outputText = elements.outputBox.innerText;
       navigator.clipboard.writeText(outputText).then(() => {
         const alertBox = document.getElementById('copyAlert');
         alertBox.style.display = 'block';
@@ -378,54 +395,49 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
       });
     }
 
-    function downloadEDL() {
-      const outputText = document.getElementById('timecodeOutput').innerText;
-      const headerText = `TITLE: Edizione\nFCM: NON DROP FRAME\n\n`;
-      const completeText = headerText + outputText + '\n\n';
+   function downloadEDL() {
+  const outputText = elements.outputBox.innerText;
+  const headerText = `TITLE: Edizione\nFCM: NON DROP FRAME\n\n`;
+  const completeText = headerText + outputText + '\n\n';
 
-      const date = new Date();
-      const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
+  const date = new Date();
+  const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
 
-      const projectName = document.getElementById('projectName').value.trim().replace(/\s+/g, '_') || 'SenzaNome';
-     const filename = `${formattedDate}_${projectName}.edl`;
-      const blob = new Blob([completeText], { type: 'text/plain' });
-     const edlButton = document.querySelector('#fileButtonContainer button');
-edlButton.disabled = true;
-edlButton.innerText = 'Generazione...';
+  const projectName = elements.projectName.value.trim().replace(/\s+/g, '_') || 'SenzaNome';
+  const filename = `${formattedDate}_${projectName}.edl`;
+  const blob = new Blob([completeText], { type: 'text/plain' });
 
-setTimeout(() => {
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = filename;
-  link.click();
+  elements.fileBtn.disabled = true;
+  elements.fileBtn.innerText = 'Generazione...';
 
-  edlButton.disabled = false;
-  edlButton.innerText = 'Scarica EDL';
-}, 300);
-    localStorage.removeItem('savedEDL');
+  setTimeout(() => {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+
+    elements.fileBtn.disabled = false;
+    elements.fileBtn.innerText = 'Scarica EDL';
+  }, 300);
+
+  clearLocalStorage();  // ✅ uso coerente
 }
+
 
     
    
 document.addEventListener('DOMContentLoaded', () => {
-resetTimecode();
-const savedEDL = localStorage.getItem('savedEDL');
-if (savedEDL) {
-  const shouldRestore = confirm("Hai un EDL non salvato. Vuoi recuperarlo?");
-  if (shouldRestore) {
-    document.getElementById('timecodeOutput').innerText = savedEDL;
-  } else {
-    localStorage.removeItem('savedEDL');
-  }
-}
-  document.getElementById('startTimecodeButton').addEventListener('click', startTimecode);
-  document.getElementById('stopTimecodeButton').addEventListener('click', stopTimecode);
-  document.getElementById('resetButton').addEventListener('click', resetTimecode);
-  document.getElementById('copyButton').addEventListener('click', copyTimecode);
-  document.getElementById('timer').addEventListener('click', toggleTimer);
-  document.querySelector('#fileButtonContainer button').addEventListener('click', downloadEDL); // ✅ questa è la riga da aggiungere
+  resetTimecode();
+  restoreFromLocalStorage();
 
-  document.getElementById('timer').classList.add('paused');
+  elements.startBtn.addEventListener('click', startTimecode);
+  elements.stopBtn.addEventListener('click', stopTimecode);
+  elements.resetBtn.addEventListener('click', resetTimecode);
+  elements.copyBtn.addEventListener('click', copyTimecode);
+  elements.timer.addEventListener('click', toggleTimer);
+  elements.fileBtn.addEventListener('click', downloadEDL);
+  elements.useCustomTimecode.addEventListener('change', toggleCustomTimecodeInput);
+  document.querySelector('#customTimecodeContainer button').addEventListener('click', addCustomMessage);
 
   document.querySelectorAll('.button-container button').forEach(button => {
     const label = button.innerText.trim();
@@ -434,33 +446,60 @@ if (savedEDL) {
     }
   });
 
-  document.getElementById('useCustomTimecode').addEventListener('change', toggleCustomTimecodeInput);
-  document.querySelector('#customTimecodeContainer button').addEventListener('click', addCustomMessage);
+  elements.projectName.addEventListener('input', updateFilePreview);
 
+  elements.customMessage.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.querySelector('#customTimecodeContainer button').click();
+    }
+  });
+
+  // ✅ Mostra la data e imposta il focus sul campo progetto
   const date = new Date();
   const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
-  document.getElementById('projectName').focus();
+  elements.projectName.focus();
 
   const todayDiv = document.getElementById('todayDate');
+  console.log("todayDiv è:", todayDiv);
+
   if (todayDiv) {
     todayDiv.innerText = `Data odierna: ${formattedDate}`;
   }
-
-  document.getElementById('projectName').addEventListener('input', () => {
-    const name = document.getElementById('projectName').value.trim().replace(/\s+/g, '_') || 'SenzaNome';
-    const preview = document.getElementById('filePreview');
-    if (preview) {
-      preview.innerText = `Il file si chiamerà: ${formattedDate}_${name}.edl`;
-    }
-  });
 });
-    document.getElementById('customMessage').addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    document.querySelector('#customTimecodeContainer button').click();
+
+
+
+ 
+
+    function setButtonState(isRunning) {
+  elements.startBtn.disabled = isRunning;
+  elements.stopBtn.disabled = !isRunning;
+}
+
+function updateFilePreview() {
+  const name = elements.projectName.value.trim().replace(/\s+/g, '_') || 'SenzaNome';
+  const date = new Date();
+  const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
+  elements.preview.innerText = `Il file si chiamerà: ${formattedDate}_${name}.edl`;
+}
+
+    function restoreFromLocalStorage() {
+  const savedEDL = localStorage.getItem('savedEDL');
+  if (savedEDL && confirm("Hai un EDL non salvato. Vuoi recuperarlo?")) {
+    elements.outputBox.innerText = savedEDL;
+  } else {
+    localStorage.removeItem('savedEDL');
   }
-});
+}
 
+function saveToLocalStorage() {
+  localStorage.setItem('savedEDL', elements.outputBox.innerText);
+}
+
+function clearLocalStorage() {
+  localStorage.removeItem('savedEDL');
+}
 
 
 
