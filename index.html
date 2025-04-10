@@ -434,8 +434,11 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
   }, 300);
 
   clearLocalStorage();  // ✅ uso coerente
+     saveToHistory(filename, completeText);
+
 }
 
+renderHistory();
 
     
    
@@ -511,12 +514,51 @@ function updateFilePreview() {
 function clearLocalStorage() {
   localStorage.removeItem('savedEDL');
 }
+    function saveToHistory(filename, content) {
+  const history = JSON.parse(localStorage.getItem('edlHistory') || '[]');
+  history.push({ filename, content, timestamp: Date.now() });
+  localStorage.setItem('edlHistory', JSON.stringify(history));
+  renderHistory();
+}
+    function renderHistory() {
+  const historyList = document.getElementById('edlHistory');
+  const history = JSON.parse(localStorage.getItem('edlHistory') || '[]');
+  historyList.innerHTML = '';
+
+  history.reverse().forEach(item => {
+    const li = document.createElement('li');
+    const date = new Date(item.timestamp).toLocaleString();
+
+    const link = document.createElement('button');
+    link.innerText = `${item.filename} (${date})`;
+    link.style.marginBottom = '8px';
+    link.style.display = 'block';
+
+    link.addEventListener('click', () => {
+      const blob = new Blob([item.content], { type: 'text/plain' });
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = item.filename;
+      downloadLink.click();
+    });
+
+    li.appendChild(link);
+    historyList.appendChild(li);
+  });
+}
+
+
 
 
 
 
   
   </script>
+  <div id="historyContainer" style="margin-top: 40px; text-align: left;">
+  <h3>Cronologia EDL generati</h3>
+  <ul id="edlHistory" style="list-style: none; padding: 0;"></ul>
+</div>
+
 </body>
 </html>
 
