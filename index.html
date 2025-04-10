@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V6.2</title>
+  <title>V6.3</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -166,8 +166,13 @@
   
    <div id="historyContainer" style="margin-top: 40px; text-align: left;">
   <h3>Cronologia EDL generati</h3>
+  <button id="clearHistoryButton" style="margin-bottom: 10px;">Svuota cronologia</button>
+  <div id="noHistoryMessage" style="color: gray; font-style: italic; display: none;">
+    Nessun EDL salvato ancora.
+  </div>
   <ul id="edlHistory" style="list-style: none; padding: 0;"></ul>
 </div>
+
 
   <script>
     // Elementi DOM riutilizzati spesso
@@ -475,10 +480,19 @@ function clearLocalStorage() {
   localStorage.setItem('edlHistory', JSON.stringify(history));
   renderHistory();
 }
-    function renderHistory() {
+   function renderHistory() {
   const historyList = document.getElementById('edlHistory');
+  const noHistoryMessage = document.getElementById('noHistoryMessage');
   const history = JSON.parse(localStorage.getItem('edlHistory') || '[]');
+
   historyList.innerHTML = '';
+
+  if (history.length === 0) {
+    noHistoryMessage.style.display = 'block';
+    return;
+  } else {
+    noHistoryMessage.style.display = 'none';
+  }
 
   history.reverse().forEach(item => {
     const li = document.createElement('li');
@@ -501,6 +515,15 @@ function clearLocalStorage() {
     historyList.appendChild(li);
   });
 }
+
+
+function clearHistory() {
+  localStorage.removeItem('edlHistory');
+  renderHistory();
+}
+
+
+    
     document.addEventListener('DOMContentLoaded', () => {
   resetTimecode();
   restoreFromLocalStorage();
@@ -542,6 +565,8 @@ function clearLocalStorage() {
 
   // ✅ Mostra la cronologia EDL generati
   renderHistory();
+      document.getElementById('clearHistoryButton').addEventListener('click', clearHistory);
+
 });
 
 
