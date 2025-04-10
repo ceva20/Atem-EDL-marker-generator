@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V5.1</title>
+  <title>V5.2</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -269,7 +269,7 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
 `;
  let edlContent = initialOutputText;
 
-   function resetTimecode() {
+  function resetTimecode() {
   isRunningTimecode = false;
   clearInterval(timerInterval);
   timerInterval = null;
@@ -283,14 +283,16 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
 
   setButtonState(false);
 
-  elements.outputBox.innerText = initialOutputText;
+  elements.outputBox.innerText = '';          // ✅ niente intestazione nella visualizzazione
+  edlContent = initialOutputText;             // ✅ ma presente nel file esportato
 
   elements.customMessage.value = '';
   elements.customTimecode.value = '';
   counter = 2;
 
-  clearLocalStorage();  // ✅ usa sempre questa funzione
+  clearLocalStorage();
 }
+
 
 
     function updateTimecodeDisplay() {
