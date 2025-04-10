@@ -528,12 +528,13 @@ function clearHistory() {
 
   elements.projectName.addEventListener('input', updateFilePreview);
 
-  elements.customMessage.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      document.querySelector('#customTimecodeContainer button').click();
-    }
-  });
+ elements.customMessage.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    addCustomMessage();
+  }
+});
+
 
   // ✅ Mostra la data e imposta il focus sul campo progetto
   const date = new Date();
