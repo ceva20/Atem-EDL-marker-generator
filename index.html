@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V4.1</title>
+  <title>V5.0</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -189,6 +189,7 @@ const elements = {
     let isRunningTimecode = false;
     let timerInterval;
     let counter = 2;
+    let edlContent = initialOutputText;
     let lastUpdateTime;
     const frameRate = 25;
 
@@ -314,72 +315,81 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
       elements.customTimecode.disabled = !elements.useCustomTimecode.checked;
     }
 
-    function addCustomMessage() {
-      const customMessage = elements.customMessage.value.trim();
-      const useCustomTimecode = elements.useCustomTimecode.checked;
-      const customTimecodeInput = elements.customTimecode.value.trim();
-      const warning = elements.warning;
-      
+   function addCustomMessage() {
+  const customMessage = elements.customMessage.value.trim();
+  const useCustomTimecode = elements.useCustomTimecode.checked;
+  const customTimecodeInput = elements.customTimecode.value.trim();
+  const warning = elements.warning;
 
-      let markerTimeSeconds;
-      if (useCustomTimecode) {
-        if (!validateCustomTimecode(customTimecodeInput)) {
-          warning.style.display = 'block';
-          return;
-        }
-        warning.style.display = 'none';
-        markerTimeSeconds = parseCustomTimecode(customTimecodeInput);
-        if (markerTimeSeconds > timerSeconds) {
-          alert('Il valore inserito supera il tempo attuale del timer.');
-          return;
-        }
-      } else {
-        markerTimeSeconds = timerSeconds;
-      }
-
-      if (!customMessage) {
-        alert('Il messaggio personalizzato non può essere vuoto.');
-        return;
-      }
-
-      const correspondingTimecodeFrames = Math.floor((timeInSeconds - (timerSeconds - markerTimeSeconds)) * frameRate);
-      const timecodeText = formatTimecode(correspondingTimecodeFrames);
-      const sequenceNumber = String(counter).padStart(3, '0');
-      const formattedText = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${customMessage} |C:ResolveColorBlue |M:Edizione |D:0\n`;
-
-
-      const outputBox = elements.outputBox;
-       outputBox.innerText += formattedText + '\n\n';
-
-      outputBox.scrollTop = outputBox.scrollHeight;
-
-      elements.customMessage.value = '';
-      elements.customTimecode.value = '';
-      counter++;
-  
- 
-  saveToLocalStorage(); // Salva anche qui
-
-    
+  let markerTimeSeconds;
+  if (useCustomTimecode) {
+    if (!validateCustomTimecode(customTimecodeInput)) {
+      warning.style.display = 'block';
+      return;
     }
-   
-   function generateFormattedText(label) {
-  const timecodeText = formatTimecode(Math.floor(timeInSeconds * frameRate));
+    warning.style.display = 'none';
+    markerTimeSeconds = parseCustomTimecode(customTimecodeInput);
+    if (markerTimeSeconds > timerSeconds) {
+      alert('Il valore inserito supera il tempo attuale del timer.');
+      return;
+    }
+  } else {
+    markerTimeSeconds = timerSeconds;
+  }
+
+  if (!customMessage) {
+    alert('Il messaggio personalizzato non può essere vuoto.');
+    return;
+  }
+
+  const correspondingTimecodeFrames = Math.floor((timeInSeconds - (timerSeconds - markerTimeSeconds)) * frameRate);
+  const timecodeText = formatTimecode(correspondingTimecodeFrames);
   const sequenceNumber = String(counter).padStart(3, '0');
-  const formattedText = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${label} |C:ResolveColor${getColorForLabel(label)} |M:Edizione |D:0\n`;
 
-  const outputBox = elements.outputBox;
- 
-  outputBox.innerText += formattedText + '\n\n';
+  // Riga semplificata per visualizzazione
+  const simpleLine = `${timecodeText} - ${customMessage}`;
 
-  outputBox.scrollTop = outputBox.scrollHeight;
+  // Riga completa per il file EDL
+  const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${customMessage} |C:ResolveColorBlue |M:Edizione |D:0\n`;
+
+  // Mostra solo la riga semplice
+  elements.outputBox.innerText += simpleLine + '\n';
+
+  // Aggiungi alla variabile per l'esportazione
+  edlContent += edlLine + '\n';
+
+  elements.customMessage.value = '';
+  elements.customTimecode.value = '';
   counter++;
 
-  saveToLocalStorage(); // Salva dopo ogni aggiunta
+  saveToLocalStorage();
 }
+
+   
+  function generateFormattedText(label) {
+  const timecodeText = formatTimecode(Math.floor(timeInSeconds * frameRate));
+  const sequenceNumber = String(counter).padStart(3, '0');
+
+  // Riga completa per il file EDL
+  const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${label} |C:ResolveColor${getColorForLabel(label)} |M:Edizione |D:0\n`;
+
+  // Riga semplificata per visualizzazione
+  const simpleLine = `${timecodeText} - ${label}`;
+
+  // Mostra solo la riga semplice all’utente
+  elements.outputBox.innerText += simpleLine + '\n';
+
+  // Salva la riga completa nel contenuto da esportare
+  edlContent += edlLine + '\n';
+
+  counter++;
+  saveToLocalStorage();
+}
+
     function saveToLocalStorage() {
-  localStorage.setItem('savedEDL', elements.outputBox.innerText);
+  localStorage.setItem('savedEDL', edlContent);
 }
+
 
     function getColorForLabel(label) {
       const map = { pausa: 'Sky', rumore: 'Purple', ripete: 'Red', In: 'Cream', Out: 'Cream' };
@@ -396,7 +406,8 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
     }
 
    function downloadEDL() {
-  const outputText = elements.outputBox.innerText;
+  const outputText = edlContent;
+
   const headerText = `TITLE: Edizione\nFCM: NON DROP FRAME\n\n`;
   const completeText = headerText + outputText + '\n\n';
 
@@ -484,18 +495,16 @@ function updateFilePreview() {
   elements.preview.innerText = `Il file si chiamerà: ${formattedDate}_${name}.edl`;
 }
 
-    function restoreFromLocalStorage() {
+   function restoreFromLocalStorage() {
   const savedEDL = localStorage.getItem('savedEDL');
   if (savedEDL && confirm("Hai un EDL non salvato. Vuoi recuperarlo?")) {
-    elements.outputBox.innerText = savedEDL;
+    edlContent = savedEDL;
+    elements.outputBox.innerText = ''; // Lasciamo vuoto l'output visivo
   } else {
     localStorage.removeItem('savedEDL');
   }
 }
 
-function saveToLocalStorage() {
-  localStorage.setItem('savedEDL', elements.outputBox.innerText);
-}
 
 function clearLocalStorage() {
   localStorage.removeItem('savedEDL');
