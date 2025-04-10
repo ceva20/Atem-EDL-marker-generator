@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V3.0</title>
+  <title>V3.1</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -332,17 +332,15 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
 
 
       const outputBox = document.getElementById('timecodeOutput');
-      const span = document.createElement('span');
-      span.innerText = formattedText + '\n\n';
-      outputBox.appendChild(span);
+       outputBox.innerText += formattedText + '\n\n';
+
       outputBox.scrollTop = outputBox.scrollHeight;
 
       document.getElementById('customMessage').value = '';
       document.getElementById('customTimecode').value = '';
       counter++;
-        outputBox.scrollTop = outputBox.scrollHeight;
-  counter++;
-
+  
+ 
   saveToLocalStorage(); // Salva anche qui
 
     
@@ -354,10 +352,9 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
   const formattedText = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${label} |C:ResolveColor${getColorForLabel(label)} |M:Edizione |D:0\n`;
 
   const outputBox = document.getElementById('timecodeOutput');
-  const span = document.createElement('span');
-  span.innerText = formattedText + '\n\n';
-  span.classList.add(label);
-  outputBox.appendChild(span);
+ 
+  outputBox.innerText += formattedText + '\n\n';
+
   outputBox.scrollTop = outputBox.scrollHeight;
   counter++;
 
@@ -411,7 +408,7 @@ setTimeout(() => {
     
    
 document.addEventListener('DOMContentLoaded', () => {
-  // resetTimecode();
+resetTimecode();
 const savedEDL = localStorage.getItem('savedEDL');
 if (savedEDL) {
   const shouldRestore = confirm("Hai un EDL non salvato. Vuoi recuperarlo?");
@@ -457,6 +454,13 @@ if (savedEDL) {
     }
   });
 });
+    document.getElementById('customMessage').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    document.querySelector('#customTimecodeContainer button').click();
+  }
+});
+
 
 
 
