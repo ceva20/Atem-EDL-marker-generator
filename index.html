@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V8.3</title>
+  <title>V8.4</title>
   <style>
 
     :root {
@@ -203,9 +203,20 @@ textarea:focus {
   border-radius: 8px;
 }
 
-    
+#fileButtonContainer button {
+  background-color: var(--primary);
+  color: white;
+  padding: 10px 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
 
-
+#fileButtonContainer button:active {
+  background-color: var(--accent);
+}
 
   </style>
 </head>
@@ -274,11 +285,6 @@ textarea:focus {
         <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
       </div>
 
-      <!-- Scarica EDL -->
-      <div id="fileButtonContainer">
-        <button>Scarica EDL</button>
-      </div>
-
       <!-- Cronologia -->
       <div id="historyContainer" style="margin-top: 40px; text-align: left;">
         <h3>Cronologia EDL generati</h3>
@@ -291,10 +297,17 @@ textarea:focus {
 
     </div>
 
-    <div id="logPanel">
-      <h3>Log eventi</h3>
-      <div id="timecodeOutput" contenteditable="true"></div>
+   <div id="logPanel">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h3>Log eventi</h3>
+    <div id="fileButtonContainer">
+      <button>Scarica EDL</button>
     </div>
+  </div>
+
+  <div id="timecodeOutput" contenteditable="true"></div>
+</div>
+
   </div>
 
 
