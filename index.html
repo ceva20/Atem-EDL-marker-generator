@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V9</title>
+  <title>V9.1</title>
   <style>
 
     :root {
@@ -300,6 +300,24 @@ textarea:focus {
   cursor: pointer;
 }
 
+#mainControls h3 {
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  color: var(--primary);
+}
+
+    .icon-button {
+  font-size: 1.4em;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
+
 
 
   </style>
@@ -326,8 +344,8 @@ textarea:focus {
   <h3 style="margin: 0 0 5px;">Timecode</h3>
   <div style="display: flex; align-items: center; gap: 10px;">
     <div id="timecode">00:00:00:00</div>
-    <button id="startTimecodeButton">Start</button>
-    <button id="stopTimecodeButton" disabled>Stop</button>
+    <button id="startTimecodeButton" title="Avvia Timecode" style="font-size: 1.4em;">▶</button>
+    <button id="stopTimecodeButton" title="Stop Timecode" style="font-size: 1.4em;" disabled>■</button>
   </div>
 </div>
 
@@ -336,9 +354,11 @@ textarea:focus {
   <h3 style="margin: 0 0 5px;">Timer</h3>
   <div style="display: flex; align-items: center; gap: 10px;">
     <div id="timer" class="timer-box">00:00</div>
-    <button id="stopTimerButton" title="Stop Timer" style="font-size: 1.4em;">&#9632;</button>
+    <button id="startTimerButton" title="Start Timer" style="font-size: 1.4em;">▶</button>
+    <button id="stopTimerButton" title="Stop Timer" style="font-size: 1.4em;">■</button>
   </div>
 </div>
+
 
       <!-- Bottoni principali -->
       <div class="button-container">
@@ -711,9 +731,11 @@ function clearHistory() {
   elements.stopBtn.addEventListener('click', stopTimecode);
   elements.resetBtn.addEventListener('click', resetTimecode);
   elements.copyBtn.addEventListener('click', copyTimecode);
-  elements.timer.addEventListener('click', toggleTimer);
+  document.getElementById('startTimerButton').addEventListener('click', toggleTimer);
   elements.fileBtn.addEventListener('click', downloadEDL);
-      document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
+  document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
+    
+
 
       const drawer = document.getElementById('drawerHistory');
 const drawerBtn = document.getElementById('historyToggle');
