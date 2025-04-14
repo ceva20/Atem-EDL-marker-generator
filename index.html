@@ -303,13 +303,18 @@ textarea:focus {
 
     </div>
 
-   <div id="logPanel">
+ <div id="logPanel">
   <div style="display: flex; justify-content: space-between; align-items: center;">
     <h3>Log eventi</h3>
     <div id="fileButtonContainer">
       <button>Scarica EDL</button>
     </div>
   </div>
+
+   <div id="filePreview" style="font-size: 0.9rem; color: #333; margin-top: 4px; margin-bottom: 10px;"></div>
+
+  <div id="timecodeOutput" contenteditable="true"></div>
+</div>
 
   <div id="timecodeOutput" contenteditable="true"></div>
 </div>
@@ -584,10 +589,10 @@ const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${ti
 }
 
 function updateFilePreview() {
-  const name = elements.projectName.value.trim().replace(/\s+/g, '_') || 'SenzaNome';
+    const name = elements.projectName.value.trim() || 'SenzaNome';
   const date = new Date();
   const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
- elements.preview.innerText = `Il file che verrà generato si chiamerà:\n${formattedDate}_${name}.edl\n(dove ${formattedDate} è la data odierna)`;
+ elements.preview.innerText = `${formattedDate}_${name}.edl`;
 
 }
 
@@ -706,7 +711,7 @@ document.querySelectorAll('.button-container button').forEach(button => {
   renderHistory();
       document.getElementById('clearHistoryButton').addEventListener('click', clearHistory);
 document.getElementById('addCustomMessageButton').addEventListener('click', addCustomMessage);
-
+updateFilePreview();
 });
 
 
