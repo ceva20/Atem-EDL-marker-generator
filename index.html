@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V9.3</title>
+  <title>V9.5</title>
   <style>
 
     :root {
@@ -133,8 +133,7 @@ textarea:focus {
   text-align: center;
   transition: background-color 1.5s ease;
 }
-ion: background-color 0.3s ease;
-}
+
 .timer-box.paused {
   background-color: #6c757d;
 }
@@ -332,6 +331,19 @@ ion: background-color 0.3s ease;
 }
 
 
+.paused-blinking {
+  animation: pause-orange 6s ease-in-out infinite alternate;
+  color: white !important;
+}
+
+@keyframes pause-orange {
+  0% {
+    background-color: #f57b23;
+  }
+  100% {
+    background-color: #eda876;
+  }
+}
 
 
 
@@ -495,17 +507,23 @@ const elements = {
         lastUpdateTime = Date.now();
         requestAnimationFrame(updateTimecode);
        setButtonState(true);
+        elements.timecode.classList.remove('paused-blinking');
         elements.timecode.classList.add('blinking');
 
 
       }
     }
-   function stopTimecode() {
-  isRunningTimecode = false;
-  setButtonState(false);  // ✅ Corretto
-     elements.timecode.classList.remove('blinking');
+ function pauseTimecode() {
+  if (!isRunningTimecode) return;
 
+  isRunningTimecode = false;
+  clearInterval(timecodeInterval);
+  elements.timecode.classList.remove('blinking');
+  elements.timecode.classList.add('paused-blinking');
+  setButtonState(false);
 }
+
+
 
 
 
@@ -534,12 +552,17 @@ const elements = {
       updateTimerDisplay();
     }, 1000);
     timerBox.classList.remove('paused');
+    timerBox.classList.remove('paused-blinking');
     timerBox.classList.add('blinking');
+    pauseTimerBtn.disabled = false;
+
   }
 }
     function stopAndResetTimer() {
   if (timerInterval) {
     clearInterval(timerInterval);
+    elements.timer.classList.remove('paused-blinking');
+pauseTimerBtn.disabled = true;
     elements.timer.classList.remove('blinking');
 
     timerInterval = null;
@@ -766,6 +789,9 @@ function clearHistory() {
   document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
   document.getElementById('pauseTimecodeButton').addEventListener('click', pauseTimecode);
  document.getElementById('pauseTimerButton').addEventListener('click', pauseTimer);
+      const pauseTimerBtn = document.getElementById('pauseTimerButton');
+pauseTimerBtn.disabled = true;
+
     
 
 
@@ -844,21 +870,15 @@ function renderDrawerHistory() {
     historyList.appendChild(li);
   });
 }
-    function pauseTimecode() {
-  if (!isRunningTimecode) return;
-
-  isRunningTimecode = false;
-  clearInterval(timecodeInterval);
-  elements.timecode.classList.remove('blinking');
-  setButtonState(false);
-}
-
+    
 function pauseTimer() {
   if (!timerInterval) return;
 
   clearInterval(timerInterval);
   timerInterval = null;
   elements.timer.classList.remove('blinking');
+elements.timer.classList.add('paused-blinking');
+
 }
 
 
