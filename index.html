@@ -252,14 +252,15 @@ textarea:focus {
       </div>
 
       <!-- Bottoni evento -->
-      <div class="button-container">
+     <div class="button-container">
   <button class="btn-in">IN</button>
   <button class="btn-out">OUT</button>
   <button>RIPETIZIONE</button>
-  <button>TOSSE</button>
+  <button>ERRORE REGIA</button>
   <button>RUMORE</button>
   <button>PAUSA</button>
 </div>
+
 
       </div>
 
@@ -638,12 +639,13 @@ function clearHistory() {
 });
 
 
-  document.querySelectorAll('.button-container button').forEach(button => {
-    const label = button.innerText.trim();
-    if (['Rumore', 'Pausa', 'Ripete', 'In', 'Out'].includes(label)) {
-      button.addEventListener('click', () => generateFormattedText(label));
-    }
-  });
+ document.querySelectorAll('.button-container button').forEach(button => {
+  const label = button.innerText.trim();
+  if (['Rumore', 'Pausa', 'Ripetizione', 'Errore Regia', 'In', 'Out'].includes(label)) {
+    button.addEventListener('click', () => generateFormattedText(label));
+  }
+});
+
 
   elements.projectName.addEventListener('input', updateFilePreview);
 
