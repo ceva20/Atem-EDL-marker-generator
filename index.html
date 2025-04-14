@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V8.0.2</title>
+  <title>V8.0.4</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -117,25 +117,25 @@
   </div>
 
   <!-- Timer e Timecode -->
-  <div class="row">
-    <div class="timer-block">
-      <strong>Timecode</strong>
-      <div id="timecodeDisplay" class="timer-display">00:00:00:00</div>
-      <div class="button-group">
-        <button class="button" id="stopTimecodeBtn">&#9632;</button>
-        <button class="button" id="startTimecodeBtn">&#9654;</button>
-      </div>
-    </div>
-
-    <div class="timer-block">
-      <strong>Durata Effettiva</strong>
-      <div id="timer" class="timer-display paused">00:00</div>
-      <div class="button-group">
-        <button class="button" id="stopTimerButton">&#9632;</button>
-        <button class="button" id="toggleTimerButton">&#9654;</button>
-      </div>
+ <div class="row">
+  <div class="timer-block">
+    <strong>Timecode</strong>
+    <div id="timecodeDisplay" class="timer-display">00:00:00:00</div>
+    <div class="button-group" style="justify-content: center;">
+      <button class="button" id="stopTimecodeBtn" title="Stop Timecode">&#9632;</button>
+      <button class="button" id="startTimecodeBtn" title="Start Timecode">&#9654;</button>
     </div>
   </div>
+
+  <div class="timer-block">
+    <strong>Durata Effettiva</strong>
+    <div id="timer" class="timer-display paused">00:00</div>
+    <div class="button-group" style="justify-content: center;">
+      <button class="button" id="stopTimerButton" title="Stop Timer">&#9632;</button>
+      <button class="button" id="toggleTimerButton" title="Start Timer">&#9654;</button>
+    </div>
+  </div>
+</div>
 
   <!-- Bottoni azione -->
   <div class="button-group">
@@ -171,25 +171,7 @@
 
 
   <script>
-    // Elementi DOM riutilizzati spesso
-const elements = {
-  projectName: document.getElementById('projectName'),
-  timer: document.getElementById('timer'),
-  timecodeDisplay: document.getElementById('timecodeDisplay'),
-  startTimecodeBtn: document.getElementById('startTimecodeBtn'),
-  stopTimecodeBtn: document.getElementById('stopTimecodeBtn'),
-  stopTimerButton: document.getElementById('stopTimerButton'),
-  toggleTimerButton: document.getElementById('toggleTimerButton'),
-  customMessage: document.getElementById('customMessage'),
-  addCustomMessageButton: document.getElementById('addCustomMessageButton'),
-  outputBox: document.getElementById('outputBox'),
-  fileBtn: document.getElementById('fileBtn'),
-  edlHistory: document.getElementById('edlHistory'),
-  historyPopup: document.getElementById('historyPopup'),
-};
-
-
-
+  
     let timeInSeconds = 0;
     let timerSeconds = 0;
     let isRunningTimecode = false;
@@ -314,7 +296,8 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
 
     function updateTimecodeDisplay() {
       const totalFrames = Math.floor(timeInSeconds * frameRate);
-      elements.timecode.innerText = formatTimecode(totalFrames);
+      elements.timecodeDisplay.innerText = formatTimecode(totalFrames);
+
     }
 
     function updateTimerDisplay() {
@@ -498,6 +481,21 @@ function clearHistory() {
 
     
     document.addEventListener('DOMContentLoaded', () => {
+       const elements = {
+    projectName: document.getElementById('projectName'),
+    timer: document.getElementById('timer'),
+    timecodeDisplay: document.getElementById('timecodeDisplay'),
+    startTimecodeBtn: document.getElementById('startTimecodeBtn'),
+    stopTimecodeBtn: document.getElementById('stopTimecodeBtn'),
+    stopTimerButton: document.getElementById('stopTimerButton'),
+    toggleTimerButton: document.getElementById('toggleTimerButton'),
+    customMessage: document.getElementById('customMessage'),
+    addCustomMessageButton: document.getElementById('addCustomMessageButton'),
+    outputBox: document.getElementById('outputBox'),
+    fileBtn: document.getElementById('fileBtn'),
+    edlHistory: document.getElementById('edlHistory'),
+    historyPopup: document.getElementById('historyPopup'),
+           };
   resetTimecode();
   restoreFromLocalStorage();
 
