@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V8.2.3</title>
+  <title>V8.3</title>
   <style>
 
     :root {
@@ -35,6 +35,7 @@
       justify-content: center;
       gap: 12px;
       margin: 10px 0;
+        margin-bottom: 8px;
     }
   button {
   background-color: var(--primary);
@@ -252,14 +253,19 @@ textarea:focus {
       </div>
 
       <!-- Bottoni evento -->
-     <div class="button-container">
-  <button class="btn-in">IN</button>
-  <button class="btn-out">OUT</button>
-  <button>RIPETIZIONE</button>
-  <button>ERRORE REGIA</button>
-  <button>RUMORE</button>
-  <button>PAUSA</button>
+   <div class="button-container">
+  <div>
+    <button class="btn-in">IN</button>
+    <button>RIPETIZIONE</button>
+    <button>PAUSA</button>
+  </div>
+  <div>
+    <button class="btn-out">OUT</button>
+    <button>RUMORE</button>
+    <button>ERRORE REGIA</button>
+  </div>
 </div>
+
 
       <!-- Messaggio personalizzato -->
       <div id="customTimecodeContainer">
