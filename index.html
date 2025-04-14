@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V8.2.2</title>
+  <title>V8.2.3</title>
   <style>
 
     :root {
@@ -471,11 +471,15 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
 
    
   function generateFormattedText(label) {
+    const cleanLabel = label.trim().toLowerCase();
+const displayLabel = label.trim(); // per visualizzare come scritto nel bottone
   const timecodeText = formatTimecode(Math.floor(timeInSeconds * frameRate));
   const sequenceNumber = String(counter).padStart(3, '0');
+    
 
   // Riga completa per il file EDL
-  const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${label} |C:ResolveColor${getColorForLabel(label)} |M:Edizione |D:0\n`;
+const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${displayLabel} |C:ResolveColor${getColorForLabel(cleanLabel)} |M:Edizione |D:0\n`;
+
 
   // Riga semplificata per visualizzazione
   const simpleLine = `${timecodeText} - ${label}`;
@@ -496,9 +500,18 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
 
 
     function getColorForLabel(label) {
-      const map = { pausa: 'Sky', rumore: 'Purple', ripete: 'Red', In: 'Cream', Out: 'Cream' };
-      return map[label] || 'Sky';
-    }
+  const map = {
+    pausa: 'Sky',
+    rumore: 'Purple',
+    ripetizione: 'Red',
+    'errore regia': 'Orange',
+    in: 'Cream',
+    out: 'Cream'
+  };
+
+  return map[label.toLowerCase()] || 'Sky';
+}
+
 
     function copyTimecode() {
       const outputText = elements.outputBox.innerText;
@@ -636,12 +649,15 @@ function clearHistory() {
 });
 
 
- document.querySelectorAll('.button-container button').forEach(button => {
-  const label = button.innerText.trim();
-  if (['Rumore', 'Pausa', 'Ripetizione', 'Errore Regia', 'In', 'Out'].includes(label)) {
-    button.addEventListener('click', () => generateFormattedText(label));
+document.querySelectorAll('.button-container button').forEach(button => {
+  const label = button.innerText.trim().toLowerCase();
+  const validLabels = ['rumore', 'pausa', 'ripetizione', 'errore regia', 'in', 'out'];
+
+  if (validLabels.includes(label)) {
+    button.addEventListener('click', () => generateFormattedText(button.innerText.trim()));
   }
 });
+
 
 
   elements.projectName.addEventListener('input', updateFilePreview);
