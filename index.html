@@ -242,18 +242,6 @@ textarea:focus {
     
     <div id="mainControls">
 
-      <!-- Data -->
-      <div id="todayDate" style="
-        padding: 8px 16px;
-        background-color: #e0f0ff;
-        color: #003366;
-        border-radius: 6px;
-        font-size: 1rem;
-        font-weight: bold;
-        box-shadow: 0 0 4px rgba(0,0,0,0.1);
-        margin-bottom: 10px;
-      "></div>
-
       <!-- Nome progetto -->
       <div id="textInputContainer" style="text-align: left;">
         <label for="projectName">Inserisci il nome del progetto:</label><br>
@@ -599,7 +587,8 @@ function updateFilePreview() {
   const name = elements.projectName.value.trim().replace(/\s+/g, '_') || 'SenzaNome';
   const date = new Date();
   const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
-  elements.preview.innerText = `Il file si chiamerà: ${formattedDate}_${name}.edl`;
+ elements.preview.innerText = `Il file che verrà generato si chiamerà:\n${formattedDate}_${name}.edl\n(dove ${formattedDate} è la data odierna)`;
+
 }
 
    function restoreFromLocalStorage() {
@@ -712,11 +701,7 @@ document.querySelectorAll('.button-container button').forEach(button => {
   const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
   elements.projectName.focus();
 
-  const todayDiv = document.getElementById('todayDate');
-  if (todayDiv) {
-    todayDiv.innerText = `Data odierna: ${formattedDate}`;
-  }
-
+ 
   // ✅ Mostra la cronologia EDL generati
   renderHistory();
       document.getElementById('clearHistoryButton').addEventListener('click', clearHistory);
