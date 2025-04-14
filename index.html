@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V9.1</title>
+  <title>V9.3</title>
   <style>
 
     :root {
@@ -138,16 +138,20 @@ ion: background-color 0.3s ease;
 .timer-box.paused {
   background-color: #6c757d;
 }
-@keyframes blink-red {
-  50% {
-    background-color: #e41702; /* Rosso/arancio acceso */
-    color: white;
+.blinking {
+  animation: fade-red 10s ease-in-out infinite alternate;
+  color: white !important;
+}
+
+@keyframes fade-red {
+  0% {
+    background-color: #e41702;
+  }
+  100% {
+    background-color: #c2200f;
   }
 }
 
-.timer-box.blinking {
-  animation: blink-red 1s step-start infinite;
-}
 
     .btn-in {
   background-color: var(--primary);
@@ -309,14 +313,24 @@ ion: background-color 0.3s ease;
 }
 
     .icon-button {
-  font-size: 1.4em;
-  background: var(--primary);
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary);
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
+
+.icon-button:active {
+  background-color: var(--accent);
+}
+
 
 
 
@@ -346,8 +360,9 @@ ion: background-color 0.3s ease;
   <h3 style="margin: 0 0 5px;">Timecode</h3>
   <div style="display: flex; align-items: center; gap: 10px;">
     <div id="timecode" class="timer-box">00:00:00:00</div>
-    <button id="startTimecodeButton" title="Avvia Timecode" style="font-size: 1.4em;">▶</button>
-    <button id="stopTimecodeButton" title="Stop Timecode" style="font-size: 1.4em;" disabled>■</button>
+    <button id="startTimecodeButton" class="icon-button" title="Avvia Timecode">▶</button>
+<button id="stopTimecodeButton" class="icon-button" title="Stop Timecode" disabled>■</button>
+
   </div>
 </div>
 
@@ -356,8 +371,8 @@ ion: background-color 0.3s ease;
   <h3 style="margin: 0 0 5px;">Timer</h3>
   <div style="display: flex; align-items: center; gap: 10px;">
     <div id="timer" class="timer-box">00:00</div>
-    <button id="startTimerButton" title="Start Timer" style="font-size: 1.4em;">▶</button>
-    <button id="stopTimerButton" title="Stop Timer" style="font-size: 1.4em;">■</button>
+    <button id="startTimerButton" class="icon-button" title="Start Timer">▶</button>
+<button id="stopTimerButton" class="icon-button" title="Stop Timer">■</button>
   </div>
 </div>
 
