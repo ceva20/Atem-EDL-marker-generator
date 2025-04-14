@@ -361,7 +361,9 @@ ion: background-color 0.3s ease;
   <div style="display: flex; align-items: center; gap: 10px;">
     <div id="timecode" class="timer-box">00:00:00:00</div>
     <button id="startTimecodeButton" class="icon-button" title="Avvia Timecode">▶</button>
+<button id="pauseTimecodeButton" class="icon-button" title="Pausa Timecode">⏸</button>
 <button id="stopTimecodeButton" class="icon-button" title="Stop Timecode" disabled>■</button>
+
 
   </div>
 </div>
@@ -371,8 +373,10 @@ ion: background-color 0.3s ease;
   <h3 style="margin: 0 0 5px;">Timer</h3>
   <div style="display: flex; align-items: center; gap: 10px;">
     <div id="timer" class="timer-box">00:00</div>
-    <button id="startTimerButton" class="icon-button" title="Start Timer">▶</button>
+  <button id="startTimerButton" class="icon-button" title="Start Timer">▶</button>
+<button id="pauseTimerButton" class="icon-button" title="Pausa Timer">⏸</button>
 <button id="stopTimerButton" class="icon-button" title="Stop Timer">■</button>
+
   </div>
 </div>
 
@@ -760,6 +764,8 @@ function clearHistory() {
   document.getElementById('startTimerButton').addEventListener('click', toggleTimer);
   elements.fileBtn.addEventListener('click', downloadEDL);
   document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
+  document.getElementById('pauseTimecodeButton').addEventListener('click', pauseTimecode);
+ document.getElementById('pauseTimerButton').addEventListener('click', pauseTimer);
     
 
 
@@ -838,6 +844,23 @@ function renderDrawerHistory() {
     historyList.appendChild(li);
   });
 }
+    function pauseTimecode() {
+  if (!isRunningTimecode) return;
+
+  isRunningTimecode = false;
+  clearInterval(timecodeInterval);
+  elements.timecode.classList.remove('blinking');
+  setButtonState(false);
+}
+
+function pauseTimer() {
+  if (!timerInterval) return;
+
+  clearInterval(timerInterval);
+  timerInterval = null;
+  elements.timer.classList.remove('blinking');
+}
+
 
 
 
