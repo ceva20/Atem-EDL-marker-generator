@@ -4,15 +4,27 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V7</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <title>V8.0</title>
   <style>
+
+    :root {
+  --bg: #F7F1EA;
+  --primary: #2D436C;
+  --accent: #F57B23;
+  --focus: #DDF45B;
+  --text-dark: #141414;
+}
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #fafafa;
-      margin: 0;
-      padding: 40px;
-      text-align: center;
-    }
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg);
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+}
+
     #timecode, #timer {
       font-size: 2rem;
       margin-bottom: 10px;
@@ -24,15 +36,21 @@
       gap: 10px;
       margin: 15px 0;
     }
-    button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 6px;
-      background-color: #007bff;
-      color: white;
-      transition: background-color 0.3s ease;
-    }
+  button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+    
+button:active {
+  background-color: var(--accent);
+}
+
     button:hover { background-color: #0056b3; }
     button:disabled {
       background-color: #ccc;
@@ -43,14 +61,21 @@
     #customTimecodeContainer { margin-top: 30px; }
     label { font-weight: bold; }
     textarea,
-    input[type="text"] {
-      width: 300px;
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin: 10px 0;
-    }
+   input[type="text"],
+textarea {
+  border: 2px solid transparent;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: var(--focus);
+  background-color: var(--focus);
+}
     input[type="checkbox"] { margin-left: 10px; }
     #timecodeOutput {
       margin: 20px auto;
@@ -100,6 +125,22 @@
 .timer-box.blinking {
   animation: pulse 1s infinite;
 }
+
+    .btn-in {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-out {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-in:active,
+.btn-out:active {
+  background-color: var(--accent);
+}
+
 
   </style>
 </head>
@@ -528,12 +569,13 @@ function clearHistory() {
 
   elements.projectName.addEventListener('input', updateFilePreview);
 
-  elements.customMessage.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      document.querySelector('#customTimecodeContainer button').click();
-    }
-  });
+ elements.customMessage.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    addCustomMessage();
+  }
+});
+
 
   // ✅ Mostra la data e imposta il focus sul campo progetto
   const date = new Date();
