@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V8.1</title>
+  <title>V8.2</title>
   <style>
 
     :root {
@@ -33,8 +33,8 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
-      margin: 15px 0;
+      gap: 12px;
+      margin: 10px 0;
     }
   button {
   background-color: var(--primary);
@@ -49,6 +49,8 @@
     
 button:active {
   background-color: var(--accent);
+  transform: scale(0.97);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2) inset;
 }
 
     button:hover { background-color: #0056b3; }
@@ -56,6 +58,24 @@ button:active {
       background-color: #ccc;
       cursor: not-allowed;
     }
+  
+.button-container button {
+  background-color: var(--primary);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 12px 18px;
+  margin: 6px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button-container button:active {
+  background-color: var(--accent);
+}
+
     .copy-alert { margin-top: 10px; color: green; }
     #textInputContainer,
     #customTimecodeContainer { margin-top: 30px; }
@@ -182,6 +202,8 @@ textarea:focus {
   border-radius: 8px;
 }
 
+    
+
 
 
   </style>
@@ -231,11 +253,14 @@ textarea:focus {
 
       <!-- Bottoni evento -->
       <div class="button-container">
-        <button>Rumore</button>
-        <button>Pausa</button>
-        <button>Ripete</button>
-        <button class="btn-in">In</button>
-        <button class="btn-out">Out</button>
+  <button class="btn-in">IN</button>
+  <button class="btn-out">OUT</button>
+  <button>RIPETIZIONE</button>
+  <button>TOSSE</button>
+  <button>RUMORE</button>
+  <button>PAUSA</button>
+</div>
+
       </div>
 
       <!-- Messaggio personalizzato -->
