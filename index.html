@@ -123,28 +123,30 @@ textarea:focus {
     .ripete { color: red; font-weight: bold; }
     .In, .Out { color: chocolate; font-weight: bold; }
 
-    .timer-box {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 2rem;
-  font-weight: bold;
-  color: #fff;
-  background-color: #28a745;
+.timer-box {
+  background-color: #f7f1ea;
+  padding: 10px 16px;
   border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-weight: bold;
+  font-size: 1.4rem;
+  min-width: 100px;
+  text-align: center;
+  transition: background-color 1.5s ease;
+}
+ion: background-color 0.3s ease;
 }
 .timer-box.paused {
   background-color: #6c757d;
 }
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.8; }
-  100% { transform: scale(1); opacity: 1; }
+@keyframes blink-red {
+  50% {
+    background-color: #e41702; /* Rosso/arancio acceso */
+    color: white;
+  }
 }
 
 .timer-box.blinking {
-  animation: pulse 1s infinite;
+  animation: blink-red 1s step-start infinite;
 }
 
     .btn-in {
@@ -343,7 +345,7 @@ textarea:focus {
 <div style="margin-bottom: 20px;">
   <h3 style="margin: 0 0 5px;">Timecode</h3>
   <div style="display: flex; align-items: center; gap: 10px;">
-    <div id="timecode">00:00:00:00</div>
+    <div id="timecode" class="timer-box">00:00:00:00</div>
     <button id="startTimecodeButton" title="Avvia Timecode" style="font-size: 1.4em;">▶</button>
     <button id="stopTimecodeButton" title="Stop Timecode" style="font-size: 1.4em;" disabled>■</button>
   </div>
@@ -474,12 +476,16 @@ const elements = {
         lastUpdateTime = Date.now();
         requestAnimationFrame(updateTimecode);
        setButtonState(true);
+        elements.timecode.classList.add('blinking');
+
 
       }
     }
    function stopTimecode() {
   isRunningTimecode = false;
   setButtonState(false);  // ✅ Corretto
+     elements.timecode.classList.remove('blinking');
+
 }
 
 
@@ -504,6 +510,7 @@ const elements = {
     timerBox.classList.remove('blinking');
   } else {
     timerInterval = setInterval(() => {
+      elements.timer.classList.add('blinking');
       timerSeconds++;
       updateTimerDisplay();
     }, 1000);
@@ -514,6 +521,8 @@ const elements = {
     function stopAndResetTimer() {
   if (timerInterval) {
     clearInterval(timerInterval);
+    elements.timer.classList.remove('blinking');
+
     timerInterval = null;
   }
 
@@ -521,7 +530,9 @@ const elements = {
   updateTimerDisplay();
 
   elements.timer.classList.add('paused');
-  elements.timer.classList.remove('blinking');
+elements.timer.classList.remove('blinking');
+
+
 }
 
 const initialOutputText = `
