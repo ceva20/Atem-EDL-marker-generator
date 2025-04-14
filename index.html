@@ -321,17 +321,27 @@ textarea:focus {
         
       </div>
 
-      <!-- Timecode + Timer + STOP -->
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <div id="timecode">00:00:00:00</div>
-        <div id="timer" class="timer-box">00:00</div>
-        <button id="stopTimerButton" title="Stop Timer" style="font-size: 1.4em;">&#9632;</button>
-      </div>
+    <!-- Timecode -->
+<div style="margin-bottom: 20px;">
+  <h3 style="margin: 0 0 5px;">Timecode</h3>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <div id="timecode">00:00:00:00</div>
+    <button id="startTimecodeButton">Start</button>
+    <button id="stopTimecodeButton" disabled>Stop</button>
+  </div>
+</div>
+
+<!-- Timer -->
+<div style="margin-bottom: 20px;">
+  <h3 style="margin: 0 0 5px;">Timer</h3>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <div id="timer" class="timer-box">00:00</div>
+    <button id="stopTimerButton" title="Stop Timer" style="font-size: 1.4em;">&#9632;</button>
+  </div>
+</div>
 
       <!-- Bottoni principali -->
       <div class="button-container">
-        <button id="startTimecodeButton">Start Timecode</button>
-        <button id="stopTimecodeButton" disabled>Stop Timecode</button>
         <button id="resetButton">Reset</button>
         <button id="copyButton">Copy</button>
       </div>
