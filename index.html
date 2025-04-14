@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V8.6.2</title>
+  <title>V8.7</title>
   <style>
 
     :root {
@@ -231,12 +231,83 @@ textarea:focus {
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
 }
+    #historyToggle {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-size: 1.8rem;
+  cursor: pointer;
+  user-select: none;
+  color: var(--primary);
+  transition: transform 0.2s ease;
+}
+#historyToggle:hover {
+  transform: scale(1.1);
+}
+#drawerHistory {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 320px;
+  height: 100%;
+  background-color: #fff;
+  border-left: 2px solid #ddd;
+  box-shadow: -4px 0 10px rgba(0,0,0,0.1);
+  transition: right 0.3s ease;
+  z-index: 1000;
+  padding: 20px;
+}
+
+#drawerHistory.open {
+  right: 0;
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#closeDrawer {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+#drawerContent {
+  margin-top: 20px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+#drawerEdlHistory {
+  list-style: none;
+  padding: 0;
+}
+
+#drawerEdlHistory li button {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: left;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 
 
   </style>
 </head>
 <body>
   <h1 id="pageTitle">Edizione Digitale – EDL Generator</h1>
+<div id="historyToggle">
+  🕒
+</div>
 
   <div id="appGrid">
     
@@ -314,6 +385,17 @@ textarea:focus {
   <div id="filePreview" style="font-size: 0.9rem; color: #333; margin-top: 6px; margin-bottom: 12px;"></div>
 
   <div id="timecodeOutput" contenteditable="true"></div>
+</div>
+
+    <!-- 🔽 Drawer laterale per la cronologia -->
+<div id="drawerHistory">
+  <div class="drawer-header">
+    <h4>Cronologia EDL</h4>
+    <button id="closeDrawer">✖</button>
+  </div>
+  <div id="drawerContent">
+    <ul id="drawerEdlHistory"></ul>
+  </div>
 </div>
 
 
@@ -667,6 +749,19 @@ function clearHistory() {
   elements.fileBtn.addEventListener('click', downloadEDL);
       document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
 
+      const drawer = document.getElementById('drawerHistory');
+const drawerBtn = document.getElementById('historyToggle');
+const drawerClose = document.getElementById('closeDrawer');
+
+drawerBtn.addEventListener('click', () => {
+  drawer.classList.add('open');
+  renderDrawerHistory();
+});
+
+drawerClose.addEventListener('click', () => {
+  drawer.classList.remove('open');
+});
+
   document.querySelector('#customTimecodeContainer').addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -708,6 +803,29 @@ document.querySelectorAll('.button-container button').forEach(button => {
 document.getElementById('addCustomMessageButton').addEventListener('click', addCustomMessage);
 updateFilePreview();
 });
+  
+function renderDrawerHistory() {
+  const historyList = document.getElementById('drawerEdlHistory');
+  const history = JSON.parse(localStorage.getItem('edlHistory') || '[]');
+  historyList.innerHTML = '';
+
+  history.reverse().forEach(item => {
+    const li = document.createElement('li');
+    const date = new Date(item.timestamp).toLocaleString();
+    const button = document.createElement('button');
+    button.innerText = `${item.filename} (${date})`;
+    button.addEventListener('click', () => {
+      const blob = new Blob([item.content], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = item.filename;
+      link.click();
+    });
+    li.appendChild(button);
+    historyList.appendChild(li);
+  });
+}
+
 
 
 
