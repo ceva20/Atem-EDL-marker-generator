@@ -4,7 +4,7 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V7</title>
+  <title>V8.0.2</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -100,6 +100,8 @@
 .timer-box.blinking {
   animation: pulse 1s infinite;
 }
+
+
 
   </style>
 </head>
@@ -506,16 +508,7 @@ function clearHistory() {
   elements.timer.addEventListener('click', toggleTimer);
   elements.fileBtn.addEventListener('click', downloadEDL);
   elements.addCustomMessageButton.addEventListener('click', addCustomMessage);
-  document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
   elements.stopTimerButton.addEventListener('click', stopAndResetTimer);
-
-  document.querySelector('#customTimecodeContainer').addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    addCustomMessage();
-  }
-});
-
 
   document.querySelectorAll('.button-group .button').forEach(button => {
   const label = button.dataset.label;
