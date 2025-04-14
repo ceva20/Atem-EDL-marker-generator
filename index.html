@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V8.0</title>
+  <title>V8.1</title>
   <style>
 
     :root {
@@ -140,80 +140,133 @@ textarea:focus {
 .btn-out:active {
   background-color: var(--accent);
 }
+    #appGrid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 30px;
+  padding: 40px;
+  align-items: start;
+}
+
+#mainControls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#logPanel {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
+
+#logPanel h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+#timecodeOutput {
+  margin-top: 10px;
+  height: 400px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 1rem;
+  background: #fff;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
 
 
   </style>
 </head>
 <body>
+  <div id="appGrid">
+    <div id="mainControls">
 
-  <div style="margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px;">
-  <div id="todayDate" style="
-    padding: 8px 16px;
-    background-color: #e0f0ff;
-    color: #003366;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: bold;
-    box-shadow: 0 0 4px rgba(0,0,0,0.1);
-  "></div>
+      <!-- Data -->
+      <div id="todayDate" style="
+        padding: 8px 16px;
+        background-color: #e0f0ff;
+        color: #003366;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: bold;
+        box-shadow: 0 0 4px rgba(0,0,0,0.1);
+        margin-bottom: 10px;
+      "></div>
 
-  <div id="textInputContainer" style="text-align: left;">
-    <label for="projectName">Inserisci il nome del progetto:</label><br>
-    <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
-    <div id="filePreview" style="margin-top: 5px; font-size: 0.9em; color: gray;"></div>
+      <!-- Nome progetto -->
+      <div id="textInputContainer" style="text-align: left;">
+        <label for="projectName">Inserisci il nome del progetto:</label><br>
+        <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
+        <div id="filePreview" style="margin-top: 5px; font-size: 0.9em; color: gray;"></div>
+      </div>
+
+      <!-- Timecode + Timer + STOP -->
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div id="timecode">00:00:00:00</div>
+        <div id="timer" class="timer-box">00:00</div>
+        <button id="stopTimerButton" title="Stop Timer" style="font-size: 1.4em;">&#9632;</button>
+      </div>
+
+      <!-- Bottoni principali -->
+      <div class="button-container">
+        <button id="startTimecodeButton">Start Timecode</button>
+        <button id="stopTimecodeButton" disabled>Stop Timecode</button>
+        <button id="resetButton">Reset</button>
+        <button id="copyButton">Copy</button>
+      </div>
+
+      <!-- Alert copia -->
+      <div id="copyAlert" class="copy-alert" style="display: none;">
+        Timecode copiato negli appunti!
+      </div>
+
+      <!-- Bottoni evento -->
+      <div class="button-container">
+        <button>Rumore</button>
+        <button>Pausa</button>
+        <button>Ripete</button>
+        <button class="btn-in">In</button>
+        <button class="btn-out">Out</button>
+      </div>
+
+      <!-- Messaggio personalizzato -->
+      <div id="customTimecodeContainer">
+        <label for="customMessage">Messaggio personalizzato:</label>
+        <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
+        <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
+      </div>
+
+      <!-- Scarica EDL -->
+      <div id="fileButtonContainer">
+        <button>Scarica EDL</button>
+      </div>
+
+      <!-- Cronologia -->
+      <div id="historyContainer" style="margin-top: 40px; text-align: left;">
+        <h3>Cronologia EDL generati</h3>
+        <button id="clearHistoryButton" style="margin-bottom: 10px;">Svuota cronologia</button>
+        <div id="noHistoryMessage" style="color: gray; font-style: italic; display: none;">
+          Nessun EDL salvato ancora.
+        </div>
+        <ul id="edlHistory" style="list-style: none; padding: 0;"></ul>
+      </div>
+
+    </div>
+
+    <div id="logPanel">
+      <h3>Log eventi</h3>
+      <div id="timecodeOutput" contenteditable="true"></div>
+    </div>
   </div>
-</div>
-
-
-
-
-  <div id="timecode">00:00:00:00</div>
-  <div id="timer" class="timer-box">00:00</div>
-  <button id="stopTimerButton" title="Stop Timer" style="margin-left: 10px; font-size: 1.4em;">
-  &#9632;
-</button>
-
-
-
-  <div class="button-container">
-    <button id="startTimecodeButton">Start Timecode</button>
-    <button id="stopTimecodeButton" disabled="">Stop Timecode</button>
-    <button id="resetButton">Reset</button>
-    <button id="copyButton">Copy</button>
-  </div>
-<div id="copyAlert" class="copy-alert" style="display: none;">
-  Timecode copiato negli appunti!
-</div>
-
-  <div class="button-container">
-    <button>Rumore</button>
-    <button>Pausa</button>
-    <button>Ripete</button>
-    <button>In</button>
-    <button>Out</button>
-  </div>
-
-  <div id="customTimecodeContainer">
-    <label for="customMessage">Messaggio personalizzato:</label>
-    <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
-    <button id="addCustomMessageButton">Aggiungi messaggio</button>
-
-  </div>
-
-  <div id="timecodeOutput" contenteditable="true"></div>
-
-  <div id="fileButtonContainer">
-    <button>Scarica EDL</button>
-  </div>
-  
-   <div id="historyContainer" style="margin-top: 40px; text-align: left;">
-  <h3>Cronologia EDL generati</h3>
-  <button id="clearHistoryButton" style="margin-bottom: 10px;">Svuota cronologia</button>
-  <div id="noHistoryMessage" style="color: gray; font-style: italic; display: none;">
-    Nessun EDL salvato ancora.
-  </div>
-  <ul id="edlHistory" style="list-style: none; padding: 0;"></ul>
-</div>
 
 
   <script>
