@@ -171,18 +171,21 @@
   <script>
     // Elementi DOM riutilizzati spesso
 const elements = {
-  startBtn: document.getElementById('startTimecodeButton'),
-  stopBtn: document.getElementById('stopTimecodeButton'),
-  resetBtn: document.getElementById('resetButton'),
-  copyBtn: document.getElementById('copyButton'),
-  timer: document.getElementById('timer'),
-  timecode: document.getElementById('timecode'),
-  outputBox: document.getElementById('timecodeOutput'),
-  customMessage: document.getElementById('customMessage'),
-    fileBtn: document.querySelector('#fileButtonContainer button'),
   projectName: document.getElementById('projectName'),
-  preview: document.getElementById('filePreview'),
+  timer: document.getElementById('timer'),
+  timecodeDisplay: document.getElementById('timecodeDisplay'),
+  startTimecodeBtn: document.getElementById('startTimecodeBtn'),
+  stopTimecodeBtn: document.getElementById('stopTimecodeBtn'),
+  stopTimerButton: document.getElementById('stopTimerButton'),
+  toggleTimerButton: document.getElementById('toggleTimerButton'),
+  customMessage: document.getElementById('customMessage'),
+  addCustomMessageButton: document.getElementById('addCustomMessageButton'),
+  outputBox: document.getElementById('outputBox'),
+  fileBtn: document.getElementById('fileBtn'),
+  edlHistory: document.getElementById('edlHistory'),
+  historyPopup: document.getElementById('historyPopup'),
 };
+
 
 
     let timeInSeconds = 0;
@@ -502,7 +505,9 @@ function clearHistory() {
   elements.copyBtn.addEventListener('click', copyTimecode);
   elements.timer.addEventListener('click', toggleTimer);
   elements.fileBtn.addEventListener('click', downloadEDL);
-      document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
+  elements.addCustomMessageButton.addEventListener('click', addCustomMessage);
+  document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
+  elements.stopTimerButton.addEventListener('click', stopAndResetTimer);
 
   document.querySelector('#customTimecodeContainer').addEventListener('keydown', e => {
   if (e.key === 'Enter') {
@@ -512,12 +517,13 @@ function clearHistory() {
 });
 
 
-  document.querySelectorAll('.button-container button').forEach(button => {
-    const label = button.innerText.trim();
-    if (['Rumore', 'Pausa', 'Ripete', 'In', 'Out'].includes(label)) {
-      button.addEventListener('click', () => generateFormattedText(label));
-    }
-  });
+  document.querySelectorAll('.button-group .button').forEach(button => {
+  const label = button.dataset.label;
+  if (label) {
+    button.addEventListener('click', () => generateFormattedText(label));
+  }
+});
+
 
   elements.projectName.addEventListener('input', updateFilePreview);
 
