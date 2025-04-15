@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V9.5.3</title>
+  <title>V9.5.4</title>
   <style>
 
     :root {
@@ -456,7 +456,9 @@ textarea:focus {
 
 
   <script>
-    let pauseTimerBtn;
+    
+ let isTimerRunning = false;
+
 
     // Elementi DOM riutilizzati spesso
 const elements = {
@@ -471,6 +473,8 @@ const elements = {
     fileBtn: document.querySelector('#fileButtonContainer button'),
   projectName: document.getElementById('projectName'),
   preview: document.getElementById('filePreview'),
+  pauseTimerBtn: document.getElementById('pauseTimerButton'),
+
 };
 
 
@@ -549,33 +553,13 @@ const elements = {
       requestAnimationFrame(updateTimecode);
     }
 
-  function toggleTimer() {
-  const timerBox = elements.timer;  // ✅ uso coerente dell'oggetto elements
-
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-    timerBox.classList.add('paused');
-    timerBox.classList.remove('blinking');
-  } else {
-    timerInterval = setInterval(() => {
-      elements.timer.classList.add('blinking');
-      timerSeconds++;
-      updateTimerDisplay();
-    }, 1000);
-    timerBox.classList.remove('paused');
-    timerBox.classList.remove('paused-blinking');
-    timerBox.classList.add('blinking');
-    pauseTimerBtn.disabled = false;
-
-  }
-}
-   function stopAndResetTimer() {
+function stopAndResetTimer() {
   if (timerInterval) {
     clearInterval(timerInterval);
     timerInterval = null;
   }
 
+  isTimerRunning = false;
   timerSeconds = 0;
   updateTimerDisplay();
 
@@ -583,8 +567,11 @@ const elements = {
   elements.timer.classList.remove('paused-blinking');
   elements.timer.classList.add('paused');
 
-  pauseTimerBtn.disabled = true; // ✅ assicurati che venga disabilitato sempre
+ elements.pauseTimerBtn.disabled = true;
+
+
 }
+
 
 
 const initialOutputText = `
@@ -784,10 +771,27 @@ function clearHistory() {
     renderDrawerHistory();
 }
 
+     function startTimer() {
+  if (isTimerRunning || timerInterval) return;
+
+  isTimerRunning = true;
+elements.pauseTimerBtn.disabled = false;
+
+
+
+  timerInterval = setInterval(() => {
+    timerSeconds++;
+    updateTimerDisplay();
+  }, 1000);
+
+  elements.timer.classList.remove('paused-blinking');
+         elements.timer.classList.remove('paused');
+  elements.timer.classList.add('blinking');
+}
 
     
     document.addEventListener('DOMContentLoaded', () => {
-      const pauseTimerBtn = document.getElementById('pauseTimerButton');
+
   resetTimecode();
   restoreFromLocalStorage();
 
@@ -801,7 +805,10 @@ function clearHistory() {
   document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
   document.getElementById('pauseTimecodeButton').addEventListener('click', pauseTimecode);
  document.getElementById('pauseTimerButton').addEventListener('click', pauseTimer);
-  pauseTimerBtn.disabled = true;
+elements.pauseTimerBtn.disabled = true;
+
+
+
 
     
 
@@ -883,26 +890,19 @@ function renderDrawerHistory() {
 }
     
 function pauseTimer() {
-  if (!timerInterval) return;
+  if (!isTimerRunning || !timerInterval) return;
 
   clearInterval(timerInterval);
   timerInterval = null;
+  isTimerRunning = false;
+
   elements.timer.classList.remove('blinking');
   elements.timer.classList.add('paused-blinking');
 }
 
-    function startTimer() {
-  if (timerInterval) return;
 
-  pauseTimerBtn.disabled = false;
-  timerInterval = setInterval(() => {
-    timerSeconds++;
-    updateTimerDisplay();
-  }, 1000);
 
-  elements.timer.classList.remove('paused-blinking');
-  elements.timer.classList.add('blinking');
-}
+
 
 
 
