@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V9.5.4</title>
+  <title>V9.6.1</title>
   <style>
 
     :root {
@@ -127,11 +127,16 @@ textarea:focus {
   background-color: #f7f1ea;
   padding: 10px 16px;
   border-radius: 8px;
+    font-family: monospace;
   font-weight: bold;
   font-size: 1.4rem;
-  min-width: 100px;
+  width: 150px;
+  min-width: 150px;
   text-align: center;
+  letter-spacing: 1px;
   transition: background-color 1.5s ease;
+  
+  
 }
 
 .timer-box.paused {
@@ -386,7 +391,6 @@ textarea:focus {
   <div style="display: flex; align-items: center; gap: 10px;">
     <div id="timecode" class="timer-box">00:00:00:00</div>
     <button id="startTimecodeButton" class="icon-button" title="Avvia Timecode">▶</button>
-<button id="pauseTimecodeButton" class="icon-button" title="Pausa Timecode">⏸</button>
 <button id="stopTimecodeButton" class="icon-button" title="Stop Timecode" disabled>■</button>
 
 
@@ -532,15 +536,7 @@ const elements = {
 
       }
     }
- function pauseTimecode() {
-  if (!isRunningTimecode) return;
 
-  isRunningTimecode = false;
-  clearInterval(timecodeInterval);
-  elements.timecode.classList.remove('blinking');
-  elements.timecode.classList.add('paused-blinking');
-  setButtonState(false);
-}
     function stopTimecode() {
   isRunningTimecode = false;
   timeInSeconds = 0;
@@ -815,7 +811,6 @@ elements.pauseTimerBtn.disabled = false;
 
   elements.fileBtn.addEventListener('click', downloadEDL);
   document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
-  document.getElementById('pauseTimecodeButton').addEventListener('click', pauseTimecode);
  document.getElementById('pauseTimerButton').addEventListener('click', pauseTimer);
 elements.pauseTimerBtn.disabled = true;
 
