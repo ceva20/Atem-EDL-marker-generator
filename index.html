@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V9.6.2</title>
+  <title>V9.6.3</title>
   <style>
 
     :root {
@@ -123,18 +123,35 @@ textarea:focus {
     .ripete { color: red; font-weight: bold; }
     .In, .Out { color: chocolate; font-weight: bold; }
 
+.timecode-box {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 0.3rem 1rem;
+  width: 220px; /* più largo per contenere 00:00:00:00 */
+  text-align: center;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  box-sizing: border-box;
+}
+    .timecode-box.paused {
+  background-color: var(--bg);
+}
+
 .timer-box {
   font-family: 'Outfit', sans-serif;
   font-size: 2rem;
   font-weight: 700;
   padding: 0.3rem 1rem;
-  width: 210px;              /* 👈 larghezza fissa */
-  text-align: center;        /* 👈 centra il contenuto */
+  width: 140px; /* più stretto per 00:00 */
+  text-align: center;
   border-radius: 10px;
   transition: background-color 0.3s ease;
   display: inline-block;
-  box-sizing: border-box;    /* 👈 assicura padding interno corretto */
+  box-sizing: border-box;
 }
+
 
 
 .timer-box.paused {
@@ -387,7 +404,8 @@ textarea:focus {
 <div style="margin-bottom: 20px;">
   <h3 style="margin: 0 0 5px;">Timecode</h3>
   <div style="display: flex; align-items: center; gap: 10px;">
-    <div id="timecode" class="timer-box">00:00:00:00</div>
+    <div id="timecode" class="timecode-box">00:00:00:00</div>
+
     <button id="startTimecodeButton" class="icon-button" title="Avvia Timecode">▶</button>
 <button id="stopTimecodeButton" class="icon-button" title="Stop Timecode" disabled>■</button>
 
@@ -400,6 +418,7 @@ textarea:focus {
   <h3 style="margin: 0 0 5px;">Timer</h3>
   <div style="display: flex; align-items: center; gap: 10px;">
     <div id="timer" class="timer-box">00:00</div>
+
   <button id="startTimerButton" class="icon-button" title="Start Timer">▶</button>
 <button id="pauseTimerButton" class="icon-button" title="Pausa Timer">⏸</button>
 <button id="stopTimerButton" class="icon-button" title="Stop Timer">■</button>
