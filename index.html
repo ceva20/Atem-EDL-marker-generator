@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V9.5.2</title>
+  <title>V9.5.3</title>
   <style>
 
     :root {
@@ -456,6 +456,8 @@ textarea:focus {
 
 
   <script>
+    let pauseTimerBtn;
+
     // Elementi DOM riutilizzati spesso
 const elements = {
   startBtn: document.getElementById('startTimecodeButton'),
@@ -793,7 +795,8 @@ function clearHistory() {
   elements.stopBtn.addEventListener('click', stopTimecode);
   elements.resetBtn.addEventListener('click', resetTimecode);
   elements.copyBtn.addEventListener('click', copyTimecode);
-  document.getElementById('startTimerButton').addEventListener('click', toggleTimer);
+  document.getElementById('startTimerButton').addEventListener('click', startTimer);
+
   elements.fileBtn.addEventListener('click', downloadEDL);
   document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
   document.getElementById('pauseTimecodeButton').addEventListener('click', pauseTimecode);
@@ -885,9 +888,22 @@ function pauseTimer() {
   clearInterval(timerInterval);
   timerInterval = null;
   elements.timer.classList.remove('blinking');
-elements.timer.classList.add('paused-blinking');
-
+  elements.timer.classList.add('paused-blinking');
 }
+
+    function startTimer() {
+  if (timerInterval) return;
+
+  pauseTimerBtn.disabled = false;
+  timerInterval = setInterval(() => {
+    timerSeconds++;
+    updateTimerDisplay();
+  }, 1000);
+
+  elements.timer.classList.remove('paused-blinking');
+  elements.timer.classList.add('blinking');
+}
+
 
 
 
