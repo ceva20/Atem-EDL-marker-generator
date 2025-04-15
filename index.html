@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V10.1.4</title>
+  <title>V10.1.2</title>
   <style>
 
     :root {
@@ -203,11 +203,10 @@ textarea:focus {
 }
 
 
- #middlePanel .event-button-box {
+  #middlePanel .event-button-box {
   width: auto;
-  max-width: 500px;
+  max-width: 320px;
 }
-
 
 
 
@@ -402,9 +401,8 @@ textarea:focus {
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   width: auto;
-  max-width: 620px; /* ← aumenta la larghezza visiva */
+  max-width: 320px;
 }
-
 
 
 
@@ -417,13 +415,6 @@ textarea:focus {
 }
 
 
-#filePreview {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--primary);
-  margin-top: 10px;
-  margin-bottom: 16px;
-}
 
 
 
@@ -439,13 +430,6 @@ textarea:focus {
 
     <!-- Colonna sinistra -->
     <div id="mainControls">
-        <!-- Nome progetto -->
-      <div id="textInputContainer" style="text-align: left;">
-        <label for="projectName">Inserisci il nome del progetto:</label><br>
-        <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
-        <div id="filePreviewTop" style="margin-top: 5px; font-size: 0.9em; color: gray;"></div>
-
-      </div>
       <!-- Timecode -->
       <div style="margin-bottom: 20px;">
         <h3 style="margin: 0 0 5px;">Timecode</h3>
@@ -465,7 +449,14 @@ textarea:focus {
           <button id="pauseTimerButton" class="icon-button" title="Pausa Timer">⏸</button>
           <button id="stopTimerButton" class="icon-button" title="Stop Timer">■</button>
         </div>
-      </div>   
+      </div>
+
+      <!-- Nome progetto -->
+      <div id="textInputContainer" style="text-align: left;">
+        <label for="projectName">Inserisci il nome del progetto:</label><br>
+        <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
+        <div id="filePreview" style="margin-top: 5px; font-size: 0.9em; color: gray;"></div>
+      </div>
     </div>
 
     <!-- Colonna centrale -->
@@ -801,10 +792,7 @@ function updateFilePreview() {
     const name = elements.projectName.value.trim() || 'SenzaNome';
   const date = new Date();
   const formattedDate = `${String(date.getFullYear() % 100).padStart(2, '0')}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
-elements.preview.innerText = `${formattedDate}_${name}.edl`;
-const previewTop = document.getElementById('filePreviewTop');
-if (previewTop) previewTop.innerText = `${formattedDate}_${name}.edl`;
-
+ elements.preview.innerText = `${formattedDate}_${name}.edl`;
 
 }
 
@@ -866,14 +854,8 @@ elements.pauseTimerBtn.disabled = false;
 
   elements.fileBtn.addEventListener('click', downloadEDL);
   document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
-const pauseBtn = document.getElementById('pauseTimerButton');
-if (pauseBtn) {
-  pauseBtn.addEventListener('click', pauseTimer);
-  pauseBtn.disabled = true;
-  elements.pauseTimerBtn = pauseBtn;  // lo aggiungi al tuo oggetto elements, se serve
-}
-
-
+ document.getElementById('pauseTimerButton').addEventListener('click', pauseTimer);
+elements.pauseTimerBtn.disabled = true;
 
 
 
