@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v10.7.2</title>
+  <title>v10.7.3</title>
   <style>
 
     :root {
@@ -468,12 +468,23 @@ textarea:focus {
   max-width: 420px;
 }
 
-   #projectNameContainer {
-  grid-column: 1 / span 2; /* occupa solo colonna 1 e 2 */
+  #projectNameContainer {
+  grid-column: 1 / span 2;
+  grid-row: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 16px;
+}
+
+#mainControls {
+  grid-row: 2;
+}
+#middlePanel {
+  grid-row: 2;
+}
+#logPanel {
+  grid-row: 2;
 }
 
 
