@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v10.6</title>
+  <title>v10.7</title>
   <style>
 
     :root {
@@ -468,6 +468,30 @@ textarea:focus {
   max-width: 420px;
 }
 
+    #projectNameContainer {
+  grid-column: 1 / span 2; /* copre la colonna sinistra + centrale */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+#projectNameContainer label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: var(--primary);
+}
+
+#projectNameContainer textarea {
+  width: 100%;
+  max-width: 600px;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
 
   </style>
 </head>
@@ -479,14 +503,15 @@ textarea:focus {
 
   <div id="appGrid">
 
-    <!-- COLONNA SINISTRA -->
-   <div id="mainControls" class="control-box">
+     <!-- Nome progetto -->
+      <div id="projectNameContainer">
 
-      <!-- Nome progetto -->
-      <div id="textInputContainer" style="text-align: left;">
         <label for="projectName">Inserisci il nome del progetto:</label><br>
         <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
       </div>
+    
+    <!-- COLONNA SINISTRA -->
+   <div id="mainControls" class="control-box">
 
       <!-- Timecode -->
       <div style="margin-bottom: 20px;">
