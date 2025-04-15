@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V10.2.3</title>
+  <title>V10.4</title>
   <style>
 
     :root {
@@ -38,7 +38,7 @@
         margin-bottom: 8px;
     }
   button {
-  background-color: var(--primary);
+ background-color: var(--primary);
   color: white;
   border: none;
   padding: 10px 14px;
@@ -430,6 +430,29 @@ textarea:focus {
   flex-shrink: 0;
 }
 
+#resetButton {
+  background-color: var(--accent); /* sfondo arancione */
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: block;
+  margin-inline: auto; /* lo centra */
+  margin-top: 10px;
+}
+
+#resetButton:hover {
+  background-color: #e06c1f;
+}
+
+#resetButton:active {
+  background-color: #cc5a12;
+  transform: scale(0.97);
+}
 
 
   </style>
