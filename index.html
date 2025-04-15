@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V10.5</title>
+  <title>v10.6</title>
   <style>
 
     :root {
@@ -456,6 +456,18 @@ textarea:focus {
   transform: scale(0.97);
 }
 
+    .control-box {
+  background-color: #f7f1ea;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+    #mainControls.control-box {
+  max-width: 420px;
+}
+
 
   </style>
 </head>
@@ -468,7 +480,8 @@ textarea:focus {
   <div id="appGrid">
 
     <!-- COLONNA SINISTRA -->
-    <div id="mainControls">
+   <div id="mainControls" class="control-box">
+
       <!-- Nome progetto -->
       <div id="textInputContainer" style="text-align: left;">
         <label for="projectName">Inserisci il nome del progetto:</label><br>
