@@ -866,8 +866,14 @@ elements.pauseTimerBtn.disabled = false;
 
   elements.fileBtn.addEventListener('click', downloadEDL);
   document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
- document.getElementById('pauseTimerButton').addEventListener('click', pauseTimer);
-elements.pauseTimerBtn.disabled = true;
+const pauseBtn = document.getElementById('pauseTimerButton');
+if (pauseBtn) {
+  pauseBtn.addEventListener('click', pauseTimer);
+  pauseBtn.disabled = true;
+  elements.pauseTimerBtn = pauseBtn;  // lo aggiungi al tuo oggetto elements, se serve
+}
+
+
 
 
 
