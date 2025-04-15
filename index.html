@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V10.0</title>
+  <title>V10.1</title>
   <style>
 
     :root {
@@ -187,13 +187,26 @@ textarea:focus {
 .btn-out:active {
   background-color: var(--accent);
 }
-    #appGrid {
+   #appGrid {
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 30px;
+  grid-template-columns: 1.2fr 1fr 1.2fr; /* 3 colonne */
+  gap: 40px;
   padding: 40px;
   align-items: start;
 }
+  #middlePanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+    #middlePanel .event-button-box {
+  width: 100%;
+  max-width: 400px;
+}
+
+
+
+
 
 #mainControls {
   display: flex;
@@ -448,40 +461,34 @@ textarea:focus {
       <!-- Bottoni principali -->
       <div class="button-container">
         <button id="resetButton">Reset</button>
-        <button id="copyButton">Copy</button>
-      </div>
+          </div>
 
-      <!-- Alert copia -->
-      <div id="copyAlert" class="copy-alert" style="display: none;">
-        Timecode copiato negli appunti!
+    
+<div id="middlePanel">
+  <div class="event-button-box">
+    <h3 class="event-box-title">Azioni rapide</h3>
+    <div class="button-container">
+      <div>
+        <button class="btn-in">IN</button>
+        <button>RIPETIZIONE</button>
+        <button>PAUSA</button>
       </div>
-
-     <!-- Box contenitore per pulsanti evento -->
-<div class="event-button-box">
-  <h3 class="event-box-title">Azioni rapide</h3>
-  <div class="button-container">
-    <div>
-      <button class="btn-in">IN</button>
-      <button>RIPETIZIONE</button>
-      <button>PAUSA</button>
+      <div>
+        <button class="btn-out">OUT</button>
+        <button>RUMORE</button>
+        <button>ERRORE REGIA</button>
+      </div>
     </div>
-    <div>
-      <button class="btn-out">OUT</button>
-      <button>RUMORE</button>
-      <button>ERRORE REGIA</button>
+
+    <!-- Messaggio personalizzato -->
+    <div id="customTimecodeContainer">
+      <label for="customMessage">Messaggio personalizzato:</label>
+      <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
+      <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
     </div>
   </div>
 </div>
 
-
-
-      <!-- Messaggio personalizzato -->
-      <div id="customTimecodeContainer">
-        <label for="customMessage">Messaggio personalizzato:</label>
-        <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
-        <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
-      </div>
- </div>
 
  <div id="logPanel">
   <div style="display: flex; justify-content: space-between; align-items: center;">
