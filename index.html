@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V9.6.1</title>
+  <title>V9.6.2</title>
   <style>
 
     :root {
@@ -124,20 +124,18 @@ textarea:focus {
     .In, .Out { color: chocolate; font-weight: bold; }
 
 .timer-box {
-  background-color: #f7f1ea;
-  padding: 10px 16px;
-  border-radius: 8px;
-    font-family: monospace;
-  font-weight: bold;
-  font-size: 1.4rem;
-  width: 150px;
-  min-width: 150px;
-  text-align: center;
-  letter-spacing: 1px;
-  transition: background-color 1.5s ease;
-  
-  
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 0.3rem 1rem;
+  width: 210px;              /* 👈 larghezza fissa */
+  text-align: center;        /* 👈 centra il contenuto */
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  box-sizing: border-box;    /* 👈 assicura padding interno corretto */
 }
+
 
 .timer-box.paused {
   background-color: var(--bg);
