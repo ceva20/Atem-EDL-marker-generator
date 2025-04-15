@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V10.1</title>
+  <title>V10.1.2</title>
   <style>
 
     :root {
@@ -194,15 +194,20 @@ textarea:focus {
   padding: 40px;
   align-items: start;
 }
-  #middlePanel {
+ #middlePanel {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  padding-top: 20px;
 }
-    #middlePanel .event-button-box {
-  width: 100%;
-  max-width: 400px;
+
+
+  #middlePanel .event-button-box {
+  width: auto;
+  max-width: 320px;
 }
+
 
 
 
@@ -394,11 +399,12 @@ textarea:focus {
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 20px;
-  margin-top: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  max-width: 420px;
-  margin-inline: auto;
+  width: auto;
+  max-width: 320px;
 }
+
+
 
 .event-box-title {
   margin-top: 0;
@@ -416,105 +422,96 @@ textarea:focus {
 </head>
 <body>
   <h1 id="pageTitle">Edizione Digitale – EDL Generator</h1>
-<div id="historyToggle">
-  🕒
-</div>
+
+  <!-- Icona cronologia -->
+  <div id="historyToggle">🕒</div>
 
   <div id="appGrid">
-    
+
+    <!-- Colonna sinistra -->
     <div id="mainControls">
+      <!-- Timecode -->
+      <div style="margin-bottom: 20px;">
+        <h3 style="margin: 0 0 5px;">Timecode</h3>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div id="timecode" class="timecode-box">00:00:00:00</div>
+          <button id="startTimecodeButton" class="icon-button" title="Avvia Timecode">▶</button>
+          <button id="stopTimecodeButton" class="icon-button" title="Stop Timecode" disabled>■</button>
+        </div>
+      </div>
+
+      <!-- Timer -->
+      <div style="margin-bottom: 20px;">
+        <h3 style="margin: 0 0 5px;">Timer</h3>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div id="timer" class="timer-box">00:00</div>
+          <button id="startTimerButton" class="icon-button" title="Start Timer">▶</button>
+          <button id="pauseTimerButton" class="icon-button" title="Pausa Timer">⏸</button>
+          <button id="stopTimerButton" class="icon-button" title="Stop Timer">■</button>
+        </div>
+      </div>
 
       <!-- Nome progetto -->
       <div id="textInputContainer" style="text-align: left;">
         <label for="projectName">Inserisci il nome del progetto:</label><br>
         <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
-        
+        <div id="filePreview" style="margin-top: 5px; font-size: 0.9em; color: gray;"></div>
       </div>
+    </div>
 
-    <!-- Timecode -->
-<div style="margin-bottom: 20px;">
-  <h3 style="margin: 0 0 5px;">Timecode</h3>
-  <div style="display: flex; align-items: center; gap: 10px;">
-    <div id="timecode" class="timecode-box">00:00:00:00</div>
-
-    <button id="startTimecodeButton" class="icon-button" title="Avvia Timecode">▶</button>
-<button id="stopTimecodeButton" class="icon-button" title="Stop Timecode" disabled>■</button>
-
-
-  </div>
-</div>
-
-<!-- Timer -->
-<div style="margin-bottom: 20px;">
-  <h3 style="margin: 0 0 5px;">Timer</h3>
-  <div style="display: flex; align-items: center; gap: 10px;">
-    <div id="timer" class="timer-box">00:00</div>
-
-  <button id="startTimerButton" class="icon-button" title="Start Timer">▶</button>
-<button id="pauseTimerButton" class="icon-button" title="Pausa Timer">⏸</button>
-<button id="stopTimerButton" class="icon-button" title="Stop Timer">■</button>
-
-  </div>
-</div>
-
-
-      <!-- Bottoni principali -->
-      <div class="button-container">
-        <button id="resetButton">Reset</button>
+    <!-- Colonna centrale -->
+    <div id="middlePanel">
+      <div class="event-button-box">
+        <h3 class="event-box-title">Azioni rapide</h3>
+        <div class="button-container">
+          <div>
+            <button class="btn-in">IN</button>
+            <button>RIPETIZIONE</button>
+            <button>PAUSA</button>
           </div>
+          <div>
+            <button class="btn-out">OUT</button>
+            <button>RUMORE</button>
+            <button>ERRORE REGIA</button>
+          </div>
+        </div>
 
-    
-<div id="middlePanel">
-  <div class="event-button-box">
-    <h3 class="event-box-title">Azioni rapide</h3>
-    <div class="button-container">
-      <div>
-        <button class="btn-in">IN</button>
-        <button>RIPETIZIONE</button>
-        <button>PAUSA</button>
-      </div>
-      <div>
-        <button class="btn-out">OUT</button>
-        <button>RUMORE</button>
-        <button>ERRORE REGIA</button>
+        <!-- Messaggio personalizzato -->
+        <div id="customTimecodeContainer">
+          <label for="customMessage">Messaggio personalizzato:</label>
+          <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
+          <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
+        </div>
       </div>
     </div>
 
-    <!-- Messaggio personalizzato -->
-    <div id="customTimecodeContainer">
-      <label for="customMessage">Messaggio personalizzato:</label>
-      <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
-      <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
+    <!-- Colonna destra -->
+    <div id="logPanel">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>Log eventi</h3>
+        <div id="fileButtonContainer">
+          <button>Scarica EDL</button>
+        </div>
+      </div>
+      <div id="filePreview" style="font-size: 0.9rem; color: #333; margin-top: 6px; margin-bottom: 12px;"></div>
+      <div id="timecodeOutput" contenteditable="true"></div>
+    </div>
+
+  </div>
+
+  <!-- Drawer laterale -->
+  <div id="drawerHistory">
+    <div class="drawer-header">
+      <h4>Cronologia EDL</h4>
+      <button id="closeDrawer">✖</button>
+    </div>
+    <div id="drawerContent">
+      <button id="clearHistoryButton" style="margin-bottom: 12px;">🗑️ Svuota cronologia</button>
+      <ul id="drawerEdlHistory"></ul>
     </div>
   </div>
-</div>
 
 
- <div id="logPanel">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <h3>Log eventi</h3>
-    <div id="fileButtonContainer">
-      <button>Scarica EDL</button>
-    </div>
-  </div>
-
-  <div id="filePreview" style="font-size: 0.9rem; color: #333; margin-top: 6px; margin-bottom: 12px;"></div>
-
-  <div id="timecodeOutput" contenteditable="true"></div>
-</div>
-
-    <!-- 🔽 Drawer laterale per la cronologia -->
-<div id="drawerHistory">
-  <div class="drawer-header">
-    <h4>Cronologia EDL</h4>
-    <button id="closeDrawer">✖</button>
-  </div>
- <div id="drawerContent">
-  <button id="clearHistoryButton" style="margin-bottom: 12px;">🗑️ Svuota cronologia</button>
-  <ul id="drawerEdlHistory"></ul>
-</div>
-
-</div>
 
 
   <script>
@@ -916,7 +913,11 @@ document.querySelectorAll('.button-container button').forEach(button => {
  
   // ✅ Mostra la cronologia EDL generati
       document.getElementById('clearHistoryButton').addEventListener('click', clearHistory);
-document.getElementById('addCustomMessageButton').addEventListener('click', addCustomMessage);
+const addMsgBtn = document.getElementById('addCustomMessageButton');
+if (addMsgBtn) {
+  addMsgBtn.addEventListener('click', addCustomMessage);
+}
+
 updateFilePreview();
 });
   
