@@ -414,6 +414,21 @@ textarea:focus {
   box-shadow: 0 0 8px rgba(0,0,0,0.05);
 }
 
+.custom-message-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.custom-message-row input[type="text"] {
+  flex: 1 1 200px;
+  min-width: 180px;
+}
+.custom-message-row button {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 
 
 
@@ -480,11 +495,16 @@ textarea:focus {
         </div>
 
         <!-- Messaggio personalizzato -->
-        <div id="customTimecodeContainer">
-          <label for="customMessage">Messaggio personalizzato:</label>
-          <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
-          <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
-        </div>
+       <div id="customTimecodeContainer">
+  <label for="customMessage" style="display: block; text-align: center; margin-bottom: 8px;">
+    Messaggio personalizzato:
+  </label>
+  <div class="custom-message-row">
+    <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
+    <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
+  </div>
+</div>
+
       </div>
     </div>
 
