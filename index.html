@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V9.6.3</title>
+  <title>V10.0</title>
   <style>
 
     :root {
@@ -376,6 +376,24 @@ textarea:focus {
   background-color: var(--accent);
   color: white;
 }
+.event-button-box {
+  background-color: #f7f1ea;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+.event-box-title {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--primary);
+}
 
 
 
@@ -438,19 +456,23 @@ textarea:focus {
         Timecode copiato negli appunti!
       </div>
 
-      <!-- Bottoni evento -->
-   <div class="button-container">
-  <div>
-    <button class="btn-in">IN</button>
-    <button>RIPETIZIONE</button>
-    <button>PAUSA</button>
-  </div>
-  <div>
-    <button class="btn-out">OUT</button>
-    <button>RUMORE</button>
-    <button>ERRORE REGIA</button>
+     <!-- Box contenitore per pulsanti evento -->
+<div class="event-button-box">
+  <h3 class="event-box-title">Azioni rapide</h3>
+  <div class="button-container">
+    <div>
+      <button class="btn-in">IN</button>
+      <button>RIPETIZIONE</button>
+      <button>PAUSA</button>
+    </div>
+    <div>
+      <button class="btn-out">OUT</button>
+      <button>RUMORE</button>
+      <button>ERRORE REGIA</button>
+    </div>
   </div>
 </div>
+
 
 
       <!-- Messaggio personalizzato -->
