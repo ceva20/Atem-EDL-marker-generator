@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V10.4</title>
+  <title>V10.5</title>
   <style>
 
     :root {
@@ -33,7 +33,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 12px;
+      gap: 16px;
       margin: 10px 0;
         margin-bottom: 8px;
     }
@@ -78,7 +78,9 @@ button:active {
 }
 
     #textInputContainer,
-    #customTimecodeContainer { margin-top: 30px; }
+    #customTimecodeContainer { 
+      margin-top: 16px;
+    }
     label { font-weight: bold; }
     textarea,
    input[type="text"],
@@ -190,7 +192,7 @@ textarea:focus {
   display: grid;
   grid-template-columns: 1.2fr 1.6fr 1.2fr; /* 👉 centrale più larga */
   gap: 30px;
-  padding: 40px;
+  padding: 32px;
   align-items: start;
 }
 
@@ -199,7 +201,7 @@ textarea:focus {
 #mainControls {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 #logPanel {
@@ -220,7 +222,7 @@ textarea:focus {
 }
 
 #timecodeOutput {
-  margin-top: 10px;
+  margin-top: 16px;
   height: 400px;
   overflow-y: auto;
   font-family: monospace;
@@ -252,8 +254,8 @@ textarea:focus {
   font-size: 2rem;
   font-weight: 700;
   color: var(--text-dark);
-  margin-top: 30px;
-  margin-bottom: 10px;
+    margin-top: 16px;
+  margin-bottom: 16px;
    text-shadow: 1px 1px 0 rgba(0,0,0,0.05);
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
@@ -382,7 +384,7 @@ textarea:focus {
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 20px;
-  margin-top: 20px;
+ margin-top: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   max-width: 420px;
   margin-inline: auto;
@@ -401,7 +403,7 @@ textarea:focus {
   flex-direction: column;
   align-items: center;
  justify-content: flex-start;
-  gap: 1.5rem;
+  gap: 16px;
   margin-top: 2rem; /* 👈 sposta verso l'alto */
 }
 
@@ -442,7 +444,7 @@ textarea:focus {
   transition: background-color 0.2s ease;
   display: block;
   margin-inline: auto; /* lo centra */
-  margin-top: 10px;
+  margin-top: 16px;
 }
 
 #resetButton:hover {
