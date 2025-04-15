@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V10.1.2</title>
+  <title>V10.1.3</title>
   <style>
 
     :root {
@@ -430,6 +430,14 @@ textarea:focus {
 
     <!-- Colonna sinistra -->
     <div id="mainControls">
+
+        <!-- Nome progetto -->
+      <div id="textInputContainer" style="text-align: left;">
+        <label for="projectName">Inserisci il nome del progetto:</label><br>
+        <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
+        <div id="filePreview" style="margin-top: 5px; font-size: 0.9em; color: gray;"></div>
+      </div>
+      
       <!-- Timecode -->
       <div style="margin-bottom: 20px;">
         <h3 style="margin: 0 0 5px;">Timecode</h3>
@@ -451,12 +459,7 @@ textarea:focus {
         </div>
       </div>
 
-      <!-- Nome progetto -->
-      <div id="textInputContainer" style="text-align: left;">
-        <label for="projectName">Inserisci il nome del progetto:</label><br>
-        <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
-        <div id="filePreview" style="margin-top: 5px; font-size: 0.9em; color: gray;"></div>
-      </div>
+    
     </div>
 
     <!-- Colonna centrale -->
