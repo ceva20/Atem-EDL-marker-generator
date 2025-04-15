@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v10.7.1</title>
+  <title>v10.7.2</title>
   <style>
 
     :root {
@@ -469,11 +469,11 @@ textarea:focus {
 }
 
    #projectNameContainer {
+  grid-column: 1 / span 2; /* occupa solo colonna 1 e 2 */
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 24px auto 0;
-  max-width: 600px;
+  margin-bottom: 16px;
 }
 
 
@@ -501,17 +501,14 @@ textarea:focus {
 
   <!-- Icona cronologia -->
   <div id="historyToggle">🕒</div>
-
-    <!-- Nome progetto -->
+  
+  <div id="appGrid">
+ <!-- Nome progetto -->
       <div id="projectNameContainer">
 
         <label for="projectName">Inserisci il nome del progetto:</label><br>
         <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
       </div>
-    
-  
-  <div id="appGrid">
-
    
     <!-- COLONNA SINISTRA -->
    <div id="mainControls" class="control-box">
