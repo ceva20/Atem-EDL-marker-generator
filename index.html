@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>V9.5.1</title>
+  <title>V9.5.2</title>
   <style>
 
     :root {
@@ -135,8 +135,9 @@ textarea:focus {
 }
 
 .timer-box.paused {
-  background-color: #6c757d;
+  background-color: var(--bg);
 }
+
 .blinking {
   animation: fade-red 10s ease-in-out infinite alternate;
   color: white !important;
@@ -567,24 +568,22 @@ const elements = {
 
   }
 }
-    function stopAndResetTimer() {
+   function stopAndResetTimer() {
   if (timerInterval) {
     clearInterval(timerInterval);
-    elements.timer.classList.remove('paused-blinking');
-pauseTimerBtn.disabled = true;
-    elements.timer.classList.remove('blinking');
-
     timerInterval = null;
   }
 
   timerSeconds = 0;
   updateTimerDisplay();
 
+  elements.timer.classList.remove('blinking');
+  elements.timer.classList.remove('paused-blinking');
   elements.timer.classList.add('paused');
-elements.timer.classList.remove('blinking');
 
-
+  pauseTimerBtn.disabled = true; // ✅ assicurati che venga disabilitato sempre
 }
+
 
 const initialOutputText = `
 
@@ -786,6 +785,7 @@ function clearHistory() {
 
     
     document.addEventListener('DOMContentLoaded', () => {
+      const pauseTimerBtn = document.getElementById('pauseTimerButton');
   resetTimecode();
   restoreFromLocalStorage();
 
@@ -798,8 +798,7 @@ function clearHistory() {
   document.getElementById('stopTimerButton').addEventListener('click', stopAndResetTimer);
   document.getElementById('pauseTimecodeButton').addEventListener('click', pauseTimecode);
  document.getElementById('pauseTimerButton').addEventListener('click', pauseTimer);
-      const pauseTimerBtn = document.getElementById('pauseTimerButton');
-pauseTimerBtn.disabled = true;
+  pauseTimerBtn.disabled = true;
 
     
 
