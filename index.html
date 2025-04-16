@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v11.3.4</title>
+  <title>v10.11</title>
   <style>
 
     :root {
@@ -139,8 +139,6 @@ textarea:focus {
       font-family: monospace;
       font-size: 1rem;
       border-radius: 8px;
-        display: flex;
-  flex-direction: column-reverse;
     }
     #fileButtonContainer { margin-top: 20px; }
     #timecodeWarning {
@@ -181,27 +179,6 @@ textarea:focus {
   display: inline-block;
   box-sizing: border-box;
 }
-
-.edl-entry {
-  position: relative;
-}
-
-.edl-entry .delete-entry {
-  position: absolute;
-  right: 10px;
-  top: 8px;
-  background: none;
-  border: none;
-  color: #999;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.edl-entry .delete-entry:hover {
-  color: red;
-}
-
 
 
 
@@ -598,45 +575,6 @@ input[type="text"]::placeholder {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-    .edl-entry {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #fff;
-    padding: 6px 10px;
-  margin-bottom: 4px;
-  font-size: 0.95rem;
-  border-left: 4px solid var(--primary);
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  font-family: 'Outfit', sans-serif;
-  font-size: 1rem;
-}
-
-.edl-entry .icon {
-  font-size: 1.2rem;
-}
-
-.edl-entry .text {
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-@keyframes fadeInEntry {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.edl-entry {
-  animation: fadeInEntry 0.3s ease-out;
-}
-
 
   </style>
 </head>
@@ -953,45 +891,9 @@ if (!customMessage) {
   const simpleLine = `${timecodeText} - ${customMessage}`;
 
   // Riga completa per il file EDL
- const outFrames = Math.floor(timeInSeconds * frameRate) + 1;
-const outTimecode = formatTimecode(outFrames);
+  const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${customMessage} |C:ResolveColorBlue |M:Edizione |D:0\n`;
 
-const color = 'Blue'; // fisso per i messaggi personalizzati
-const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${outTimecode}  ${timecodeText}  ${outTimecode}\n\n${customMessage} |C:ResolveColor${color} |M:Edizione |D:1\n`;
-
- // Mostra come scheda (come gli altri eventi)
-const entryDiv = document.createElement('div');
-entryDiv.classList.add('edl-entry');
-entryDiv.dataset.type = 'custom';
-entryDiv.dataset.label = customMessage;
-entryDiv.dataset.timecode = timecodeText;
-entryDiv.dataset.color = 'Blue';
-entryDiv.style.backgroundColor = "#FFF9F5";
-
-     
-
-const iconSpan = document.createElement('span');
-iconSpan.classList.add('icon');
-iconSpan.textContent = "💬";
-
-const textSpan = document.createElement('span');
-textSpan.classList.add('text');
-textSpan.textContent = simpleLine;
-
-entryDiv.appendChild(iconSpan);
-entryDiv.appendChild(textSpan);
-     const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '✖';
-deleteBtn.classList.add('delete-entry');
-deleteBtn.onclick = () => {
-  entryDiv.remove();
-  updateEDLFromDisplay();
-};
-
-entryDiv.appendChild(deleteBtn);
-elements.outputBox.prepend(entryDiv);
-
-
+  elements.outputBox.innerText += simpleLine + '\n';
   edlContent += edlLine + '\n';
 
   elements.customMessage.value = '';
@@ -1010,55 +912,14 @@ const displayLabel = label.trim(); // per visualizzare come scritto nel bottone
     
 
   // Riga completa per il file EDL
-const outFrames = Math.floor(timeInSeconds * frameRate) + 1;
-const outTimecode = formatTimecode(outFrames);
-const color = getColorForLabel(cleanLabel);
-
-const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${outTimecode}  ${timecodeText}  ${outTimecode}\n\n${label} |C:ResolveColor${color} |M:Edizione |D:1\n`;
+const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${displayLabel} |C:ResolveColor${getColorForLabel(cleanLabel)} |M:Edizione |D:0\n`;
 
 
-const iconMap = {
-  in: "📍",
-  out: "📍",
-  ripetizione: "🔁",
-  pausa: "⏸️",
-  rumore: "🔊",
-  "errore regia": "⚠️"
-};
+  // Riga semplificata per visualizzazione
+  const simpleLine = `${timecodeText} - ${label}`;
 
-const icon = iconMap[cleanLabel] || "🔘";
-
-// Crea la "scheda" visiva
-const entryDiv = document.createElement('div');
-entryDiv.classList.add('edl-entry');
-entryDiv.dataset.type = 'quick';
-entryDiv.dataset.label = displayLabel;
-entryDiv.dataset.timecode = timecodeText;
-entryDiv.dataset.color = getColorForLabel(cleanLabel);
-
-
-const iconSpan = document.createElement('span');
-iconSpan.classList.add('icon');
-iconSpan.textContent = icon;
-
-const textSpan = document.createElement('span');
-textSpan.classList.add('text');
-textSpan.textContent = `${timecodeText} - ${label}`;
-
-entryDiv.appendChild(iconSpan);
-entryDiv.appendChild(textSpan);
-    const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '✖';
-deleteBtn.classList.add('delete-entry');
-deleteBtn.onclick = () => {
-  entryDiv.remove();
-  updateEDLFromDisplay();
-};
-
-entryDiv.appendChild(deleteBtn);
-elements.outputBox.prepend(entryDiv);
-
-
+  // Mostra solo la riga semplice all’utente
+  elements.outputBox.innerText += simpleLine + '\n';
 
   // Salva la riga completa nel contenuto da esportare
   edlContent += edlLine + '\n';
@@ -1283,29 +1144,8 @@ function pauseTimer() {
   elements.timer.classList.add('paused-blinking');
 }
 
-function updateEDLFromDisplay() {
-  const entries = Array.from(document.querySelectorAll('.edl-entry'));
-  const lines = entries.map((el, index) => {
-    const number = String(index + 2).padStart(3, '0');
-    const time = el.dataset.timecode;
-    const label = el.dataset.label;
-    const color = el.dataset.color || 'Blue';
-
-    const totalFrames = timecodeToFrames(time);
-    const outTimecode = formatTimecode(totalFrames + 1);
-
-    return `${number}  C  V  ${time}  ${outTimecode}  ${time}  ${outTimecode}\n\n${label} |C:ResolveColor${color} |M:Edizione |D:1\n`;
-  });
-
-  edlContent = initialOutputText + lines.join('\n') + '\n';
-  saveToLocalStorage();
-}
 
 
-function timecodeToFrames(timecode) {
-  const [h, m, s, f] = timecode.split(':').map(Number);
-  return h * 3600 * frameRate + m * 60 * frameRate + s * frameRate + f;
-}
 
 
 
