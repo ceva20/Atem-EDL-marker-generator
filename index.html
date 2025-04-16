@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v11.4.3</title>
+  <title>v12.1</title>
   <style>
 
     :root {
@@ -657,7 +657,19 @@ input[type="text"]::placeholder {
 }
 
 .edl-entry {
-  animation: fadeInEntry 0.3s ease-out;
+  animation: slideFadeIn 0.3s ease-out;
+}
+
+
+    @keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 
@@ -1013,6 +1025,7 @@ deleteBtn.onclick = () => {
 
 entryDiv.appendChild(deleteBtn);
 elements.outputBox.prepend(entryDiv);
+entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
 
   edlContent += edlLine + '\n';
@@ -1080,6 +1093,7 @@ deleteBtn.onclick = () => {
 
 entryDiv.appendChild(deleteBtn);
 elements.outputBox.prepend(entryDiv);
+entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
 
 
