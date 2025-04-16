@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v11.4.1</title>
+  <title>v11.4.2</title>
   <style>
 
     :root {
@@ -204,7 +204,8 @@ textarea:focus {
 
 .edl-entry .delete-entry {
   position: absolute;
-  top: 8px;
+  top: 50%;
+  transform: translateY(-50%);
   right: 10px;
   background: none;
   border: none;
@@ -213,6 +214,7 @@ textarea:focus {
   cursor: pointer;
   transition: color 0.2s ease;
 }
+
 
 .edl-entry .delete-entry:hover {
   color: red;
