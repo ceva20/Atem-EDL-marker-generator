@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v12.1</title>
+  <title>v13</title>
   <style>
 
     :root {
@@ -572,6 +572,31 @@ top: 22px;
   box-shadow: 0 0 8px rgba(0,0,0,0.05);
 }
 
+    .edit-input {
+  font-size: 1rem;
+  font-family: 'Outfit', sans-serif;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.save-button {
+  margin-left: 8px;
+  background: var(--accent);
+  border: none;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.save-button:hover {
+  background: #e06c1f;
+}
+
+
     .input-error {
   border-color: red !important;
   animation: shake 0.25s ease-in-out;
@@ -670,6 +695,16 @@ input[type="text"]::placeholder {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+    
+.edl-entry.highlighted {
+  background-color: #fff5c4 !important; /* giallo chiaro */
+  transition: background-color 0.5s ease;
+}
+
+@keyframes fadeHighlight {
+  0% { background-color: #fff5c4; }
+  100% { background-color: inherit; }
 }
 
 
@@ -1012,6 +1047,46 @@ iconSpan.textContent = "💬";
 const textSpan = document.createElement('span');
 textSpan.classList.add('text');
 textSpan.textContent = simpleLine;
+     textSpan.addEventListener('click', () => {
+  const currentText = textSpan.textContent;
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = currentText;
+  input.classList.add('edit-input');
+  input.style.flex = '1';
+
+  const saveBtn = document.createElement('button');
+  saveBtn.innerText = '💾';
+  saveBtn.classList.add('save-button');
+
+  const saveEdit = () => {
+  textSpan.textContent = input.value;
+  entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
+  entryDiv.replaceChild(textSpan, input);
+  saveBtn.remove();
+  updateEDLFromDisplay();
+
+  // aggiungi classe per evidenziare
+  entryDiv.classList.add('highlighted');
+
+  // rimuovi dopo 2 secondi
+  setTimeout(() => {
+    entryDiv.classList.remove('highlighted');
+  }, 2000);
+};
+
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveEdit();
+  });
+
+  saveBtn.addEventListener('click', saveEdit);
+
+  entryDiv.replaceChild(input, textSpan);
+  entryDiv.appendChild(saveBtn);
+  input.focus();
+});
+
 
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
@@ -1080,6 +1155,37 @@ iconSpan.textContent = icon;
 const textSpan = document.createElement('span');
 textSpan.classList.add('text');
 textSpan.textContent = `${timecodeText} - ${label}`;
+    textSpan.addEventListener('click', () => {
+  const currentText = textSpan.textContent;
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = currentText;
+  input.classList.add('edit-input');
+  input.style.flex = '1';
+
+  const saveBtn = document.createElement('button');
+  saveBtn.innerText = '💾';
+  saveBtn.classList.add('save-button');
+
+  const saveEdit = () => {
+    textSpan.textContent = input.value;
+    entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
+    entryDiv.replaceChild(textSpan, input);
+    saveBtn.remove();
+    updateEDLFromDisplay();
+  };
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveEdit();
+  });
+
+  saveBtn.addEventListener('click', saveEdit);
+
+  entryDiv.replaceChild(input, textSpan);
+  entryDiv.appendChild(saveBtn);
+  input.focus();
+});
+
 
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
