@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v11.4</title>
+  <title>v11.4.1</title>
   <style>
 
     :root {
@@ -184,39 +184,40 @@ textarea:focus {
 
 .edl-entry {
   position: relative;
-}
-
-.edl-entry {
-  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  border-radius: 8px;
+  align-items: flex-start;
+  gap: 8px;
   background-color: #fff;
-  margin-bottom: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-family: 'Courier New', monospace;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .edl-entry .text {
-  flex-grow: 1;
-  margin-left: 8px;
-  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .edl-entry .delete-entry {
+  position: absolute;
+  top: 8px;
+  right: 10px;
   background: none;
   border: none;
-  color: #999;
   font-size: 1.2rem;
+  color: #999;
   cursor: pointer;
-  margin-left: 12px;
   transition: color 0.2s ease;
 }
 
 .edl-entry .delete-entry:hover {
   color: red;
 }
+
 
 
 
