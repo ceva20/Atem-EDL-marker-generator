@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v10.8.2</title>
+  <title>v10.9</title>
   <style>
 
     :root {
@@ -499,6 +499,30 @@ top: 22px;
   box-shadow: 0 0 8px rgba(0,0,0,0.05);
 }
 
+    .input-error {
+  border-color: red !important;
+  animation: shake 0.25s ease-in-out;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.field-error-message {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  text-align: center;
+  display: none;
+}
+.field-error-message.active {
+  display: block;
+}
+
 
   </style>
 </head>
@@ -511,6 +535,8 @@ top: 22px;
 <div id="projectNameContainer">
   <label for="projectName">Inserisci il nome del progetto:</label><br>
   <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
+  <div id="projectNameError" class="field-error-message">Inserisci il nome del progetto.</div>
+
 </div>
   
   <div id="appGrid">
@@ -568,6 +594,7 @@ top: 22px;
     </label>
     <div class="custom-message-row">
       <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
+      <div id="customMessageError" class="field-error-message">Il messaggio non può essere vuoto.</div>
       <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
     </div>
   </div>
@@ -650,10 +677,15 @@ const elements = {
     function startTimecode() {
       const projectName = elements.projectName.value.trim();
 
-      if (!projectName) {
-        alert('Inserisci il nome del progetto prima di avviare il timecode.');
-        return;
-      }
+    if (!projectName) {
+  elements.projectName.classList.add('input-error');
+  document.getElementById('projectNameError').classList.add('active');
+  setTimeout(() => elements.projectName.classList.remove('input-error'), 300);
+  return;
+} else {
+  document.getElementById('projectNameError').classList.remove('active');
+}
+
       if (!isRunningTimecode) {
         isRunningTimecode = true;
         lastUpdateTime = Date.now();
@@ -760,10 +792,15 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
    function addCustomMessage() {
   const customMessage = elements.customMessage.value.trim();
 
-  if (!customMessage) {
-    alert('Il messaggio personalizzato non può essere vuoto.');
-    return;
-  }
+if (!customMessage) {
+  elements.customMessage.classList.add('input-error');
+  document.getElementById('customMessageError').classList.add('active');
+  setTimeout(() => elements.customMessage.classList.remove('input-error'), 300);
+  return;
+} else {
+  document.getElementById('customMessageError').classList.remove('active');
+}
+
 
   const correspondingTimecodeFrames = Math.floor(timeInSeconds * frameRate);
   const timecodeText = formatTimecode(correspondingTimecodeFrames);
