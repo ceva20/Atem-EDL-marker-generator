@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v10.10.1</title>
+  <title>v10.10.2</title>
   <style>
 
     :root {
@@ -18,14 +18,29 @@
   --focus: #DDF45B;
   --text-dark: #141414;
 }
+    
+html, body {
+  height: 100%;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 
     body {
+        margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   font-family: 'Outfit', sans-serif;
   background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
   color: var(--text-dark);
   margin: 0;
   padding: 0;
 }
+    
 
     #timecode, #timer {
       font-size: 2rem;
