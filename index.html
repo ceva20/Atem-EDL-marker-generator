@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v11.3.2</title>
+  <title>v11.3.3</title>
   <style>
 
     :root {
@@ -956,7 +956,8 @@ if (!customMessage) {
  const outFrames = Math.floor(timeInSeconds * frameRate) + 1;
 const outTimecode = formatTimecode(outFrames);
 
-const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${outTimecode}  ${timecodeText}  ${outTimecode}\n\n${label} |C:ResolveColor${color} |M:Edizione |D:1\n`;
+const color = 'Blue'; // fisso per i messaggi personalizzati
+const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${outTimecode}  ${timecodeText}  ${outTimecode}\n\n${customMessage} |C:ResolveColor${color} |M:Edizione |D:1\n`;
 
  // Mostra come scheda (come gli altri eventi)
 const entryDiv = document.createElement('div');
