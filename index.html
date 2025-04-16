@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v11.3.1</title>
+  <title>v11.3.2</title>
   <style>
 
     :root {
@@ -1011,6 +1011,7 @@ const displayLabel = label.trim(); // per visualizzare come scritto nel bottone
   // Riga completa per il file EDL
 const outFrames = Math.floor(timeInSeconds * frameRate) + 1;
 const outTimecode = formatTimecode(outFrames);
+const color = getColorForLabel(cleanLabel);
 
 const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${outTimecode}  ${timecodeText}  ${outTimecode}\n\n${label} |C:ResolveColor${color} |M:Edizione |D:1\n`;
 
