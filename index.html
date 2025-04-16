@@ -6,41 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v10.11</title>
+  <title>V9.6.3</title>
   <style>
 
     :root {
   --bg: #F7F1EA;
-  --bg-start: #f7f1ea;
---bg-end: #fbeee0;  
   --primary: #2D436C;
   --accent: #F57B23;
   --focus: #DDF45B;
   --text-dark: #141414;
 }
-    
-html, body {
-  height: 100%;
-  min-height: 100vh;
-  background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
 
     body {
-        margin: 0;
-  padding: 0;
-  background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
-  background-repeat: no-repeat;
-  background-attachment: fixed;
   font-family: 'Outfit', sans-serif;
-  background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
+  background-color: var(--bg);
   color: var(--text-dark);
   margin: 0;
   padding: 0;
 }
-    
 
     #timecode, #timer {
       font-size: 2rem;
@@ -50,22 +33,20 @@ html, body {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 16px;
+      gap: 12px;
       margin: 10px 0;
         margin-bottom: 8px;
     }
   button {
-    
- background-color: var(--primary);
+  background-color: var(--primary);
   color: white;
   border: none;
   padding: 10px 14px;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease;
 }
-    
     
 button:active {
   background-color: var(--accent);
@@ -73,11 +54,7 @@ button:active {
   box-shadow: 0 2px 6px rgba(0,0,0,0.2) inset;
 }
 
-    button:hover { 
-      background-color: #0056b3;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    }
-    
+    button:hover { background-color: #0056b3; }
     button:disabled {
       background-color: #ccc;
       cursor: not-allowed;
@@ -95,24 +72,19 @@ button:active {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-    .button-container button:hover {
-  background-color: #0056b3 !important;
-}
-
 
 .button-container button:active {
   background-color: var(--accent);
 }
 
+    .copy-alert { margin-top: 10px; color: green; }
     #textInputContainer,
-    #customTimecodeContainer { 
-      margin-top: 16px;
-    }
+    #customTimecodeContainer { margin-top: 30px; }
     label { font-weight: bold; }
-    
-textarea,
-input[type="text"] {
-  border: 1px solid black;
+    textarea,
+   input[type="text"],
+textarea {
+  border: 2px solid transparent;
   padding: 10px;
   border-radius: 6px;
   font-size: 1rem;
@@ -120,10 +92,10 @@ input[type="text"] {
   transition: border-color 0.2s ease;
 }
 
-
 input[type="text"]:focus,
 textarea:focus {
-   background-color: var(--focus);
+  border-color: var(--focus);
+  background-color: var(--focus);
 }
     input[type="checkbox"] { margin-left: 10px; }
     #timecodeOutput {
@@ -215,22 +187,18 @@ textarea:focus {
 .btn-out:active {
   background-color: var(--accent);
 }
-  #appGrid {
+    #appGrid {
   display: grid;
-  grid-template-columns: 1.2fr 1.6fr 1.2fr;
-  align-items: start; /* <- già presente */
+  grid-template-columns: 1.3fr 1fr;
   gap: 30px;
-  padding: 32px;
-  margin-top: 16px;
+  padding: 40px;
+  align-items: start;
 }
-
-
-
 
 #mainControls {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 #logPanel {
@@ -238,9 +206,9 @@ textarea:focus {
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 20px;
+  height: 100%;
   overflow-y: auto;
   box-shadow: 0 0 8px rgba(0,0,0,0.05);
-  align-self: start;
 }
 
 #logPanel h3 {
@@ -251,7 +219,7 @@ textarea:focus {
 }
 
 #timecodeOutput {
-  margin-top: 16px;
+  margin-top: 10px;
   height: 400px;
   overflow-y: auto;
   font-family: monospace;
@@ -283,15 +251,15 @@ textarea:focus {
   font-size: 2rem;
   font-weight: 700;
   color: var(--text-dark);
-    margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 30px;
+  margin-bottom: 10px;
    text-shadow: 1px 1px 0 rgba(0,0,0,0.05);
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
 }
     #historyToggle {
   position: absolute;
-top: 22px;
+  top: 30px;
   right: 30px;
   font-size: 1.8rem;
   cursor: pointer;
@@ -408,281 +376,117 @@ top: 22px;
   background-color: var(--accent);
   color: white;
 }
-    
-.event-box-title {
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 1.1rem;
-  text-align: center;
-  color: var(--primary);
-}
-
-#middlePanel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
- justify-content: flex-start;
-  gap: 16px;
-  margin-top: 0; 
-}
-
-#quickActionsBox {
-  width: 100%;
-  max-width: 420px;
-  background-color: var(--box-bg);
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
-}
-
-.custom-message-row {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.custom-message-row input[type="text"] {
-  flex: 1 1 200px;
-  min-width: 180px;
-}
-.custom-message-row button {
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-#resetButton {
-  background-color: var(--accent); /* sfondo arancione */
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1rem;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: block;
-  margin-inline: auto; /* lo centra */
-  margin-top: 16px;
-}
-
-#resetButton:hover {
-  background-color: #e06c1f;
-}
-
-#resetButton:active {
-  background-color: #cc5a12;
-  transform: scale(0.97);
-}
-
-  
-
-    #mainControls.control-box {
-  max-width: 420px;
-}
-
-  #projectNameContainer {
-  grid-column: 1 / span 2;
-  grid-row: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 16px;
-      padding-top: 8px;
-}
-
-#mainControls {
-  grid-row: 2;
-}
-#middlePanel {
-  grid-row: 2;
-}
-#logPanel {
-  grid-row: 2;
-}
 
 
-#projectNameContainer label {
-  font-weight: bold;
-  margin-bottom: 6px;
-  color: var(--primary);
-}
 
-#projectNameContainer textarea {
-  width: 100%;
-  max-width: 600px;
-  padding: 10px;
-  border-radius: 6px;
-  font-size: 1rem;
-  border: 1px solid black;
-  transition: border-color 0.2s ease;
-}
-
-    .panel-box {
-  background-color: var(--bg);
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
-}
-
-    .input-error {
-  border-color: red !important;
-  animation: shake 0.25s ease-in-out;
-}
-
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
-  75% { transform: translateX(-4px); }
-  100% { transform: translateX(0); }
-}
-
-.field-error-message {
-  position: absolute;
-  color: red;
-  font-size: 0.85rem;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  background-color: transparent;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.field-error-message.active {
-  opacity: 1;
-}
-
-    .hide-placeholder::placeholder {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-textarea::placeholder,
-input[type="text"]::placeholder {
-  transition: opacity 0.3s ease;
-}
-
-    .button-container button {
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.button-container button:hover {
-  background-color: #0056b3;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
 
 
   </style>
 </head>
 <body>
   <h1 id="pageTitle">Edizione Digitale – EDL Generator</h1>
-
-  <!-- Icona cronologia -->
-  <div id="historyToggle">🕒</div>
-  
- <!-- Nome progetto -->
- <div id="projectNameContainer">
-  <label for="projectName">Inserisci il nome del progetto:</label><br>
-  <div class="project-name-wrapper" style="position: relative; width: 100%; max-width: 600px;">
-    <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
-    <div id="projectNameError" class="field-error-message">Inserisci il nome del progetto.</div>
-  </div>
+<div id="historyToggle">
+  🕒
 </div>
 
-  
   <div id="appGrid">
+    
+    <div id="mainControls">
 
-
-<!-- COLONNA SINISTRA -->
-<div id="mainControls" class="panel-box">
-  <!-- Timecode -->
-  <div style="margin-bottom: 20px;">
-    <h3 style="margin: 0 0 5px;">Timecode</h3>
-    <div style="display: flex; align-items: center; gap: 10px;">
-      <div id="timecode" class="timecode-box">00:00:00:00</div>
-      <button id="startTimecodeButton" class="icon-button" title="Avvia Timecode">▶</button>
-      <button id="stopTimecodeButton" class="icon-button" title="Stop Timecode" disabled>■</button>
-    </div>
-  </div>
-
-  <!-- Timer -->
-  <div style="margin-bottom: 20px;">
-    <h3 style="margin: 0 0 5px;">Timer</h3>
-    <div style="display: flex; align-items: center; gap: 10px;">
-      <div id="timer" class="timer-box">00:00</div>
-      <button id="startTimerButton" class="icon-button" title="Start Timer">▶</button>
-      <button id="pauseTimerButton" class="icon-button" title="Pausa Timer">⏸</button>
-      <button id="stopTimerButton" class="icon-button" title="Stop Timer">■</button>
-    </div>
-  </div>
-
-  <!-- Reset -->
-  <div class="button-container">
-    <button id="resetButton">Reset</button>
-  </div>
-</div>
-
-<!-- COLONNA CENTRALE -->
-<div id="middlePanel" class="panel-box">
-  <h3 class="event-box-title">Azioni rapide</h3>
-  <div class="button-container" style="justify-content: center;">
-    <div>
-      <button class="btn-in">IN</button>
-      <button>RIPETIZIONE</button>
-      <button>PAUSA</button>
-    </div>
-    <div>
-      <button class="btn-out">OUT</button>
-      <button>RUMORE</button>
-      <button>ERRORE REGIA</button>
-    </div>
-  </div>
-
-  <!-- Messaggio personalizzato -->
-  <div id="customTimecodeContainer">
-    <label for="customMessage" style="display: block; text-align: center; margin-bottom: 8px;">
-      Messaggio personalizzato:
-    </label>
-    <div class="custom-message-row">
-      <div class="custom-message-wrapper" style="position: relative;">
-      <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
-      <div id="customMessageError" class="field-error-message">Il campo non può essere vuoto.</div>
-      <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
-    </div>
+      <!-- Nome progetto -->
+      <div id="textInputContainer" style="text-align: left;">
+        <label for="projectName">Inserisci il nome del progetto:</label><br>
+        <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
+        
       </div>
+
+    <!-- Timecode -->
+<div style="margin-bottom: 20px;">
+  <h3 style="margin: 0 0 5px;">Timecode</h3>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <div id="timecode" class="timecode-box">00:00:00:00</div>
+
+    <button id="startTimecodeButton" class="icon-button" title="Avvia Timecode">▶</button>
+<button id="stopTimecodeButton" class="icon-button" title="Stop Timecode" disabled>■</button>
+
+
   </div>
 </div>
 
-<!-- COLONNA DESTRA -->
-<div id="logPanel" class="panel-box">
+<!-- Timer -->
+<div style="margin-bottom: 20px;">
+  <h3 style="margin: 0 0 5px;">Timer</h3>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <div id="timer" class="timer-box">00:00</div>
+
+  <button id="startTimerButton" class="icon-button" title="Start Timer">▶</button>
+<button id="pauseTimerButton" class="icon-button" title="Pausa Timer">⏸</button>
+<button id="stopTimerButton" class="icon-button" title="Stop Timer">■</button>
+
+  </div>
+</div>
+
+
+      <!-- Bottoni principali -->
+      <div class="button-container">
+        <button id="resetButton">Reset</button>
+        <button id="copyButton">Copy</button>
+      </div>
+
+      <!-- Alert copia -->
+      <div id="copyAlert" class="copy-alert" style="display: none;">
+        Timecode copiato negli appunti!
+      </div>
+
+      <!-- Bottoni evento -->
+   <div class="button-container">
+  <div>
+    <button class="btn-in">IN</button>
+    <button>RIPETIZIONE</button>
+    <button>PAUSA</button>
+  </div>
+  <div>
+    <button class="btn-out">OUT</button>
+    <button>RUMORE</button>
+    <button>ERRORE REGIA</button>
+  </div>
+</div>
+
+
+      <!-- Messaggio personalizzato -->
+      <div id="customTimecodeContainer">
+        <label for="customMessage">Messaggio personalizzato:</label>
+        <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
+        <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
+      </div>
+ </div>
+
+ <div id="logPanel">
   <div style="display: flex; justify-content: space-between; align-items: center;">
     <h3>Log eventi</h3>
     <div id="fileButtonContainer">
       <button>Scarica EDL</button>
     </div>
   </div>
+
   <div id="filePreview" style="font-size: 0.9rem; color: #333; margin-top: 6px; margin-bottom: 12px;"></div>
+
   <div id="timecodeOutput" contenteditable="true"></div>
 </div>
 
-
+    <!-- 🔽 Drawer laterale per la cronologia -->
+<div id="drawerHistory">
+  <div class="drawer-header">
+    <h4>Cronologia EDL</h4>
+    <button id="closeDrawer">✖</button>
   </div>
+ <div id="drawerContent">
+  <button id="clearHistoryButton" style="margin-bottom: 12px;">🗑️ Svuota cronologia</button>
+  <ul id="drawerEdlHistory"></ul>
+</div>
 
-  <!-- DRAWER LATERALE -->
-  <div id="drawerHistory">
-    <div class="drawer-header">
-      <h4>Cronologia EDL</h4>
-      <button id="closeDrawer">✖</button>
-    </div>
-    <div id="drawerContent">
-      <button id="clearHistoryButton" style="margin-bottom: 12px;">🗑️ Svuota cronologia</button>
-      <ul id="drawerEdlHistory"></ul>
-    </div>
-  </div>
+</div>
+
 
   <script>
     
@@ -694,7 +498,7 @@ const elements = {
   startBtn: document.getElementById('startTimecodeButton'),
   stopBtn: document.getElementById('stopTimecodeButton'),
   resetBtn: document.getElementById('resetButton'),
-
+  copyBtn: document.getElementById('copyButton'),
   timer: document.getElementById('timer'),
   timecode: document.getElementById('timecode'),
   outputBox: document.getElementById('timecodeOutput'),
@@ -734,27 +538,10 @@ const elements = {
     function startTimecode() {
       const projectName = elements.projectName.value.trim();
 
-if (!projectName) {
-  elements.projectName.classList.add('input-error');
-  elements.projectName.classList.add('hide-placeholder'); // nasconde placeholder
-
-  const err = document.getElementById('projectNameError');
-  err.classList.add('active');
-
-  setTimeout(() => {
-    elements.projectName.classList.remove('input-error');
-    err.classList.remove('active');
-
-    // riporta il placeholder con fade
-    elements.projectName.classList.remove('hide-placeholder');
-  }, 2000);
-  return;
-}
-
-else {
-  document.getElementById('projectNameError').classList.remove('active');
-}
-
+      if (!projectName) {
+        alert('Inserisci il nome del progetto prima di avviare il timecode.');
+        return;
+      }
       if (!isRunningTimecode) {
         isRunningTimecode = true;
         lastUpdateTime = Date.now();
@@ -861,27 +648,10 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
    function addCustomMessage() {
   const customMessage = elements.customMessage.value.trim();
 
-if (!customMessage) {
-  elements.customMessage.classList.add('input-error');
-  elements.customMessage.classList.add('hide-placeholder'); // nasconde placeholder
-
-  const err = document.getElementById('customMessageError');
-  err.classList.add('active');
-
-  setTimeout(() => {
-    elements.customMessage.classList.remove('input-error');
-    err.classList.remove('active');
-
-    // riporta il placeholder con fade
-    elements.customMessage.classList.remove('hide-placeholder');
-  }, 2000);
-  return;
-}
-
- else {
-  document.getElementById('customMessageError').classList.remove('active');
-}
-
+  if (!customMessage) {
+    alert('Il messaggio personalizzato non può essere vuoto.');
+    return;
+  }
 
   const correspondingTimecodeFrames = Math.floor(timeInSeconds * frameRate);
   const timecodeText = formatTimecode(correspondingTimecodeFrames);
@@ -945,6 +715,16 @@ const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${ti
 
   return map[label.toLowerCase()] || 'Sky';
 }
+
+
+    function copyTimecode() {
+      const outputText = elements.outputBox.innerText;
+      navigator.clipboard.writeText(outputText).then(() => {
+        const alertBox = document.getElementById('copyAlert');
+        alertBox.style.display = 'block';
+        setTimeout(() => alertBox.style.display = 'none', 2000);
+      });
+    }
 
    function downloadEDL() {
   const outputText = edlContent;
@@ -1043,7 +823,7 @@ elements.pauseTimerBtn.disabled = false;
   elements.startBtn.addEventListener('click', startTimecode);
   elements.stopBtn.addEventListener('click', stopTimecode);
   elements.resetBtn.addEventListener('click', resetTimecode);
-
+  elements.copyBtn.addEventListener('click', copyTimecode);
   document.getElementById('startTimerButton').addEventListener('click', startTimer);
 
   elements.fileBtn.addEventListener('click', downloadEDL);
@@ -1162,4 +942,3 @@ function pauseTimer() {
 
 </body>
 </html>
-
