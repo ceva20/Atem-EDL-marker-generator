@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v10.9.2</title>
+  <title>v10.9.3</title>
   <style>
 
     :root {
@@ -529,6 +529,16 @@ top: 22px;
   opacity: 1;
 }
 
+    .hide-placeholder::placeholder {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+textarea::placeholder,
+input[type="text"]::placeholder {
+  transition: opacity 0.3s ease;
+}
+
 
   </style>
 </head>
@@ -686,16 +696,23 @@ const elements = {
     function startTimecode() {
       const projectName = elements.projectName.value.trim();
 
-  if (!projectName) {
+if (!projectName) {
   elements.projectName.classList.add('input-error');
+  elements.projectName.classList.add('hide-placeholder'); // nasconde placeholder
+
   const err = document.getElementById('projectNameError');
   err.classList.add('active');
+
   setTimeout(() => {
     elements.projectName.classList.remove('input-error');
     err.classList.remove('active');
+
+    // riporta il placeholder con fade
+    elements.projectName.classList.remove('hide-placeholder');
   }, 2000);
   return;
 }
+
 else {
   document.getElementById('projectNameError').classList.remove('active');
 }
@@ -808,14 +825,21 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
 
 if (!customMessage) {
   elements.customMessage.classList.add('input-error');
+  elements.customMessage.classList.add('hide-placeholder'); // nasconde placeholder
+
   const err = document.getElementById('customMessageError');
   err.classList.add('active');
+
   setTimeout(() => {
     elements.customMessage.classList.remove('input-error');
     err.classList.remove('active');
+
+    // riporta il placeholder con fade
+    elements.customMessage.classList.remove('hide-placeholder');
   }, 2000);
   return;
 }
+
  else {
   document.getElementById('customMessageError').classList.remove('active');
 }
