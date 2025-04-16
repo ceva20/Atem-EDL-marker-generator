@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v11</title>
+  <title>v11.1</title>
   <style>
 
     :root {
@@ -917,7 +917,22 @@ if (!customMessage) {
   // Riga completa per il file EDL
   const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${customMessage} |C:ResolveColorBlue |M:Edizione |D:0\n`;
 
-  elements.outputBox.innerText += simpleLine + '\n';
+ // Mostra come scheda (come gli altri eventi)
+const entryDiv = document.createElement('div');
+entryDiv.classList.add('edl-entry');
+
+const iconSpan = document.createElement('span');
+iconSpan.classList.add('icon');
+iconSpan.textContent = "💬";
+
+const textSpan = document.createElement('span');
+textSpan.classList.add('text');
+textSpan.textContent = simpleLine;
+
+entryDiv.appendChild(iconSpan);
+entryDiv.appendChild(textSpan);
+elements.outputBox.appendChild(entryDiv);
+
   edlContent += edlLine + '\n';
 
   elements.customMessage.value = '';
