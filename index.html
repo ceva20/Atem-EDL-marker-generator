@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v10.9</title>
+  <title>v10.9.1</title>
   <style>
 
     :root {
@@ -513,14 +513,20 @@ top: 22px;
 }
 
 .field-error-message {
+  position: absolute;
   color: red;
   font-size: 0.85rem;
-  margin-top: 4px;
-  text-align: center;
-  display: none;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
+
 .field-error-message.active {
-  display: block;
+  opacity: 1;
 }
 
 
@@ -532,7 +538,7 @@ top: 22px;
   <!-- Icona cronologia -->
   <div id="historyToggle">🕒</div>
  <!-- Nome progetto -->
-<div id="projectNameContainer">
+  <div id="projectNameContainer" style="position: relative;">
   <label for="projectName">Inserisci il nome del progetto:</label><br>
   <textarea id="projectName" placeholder="Scrivi il nome del progetto qui..."></textarea>
   <div id="projectNameError" class="field-error-message">Inserisci il nome del progetto.</div>
@@ -593,8 +599,9 @@ top: 22px;
       Messaggio personalizzato:
     </label>
     <div class="custom-message-row">
+      <div class="custom-message-wrapper" style="position: relative;">
       <input type="text" id="customMessage" placeholder="Scrivi qui il tuo messaggio...">
-      <div id="customMessageError" class="field-error-message">Il messaggio non può essere vuoto.</div>
+      <div id="customMessageError" class="field-error-message">Il campo non può essere vuoto.</div>
       <button id="addCustomMessageButton">➕ Aggiungi messaggio</button>
     </div>
   </div>
@@ -677,12 +684,17 @@ const elements = {
     function startTimecode() {
       const projectName = elements.projectName.value.trim();
 
-    if (!projectName) {
+  if (!projectName) {
   elements.projectName.classList.add('input-error');
-  document.getElementById('projectNameError').classList.add('active');
-  setTimeout(() => elements.projectName.classList.remove('input-error'), 300);
+  const err = document.getElementById('projectNameError');
+  err.classList.add('active');
+  setTimeout(() => {
+    elements.projectName.classList.remove('input-error');
+    err.classList.remove('active');
+  }, 2000);
   return;
-} else {
+}
+else {
   document.getElementById('projectNameError').classList.remove('active');
 }
 
@@ -794,10 +806,15 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
 
 if (!customMessage) {
   elements.customMessage.classList.add('input-error');
-  document.getElementById('customMessageError').classList.add('active');
-  setTimeout(() => elements.customMessage.classList.remove('input-error'), 300);
+  const err = document.getElementById('customMessageError');
+  err.classList.add('active');
+  setTimeout(() => {
+    elements.customMessage.classList.remove('input-error');
+    err.classList.remove('active');
+  }, 2000);
   return;
-} else {
+}
+ else {
   document.getElementById('customMessageError').classList.remove('active');
 }
 
