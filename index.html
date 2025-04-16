@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v11.3.3</title>
+  <title>v11.3.4</title>
   <style>
 
     :root {
@@ -1283,7 +1283,6 @@ function pauseTimer() {
   elements.timer.classList.add('paused-blinking');
 }
 
-
 function updateEDLFromDisplay() {
   const entries = Array.from(document.querySelectorAll('.edl-entry'));
   const lines = entries.map((el, index) => {
@@ -1291,15 +1290,17 @@ function updateEDLFromDisplay() {
     const time = el.dataset.timecode;
     const label = el.dataset.label;
     const color = el.dataset.color || 'Blue';
-    const totalFrames = timecodeToFrames(time); // converti il timecode in frame
-const outTimecode = formatTimecode(totalFrames + 1); // +1 frame
-return `${number}  C  V  ${time}  ${outTimecode}  ${time}  ${outTimecode}\n\n${label} |C:ResolveColor${color} |M:Edizione |D:1\n`;
 
+    const totalFrames = timecodeToFrames(time);
+    const outTimecode = formatTimecode(totalFrames + 1);
+
+    return `${number}  C  V  ${time}  ${outTimecode}  ${time}  ${outTimecode}\n\n${label} |C:ResolveColor${color} |M:Edizione |D:1\n`;
   });
 
   edlContent = initialOutputText + lines.join('\n') + '\n';
   saveToLocalStorage();
 }
+
 
 function timecodeToFrames(timecode) {
   const [h, m, s, f] = timecode.split(':').map(Number);
