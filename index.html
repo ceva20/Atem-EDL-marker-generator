@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v10.11</title>
+  <title>v11</title>
   <style>
 
     :root {
@@ -575,6 +575,30 @@ input[type="text"]::placeholder {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
+    .edl-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #fff;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-left: 4px solid var(--primary);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+}
+
+.edl-entry .icon {
+  font-size: 1.2rem;
+}
+
+.edl-entry .text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+
 
   </style>
 </head>
@@ -915,11 +939,33 @@ const displayLabel = label.trim(); // per visualizzare come scritto nel bottone
 const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${timecodeText}  ${timecodeText}  ${timecodeText}\n\n${displayLabel} |C:ResolveColor${getColorForLabel(cleanLabel)} |M:Edizione |D:0\n`;
 
 
-  // Riga semplificata per visualizzazione
-  const simpleLine = `${timecodeText} - ${label}`;
+const iconMap = {
+  in: "📍",
+  out: "📍",
+  ripetizione: "🔁",
+  pausa: "⏸️",
+  rumore: "🔊",
+  "errore regia": "⚠️"
+};
 
-  // Mostra solo la riga semplice all’utente
-  elements.outputBox.innerText += simpleLine + '\n';
+const icon = iconMap[cleanLabel] || "🔘";
+
+// Crea la "scheda" visiva
+const entryDiv = document.createElement('div');
+entryDiv.classList.add('edl-entry');
+
+const iconSpan = document.createElement('span');
+iconSpan.classList.add('icon');
+iconSpan.textContent = icon;
+
+const textSpan = document.createElement('span');
+textSpan.classList.add('text');
+textSpan.textContent = `${timecodeText} - ${label}`;
+
+entryDiv.appendChild(iconSpan);
+entryDiv.appendChild(textSpan);
+elements.outputBox.appendChild(entryDiv);
+
 
   // Salva la riga completa nel contenuto da esportare
   edlContent += edlLine + '\n';
