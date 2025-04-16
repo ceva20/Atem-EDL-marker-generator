@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v11.2</title>
+  <title>v11.2.1</title>
   <style>
 
     :root {
@@ -601,6 +601,20 @@ input[type="text"]::placeholder {
   word-break: break-word;
 }
 
+@keyframes fadeInEntry {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.edl-entry {
+  animation: fadeInEntry 0.3s ease-out;
+}
 
 
   </style>
@@ -923,6 +937,7 @@ if (!customMessage) {
  // Mostra come scheda (come gli altri eventi)
 const entryDiv = document.createElement('div');
 entryDiv.classList.add('edl-entry');
+     
 
 const iconSpan = document.createElement('span');
 iconSpan.classList.add('icon');
@@ -934,7 +949,8 @@ textSpan.textContent = simpleLine;
 
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
-elements.outputBox.appendChild(entryDiv);
+elements.outputBox.prepend(entryDiv);
+
 
   edlContent += edlLine + '\n';
 
@@ -982,7 +998,8 @@ textSpan.textContent = `${timecodeText} - ${label}`;
 
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
-elements.outputBox.appendChild(entryDiv);
+elements.outputBox.prepend(entryDiv);
+
 
 
   // Salva la riga completa nel contenuto da esportare
