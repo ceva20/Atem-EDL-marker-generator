@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v11.2.1</title>
+  <title>v11.3</title>
   <style>
 
     :root {
@@ -181,6 +181,27 @@ textarea:focus {
   display: inline-block;
   box-sizing: border-box;
 }
+
+.edl-entry {
+  position: relative;
+}
+
+.edl-entry .delete-entry {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.edl-entry .delete-entry:hover {
+  color: red;
+}
+
 
 
 
@@ -937,6 +958,12 @@ if (!customMessage) {
  // Mostra come scheda (come gli altri eventi)
 const entryDiv = document.createElement('div');
 entryDiv.classList.add('edl-entry');
+entryDiv.dataset.type = 'custom';
+entryDiv.dataset.label = customMessage;
+entryDiv.dataset.timecode = timecodeText;
+entryDiv.dataset.color = 'Blue';
+entryDiv.style.backgroundColor = "#FFF9F5";
+
      
 
 const iconSpan = document.createElement('span');
@@ -949,6 +976,15 @@ textSpan.textContent = simpleLine;
 
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
+     const deleteBtn = document.createElement('button');
+deleteBtn.innerText = '✖';
+deleteBtn.classList.add('delete-entry');
+deleteBtn.onclick = () => {
+  entryDiv.remove();
+  updateEDLFromDisplay();
+};
+
+entryDiv.appendChild(deleteBtn);
 elements.outputBox.prepend(entryDiv);
 
 
@@ -987,6 +1023,11 @@ const icon = iconMap[cleanLabel] || "🔘";
 // Crea la "scheda" visiva
 const entryDiv = document.createElement('div');
 entryDiv.classList.add('edl-entry');
+entryDiv.dataset.type = 'quick';
+entryDiv.dataset.label = displayLabel;
+entryDiv.dataset.timecode = timecodeText;
+entryDiv.dataset.color = getColorForLabel(cleanLabel);
+
 
 const iconSpan = document.createElement('span');
 iconSpan.classList.add('icon');
@@ -998,6 +1039,15 @@ textSpan.textContent = `${timecodeText} - ${label}`;
 
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
+    const deleteBtn = document.createElement('button');
+deleteBtn.innerText = '✖';
+deleteBtn.classList.add('delete-entry');
+deleteBtn.onclick = () => {
+  entryDiv.remove();
+  updateEDLFromDisplay();
+};
+
+entryDiv.appendChild(deleteBtn);
 elements.outputBox.prepend(entryDiv);
 
 
@@ -1226,6 +1276,19 @@ function pauseTimer() {
 }
 
 
+function updateEDLFromDisplay() {
+  const entries = Array.from(document.querySelectorAll('.edl-entry'));
+  const lines = entries.map((el, index) => {
+    const number = String(index + 2).padStart(3, '0');
+    const time = el.dataset.timecode;
+    const label = el.dataset.label;
+    const color = el.dataset.color || 'Blue';
+    return `${number}  C  V  ${time}  ${time}  ${time}  ${time}\n\n${label} |C:ResolveColor${color} |M:Edizione |D:0\n`;
+  });
+
+  edlContent = initialOutputText + lines.join('\n') + '\n';
+  saveToLocalStorage();
+}
 
 
 
