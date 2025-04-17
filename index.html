@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v14.4.3</title>
+  <title>v14.5</title>
   <style>
 
     :root {
@@ -800,6 +800,12 @@ body.dark-mode ::placeholder {
   opacity: 0.6;
 }
 
+.save-button,
+.delete-entry {
+  font-size: 1.1rem;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
 
 
   </style>
@@ -1187,14 +1193,23 @@ textSpan.textContent = simpleLine;
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
      const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '✖';
+deleteBtn.innerText = '🗑️';
+
 deleteBtn.classList.add('delete-entry');
 deleteBtn.onclick = () => {
   entryDiv.remove();
   updateEDLFromDisplay();
 };
 
-entryDiv.appendChild(deleteBtn);
+const buttonWrapper = document.createElement('div');
+buttonWrapper.style.display = 'flex';
+buttonWrapper.style.gap = '6px';
+buttonWrapper.style.marginLeft = 'auto';
+
+buttonWrapper.appendChild(saveBtn);
+buttonWrapper.appendChild(deleteBtn);
+entryDiv.appendChild(buttonWrapper);
+
 elements.outputBox.prepend(entryDiv);
 entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -1286,14 +1301,23 @@ textSpan.textContent = `${timecodeText} - ${label}`;
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
     const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '✖';
+deleteBtn.innerText = '🗑️';
+
 deleteBtn.classList.add('delete-entry');
 deleteBtn.onclick = () => {
   entryDiv.remove();
   updateEDLFromDisplay();
 };
 
-entryDiv.appendChild(deleteBtn);
+const buttonWrapper = document.createElement('div');
+buttonWrapper.style.display = 'flex';
+buttonWrapper.style.gap = '6px';
+buttonWrapper.style.marginLeft = 'auto';
+
+buttonWrapper.appendChild(saveBtn);
+buttonWrapper.appendChild(deleteBtn);
+entryDiv.appendChild(buttonWrapper);
+
 elements.outputBox.prepend(entryDiv);
 entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
