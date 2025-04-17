@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v14.4.3</title>
+  <title>v14.3</title>
   <style>
 
     :root {
@@ -22,7 +22,7 @@
   --accent: #F57B23;
   --focus: #DDF45B;
   --text-dark: #141414;
-  --text: #F7F1EA;
+  --text: var(--paper);
   --accent: var(--orange);
   --highlight: var(--lime);
 }
@@ -103,7 +103,7 @@ button:active {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-    .button-container button: {
+    .button-container button:hover {
   background-color: #0056b3 !important;
 }
 
@@ -227,7 +227,7 @@ textarea:focus {
 }
 
 
-.edl-entry .delete-entry: {
+.edl-entry .delete-entry:hover {
   color: red;
 }
 
@@ -351,7 +351,7 @@ textarea:focus {
   transition: transform 0.2s ease;
 }
 
-#historyToggle: {
+#historyToggle:hover {
   transform: scale(1.1);
 }
 #drawerHistory {
@@ -456,7 +456,7 @@ textarea:focus {
   cursor: not-allowed;
   opacity: 0.6;
 }
-.icon-button::not(:disabled) {
+.icon-button:hover:not(:disabled) {
   background-color: var(--accent);
   color: white;
 }
@@ -518,7 +518,7 @@ textarea:focus {
   margin-top: 16px;
 }
 
-#resetButton: {
+#resetButton:hover {
   background-color: #e06c1f;
 }
 
@@ -598,7 +598,7 @@ textarea:focus {
   transition: background-color 0.2s ease;
 }
 
-.save-button: {
+.save-button:hover {
   background: #e06c1f;
 }
 
@@ -647,7 +647,7 @@ input[type="text"]::placeholder {
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.button-container button: {
+.button-container button:hover {
   background-color: #0056b3;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
@@ -714,7 +714,6 @@ input[type="text"]::placeholder {
 }
 
     body.dark-mode {
-  --text: #FFF9F5;
   --bg: #1e1e1e;
   --bg-start: #1a1a1a;
   --bg-end: #2a2a2a;
@@ -750,14 +749,13 @@ body.dark-mode #drawerHistory {
 body.dark-mode button,
 body.dark-mode .icon-button {
   background-color: #F57B23;
-  color: var(--text); /* #FFF9F5 */
-  box-shadow: 0 0 6px rgba(221, 244, 91, 0.4);
+  color: #141414;
+  box-shadow: 0 0 6px rgba(221, 244, 91, 0.4); /* lime glow */
 }
 
-
 body.dark-mode button:hover {
-  background-color: #2D436C;
-  color: #FFF9F5;
+  background-color: #DDF45B;
+  color: #141414;
   box-shadow: 0 0 12px rgba(221, 244, 91, 0.6);
 }
 
@@ -770,23 +768,13 @@ body.dark-mode .edl-entry {
 }
 
     body.dark-mode,
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode h4,
-body.dark-mode p,
-body.dark-mode label,
-body.dark-mode textarea,
-body.dark-mode input,
 body.dark-mode .text,
-body.dark-mode .timer-box,
-body.dark-mode #timer,
-body.dark-mode #timecode,
+body.dark-mode .panel-box,
 body.dark-mode .edl-entry,
-body.dark-mode .field-error-message {
+body.dark-mode textarea,
+body.dark-mode input {
   color: var(--text);
 }
-
 
 body.dark-mode .icon-button,
 body.dark-mode #historyToggle,
@@ -794,18 +782,7 @@ body.dark-mode #toggleDarkMode {
   color: #DDF45B;
   text-shadow: 0 0 6px rgba(221, 244, 91, 0.8);
 }
-    
-body.dark-mode ::placeholder {
-  color: var(--text);
-  opacity: 0.6;
-}
 
-.save-button,
-.delete-entry {
-  font-size: 1.1rem;
-  padding: 6px 8px;
-  border-radius: 6px;
-}
 
 
   </style>
@@ -1193,23 +1170,14 @@ textSpan.textContent = simpleLine;
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
      const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '🗑️';
-
+deleteBtn.innerText = '✖';
 deleteBtn.classList.add('delete-entry');
 deleteBtn.onclick = () => {
   entryDiv.remove();
   updateEDLFromDisplay();
 };
 
-const buttonWrapper = document.createElement('div');
-buttonWrapper.style.display = 'flex';
-buttonWrapper.style.gap = '6px';
-buttonWrapper.style.marginLeft = 'auto';
-
-buttonWrapper.appendChild(saveBtn);
-buttonWrapper.appendChild(deleteBtn);
-entryDiv.appendChild(buttonWrapper);
-
+entryDiv.appendChild(deleteBtn);
 elements.outputBox.prepend(entryDiv);
 entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -1301,23 +1269,14 @@ textSpan.textContent = `${timecodeText} - ${label}`;
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
     const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '🗑️';
-
+deleteBtn.innerText = '✖';
 deleteBtn.classList.add('delete-entry');
 deleteBtn.onclick = () => {
   entryDiv.remove();
   updateEDLFromDisplay();
 };
 
-const buttonWrapper = document.createElement('div');
-buttonWrapper.style.display = 'flex';
-buttonWrapper.style.gap = '6px';
-buttonWrapper.style.marginLeft = 'auto';
-
-buttonWrapper.appendChild(saveBtn);
-buttonWrapper.appendChild(deleteBtn);
-entryDiv.appendChild(buttonWrapper);
-
+entryDiv.appendChild(deleteBtn);
 elements.outputBox.prepend(entryDiv);
 entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
