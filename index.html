@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v14.2</title>
+  <title>v14.2.1</title>
   <style>
 
     :root {
@@ -23,8 +23,8 @@
   --focus: #DDF45B;
   --text-dark: #141414;
   --text: var(--paper);
-  --accent: var(--orange);
-  --highlight: var(--lime);
+ --accent: #F57B23;     /* Arancione palette originale */
+  --highlight: #DDF45B;  /* Glow lime */
 }
     
 html, body {
@@ -103,9 +103,12 @@ button:active {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-    .button-container button:hover {
-  background-color: #0056b3 !important;
+  .button-container button:hover {
+  background-color: var(--highlight);
+  box-shadow: 0 0 12px var(--highlight);
+  color: #141414;
 }
+
 
 
 .button-container button:active {
@@ -744,22 +747,29 @@ body.dark-mode #drawerHistory {
   box-shadow: 0 0 10px #2D436C88;
 }
 
+/* Pulsanti generici (tutti, anche timer, aggiungi, EDL, ecc.) */
+body.dark-mode button,
 body.dark-mode .button,
-body.dark-mode button {
+body.dark-mode .icon-button {
   background-color: var(--accent);
   color: #141414;
   border: none;
   font-weight: bold;
-  box-shadow: 0 0 8px var(--accent);
+  border-radius: 10px;
+  padding: 0.5em 1em;
+  box-shadow: 0 0 10px var(--highlight);
   transition: all 0.3s ease;
 }
 
+/* Hover: glow più intenso */
+body.dark-mode button:hover,
 body.dark-mode .button:hover,
-body.dark-mode button:hover {
-  box-shadow: 0 0 12px var(--highlight);
-  background-color: var(--highlight);
+body.dark-mode .icon-button:hover {
+  background-color: var(--accent);
+  box-shadow: 0 0 18px var(--highlight), 0 0 4px var(--highlight);
   color: #141414;
 }
+
 
 body.dark-mode .edl-entry {
   background-color: #222;
@@ -781,6 +791,16 @@ body.dark-mode #historyToggle {
   color: var(--highlight);
   text-shadow: 0 0 6px var(--highlight);
 }
+    body.dark-mode #addCustomMessage {
+  background-color: var(--accent);
+  color: #141414;
+  box-shadow: 0 0 10px var(--highlight);
+}
+
+body.dark-mode #addCustomMessage:hover {
+  box-shadow: 0 0 18px var(--highlight);
+}
+
 
 
   </style>
