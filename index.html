@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v14.5</title>
+  <title>v15.0.1</title>
   <style>
 
     :root {
@@ -1266,7 +1266,7 @@ iconSpan.textContent = icon;
 const textSpan = document.createElement('span');
 textSpan.classList.add('text');
 textSpan.textContent = `${timecodeText} - ${label}`;
-    textSpan.addEventListener('click', () => {
+  textSpan.addEventListener('click', () => {
   const currentText = textSpan.textContent;
   const input = document.createElement('input');
   input.type = 'text';
@@ -1278,12 +1278,28 @@ textSpan.textContent = `${timecodeText} - ${label}`;
   saveBtn.innerText = '💾';
   saveBtn.classList.add('save-button');
 
+  const deleteBtn = document.createElement('button');
+  deleteBtn.innerText = '🗑️';
+  deleteBtn.classList.add('delete-entry');
+  deleteBtn.onclick = () => {
+    entryDiv.remove();
+    updateEDLFromDisplay();
+  };
+
+  const buttonWrapper = document.createElement('div');
+  buttonWrapper.style.display = 'flex';
+  buttonWrapper.style.gap = '6px';
+  buttonWrapper.style.marginLeft = 'auto';
+
   const saveEdit = () => {
     textSpan.textContent = input.value;
     entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
     entryDiv.replaceChild(textSpan, input);
-    saveBtn.remove();
+    buttonWrapper.remove();
     updateEDLFromDisplay();
+
+    entryDiv.classList.add('highlighted');
+    setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
   };
 
   input.addEventListener('keydown', e => {
@@ -1292,10 +1308,14 @@ textSpan.textContent = `${timecodeText} - ${label}`;
 
   saveBtn.addEventListener('click', saveEdit);
 
+  buttonWrapper.appendChild(saveBtn);
+  buttonWrapper.appendChild(deleteBtn);
+
   entryDiv.replaceChild(input, textSpan);
-  entryDiv.appendChild(saveBtn);
+  entryDiv.appendChild(buttonWrapper);
   input.focus();
 });
+
 
 
 entryDiv.appendChild(iconSpan);
