@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v15.0.2</title>
+  <title>v14.3</title>
   <style>
 
     :root {
@@ -22,7 +22,7 @@
   --accent: #F57B23;
   --focus: #DDF45B;
   --text-dark: #141414;
-  --text: #F7F1EA;
+  --text: var(--paper);
   --accent: var(--orange);
   --highlight: var(--lime);
 }
@@ -103,7 +103,7 @@ button:active {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-    .button-container button: {
+    .button-container button:hover {
   background-color: #0056b3 !important;
 }
 
@@ -227,7 +227,7 @@ textarea:focus {
 }
 
 
-.edl-entry .delete-entry: {
+.edl-entry .delete-entry:hover {
   color: red;
 }
 
@@ -351,7 +351,7 @@ textarea:focus {
   transition: transform 0.2s ease;
 }
 
-#historyToggle: {
+#historyToggle:hover {
   transform: scale(1.1);
 }
 #drawerHistory {
@@ -456,7 +456,7 @@ textarea:focus {
   cursor: not-allowed;
   opacity: 0.6;
 }
-.icon-button::not(:disabled) {
+.icon-button:hover:not(:disabled) {
   background-color: var(--accent);
   color: white;
 }
@@ -518,7 +518,7 @@ textarea:focus {
   margin-top: 16px;
 }
 
-#resetButton: {
+#resetButton:hover {
   background-color: #e06c1f;
 }
 
@@ -598,7 +598,7 @@ textarea:focus {
   transition: background-color 0.2s ease;
 }
 
-.save-button: {
+.save-button:hover {
   background: #e06c1f;
 }
 
@@ -647,7 +647,7 @@ input[type="text"]::placeholder {
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.button-container button: {
+.button-container button:hover {
   background-color: #0056b3;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
@@ -714,7 +714,6 @@ input[type="text"]::placeholder {
 }
 
     body.dark-mode {
-  --text: #FFF9F5;
   --bg: #1e1e1e;
   --bg-start: #1a1a1a;
   --bg-end: #2a2a2a;
@@ -750,14 +749,13 @@ body.dark-mode #drawerHistory {
 body.dark-mode button,
 body.dark-mode .icon-button {
   background-color: #F57B23;
-  color: var(--text); /* #FFF9F5 */
-  box-shadow: 0 0 6px rgba(221, 244, 91, 0.4);
+  color: #141414;
+  box-shadow: 0 0 6px rgba(221, 244, 91, 0.4); /* lime glow */
 }
 
-
 body.dark-mode button:hover {
-  background-color: #2D436C;
-  color: #FFF9F5;
+  background-color: #DDF45B;
+  color: #141414;
   box-shadow: 0 0 12px rgba(221, 244, 91, 0.6);
 }
 
@@ -770,23 +768,13 @@ body.dark-mode .edl-entry {
 }
 
     body.dark-mode,
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode h4,
-body.dark-mode p,
-body.dark-mode label,
-body.dark-mode textarea,
-body.dark-mode input,
 body.dark-mode .text,
-body.dark-mode .timer-box,
-body.dark-mode #timer,
-body.dark-mode #timecode,
+body.dark-mode .panel-box,
 body.dark-mode .edl-entry,
-body.dark-mode .field-error-message {
+body.dark-mode textarea,
+body.dark-mode input {
   color: var(--text);
 }
-
 
 body.dark-mode .icon-button,
 body.dark-mode #historyToggle,
@@ -794,18 +782,7 @@ body.dark-mode #toggleDarkMode {
   color: #DDF45B;
   text-shadow: 0 0 6px rgba(221, 244, 91, 0.8);
 }
-    
-body.dark-mode ::placeholder {
-  color: var(--text);
-  opacity: 0.6;
-}
 
-.save-button,
-.delete-entry {
-  font-size: 1.1rem;
-  padding: 6px 8px;
-  border-radius: 6px;
-}
 
 
   </style>
@@ -1092,184 +1069,225 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
     }
 
 
- function addCustomMessage() {
-  const customMessageInput = document.getElementById('customMessage');
-  const message = customMessageInput.value.trim();
-  if (!message) return showFieldError(customMessageInput, 'Inserisci un messaggio.');
+   function addCustomMessage() {
+  const customMessage = elements.customMessage.value.trim();
 
-  const timecode = getCurrentTimecode();
-  const label = message;
+if (!customMessage) {
+  elements.customMessage.classList.add('input-error');
+  elements.customMessage.classList.add('hide-placeholder'); // nasconde placeholder
 
-  const edlLine = `${timecode} - ${label}`;
-  edlLines.unshift(edlLine);
-  updateEDLPreview();
+  const err = document.getElementById('customMessageError');
+  err.classList.add('active');
 
-  const entryDiv = document.createElement('div');
-  entryDiv.classList.add('edl-entry');
-  entryDiv.dataset.label = label;
+  setTimeout(() => {
+    elements.customMessage.classList.remove('input-error');
+    err.classList.remove('active');
 
-  const iconSpan = document.createElement('span');
-  iconSpan.classList.add('entry-icon');
-  iconSpan.textContent = '💬';
-
-  const textSpan = document.createElement('span');
-  textSpan.classList.add('entry-text');
-  textSpan.textContent = `${timecode} - ${label}`;
-
-  textSpan.addEventListener('click', () => {
-    const currentText = textSpan.textContent;
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = currentText;
-    input.classList.add('edit-input');
-    input.style.flex = '1';
-
-    const saveBtn = document.createElement('button');
-    saveBtn.innerText = '💾';
-    saveBtn.classList.add('save-button');
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.innerText = '🗑️';
-    deleteBtn.classList.add('delete-entry');
-    deleteBtn.onclick = () => {
-      entryDiv.remove();
-      updateEDLFromDisplay();
-    };
-
-    const buttonWrapper = document.createElement('div');
-    buttonWrapper.style.display = 'flex';
-    buttonWrapper.style.gap = '6px';
-    buttonWrapper.style.marginLeft = 'auto';
-
-    const saveEdit = () => {
-      textSpan.textContent = input.value;
-      entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
-      entryDiv.replaceChild(textSpan, input);
-      buttonWrapper.remove();
-      updateEDLFromDisplay();
-      entryDiv.classList.add('highlighted');
-      setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
-    };
-
-    input.addEventListener('keydown', e => {
-      if (e.key === 'Enter') saveEdit();
-    });
-
-    saveBtn.addEventListener('click', saveEdit);
-
-    buttonWrapper.appendChild(saveBtn);
-    buttonWrapper.appendChild(deleteBtn);
-    entryDiv.replaceChild(input, textSpan);
-    entryDiv.appendChild(buttonWrapper);
-    input.focus();
-  });
-
-  const deleteBtn = document.createElement('button');
-  deleteBtn.innerText = '🗑️';
-  deleteBtn.classList.add('delete-entry');
-  deleteBtn.onclick = () => {
-    entryDiv.remove();
-    updateEDLFromDisplay();
-  };
-
-  entryDiv.appendChild(iconSpan);
-  entryDiv.appendChild(textSpan);
-  entryDiv.appendChild(deleteBtn);
-
-  const edlDisplay = document.getElementById('edlDisplay');
-  edlDisplay.prepend(entryDiv);
-  customMessageInput.value = '';
-
-  entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // riporta il placeholder con fade
+    elements.customMessage.classList.remove('hide-placeholder');
+  }, 2000);
+  return;
 }
 
+ else {
+  document.getElementById('customMessageError').classList.remove('active');
+}
+
+
+  const correspondingTimecodeFrames = Math.floor(timeInSeconds * frameRate);
+  const timecodeText = formatTimecode(correspondingTimecodeFrames);
+  const sequenceNumber = String(counter).padStart(3, '0');
+
+  // Riga semplificata per visualizzazione
+  const simpleLine = `${timecodeText} - ${customMessage}`;
+
+  // Riga completa per il file EDL
+ const outFrames = Math.floor(timeInSeconds * frameRate) + 1;
+const outTimecode = formatTimecode(outFrames);
+
+const color = 'Blue'; // fisso per i messaggi personalizzati
+const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${outTimecode}  ${timecodeText}  ${outTimecode}\n\n${customMessage} |C:ResolveColor${color} |M:Edizione |D:1\n`;
+
+ // Mostra come scheda (come gli altri eventi)
+const entryDiv = document.createElement('div');
+entryDiv.classList.add('edl-entry');
+entryDiv.dataset.type = 'custom';
+entryDiv.dataset.label = customMessage;
+entryDiv.dataset.timecode = timecodeText;
+entryDiv.dataset.color = 'Blue';
+entryDiv.style.backgroundColor = "#FFF9F5";
+
+     
+
+const iconSpan = document.createElement('span');
+iconSpan.classList.add('icon');
+iconSpan.textContent = "💬";
+
+const textSpan = document.createElement('span');
+textSpan.classList.add('text');
+textSpan.textContent = simpleLine;
+     textSpan.addEventListener('click', () => {
+  const currentText = textSpan.textContent;
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = currentText;
+  input.classList.add('edit-input');
+  input.style.flex = '1';
+
+  const saveBtn = document.createElement('button');
+  saveBtn.innerText = '💾';
+  saveBtn.classList.add('save-button');
+
+  const saveEdit = () => {
+  textSpan.textContent = input.value;
+  entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
+  entryDiv.replaceChild(textSpan, input);
+  saveBtn.remove();
+  updateEDLFromDisplay();
+
+  // aggiungi classe per evidenziare
+  entryDiv.classList.add('highlighted');
+
+  // rimuovi dopo 2 secondi
+  setTimeout(() => {
+    entryDiv.classList.remove('highlighted');
+  }, 2000);
+};
+
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveEdit();
+  });
+
+  saveBtn.addEventListener('click', saveEdit);
+
+  entryDiv.replaceChild(input, textSpan);
+  entryDiv.appendChild(saveBtn);
+  input.focus();
+});
+
+
+entryDiv.appendChild(iconSpan);
+entryDiv.appendChild(textSpan);
+     const deleteBtn = document.createElement('button');
+deleteBtn.innerText = '✖';
+deleteBtn.classList.add('delete-entry');
+deleteBtn.onclick = () => {
+  entryDiv.remove();
+  updateEDLFromDisplay();
+};
+
+entryDiv.appendChild(deleteBtn);
+elements.outputBox.prepend(entryDiv);
+entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+
+  edlContent += edlLine + '\n';
+
+  elements.customMessage.value = '';
+  counter++;
+
+  saveToLocalStorage();
+}
 
 
    
- function generateFormattedText(label) {
-  const timecode = getCurrentTimecode();
-  const edlLine = `${timecode} - ${label}`;
-  edlLines.unshift(edlLine);
-  updateEDLPreview();
+  function generateFormattedText(label) {
+    const cleanLabel = label.trim().toLowerCase();
+const displayLabel = label.trim(); // per visualizzare come scritto nel bottone
+  const timecodeText = formatTimecode(Math.floor(timeInSeconds * frameRate));
+  const sequenceNumber = String(counter).padStart(3, '0');
+    
 
-  const entryDiv = document.createElement('div');
-  entryDiv.classList.add('edl-entry');
-  entryDiv.dataset.label = label;
+  // Riga completa per il file EDL
+const outFrames = Math.floor(timeInSeconds * frameRate) + 1;
+const outTimecode = formatTimecode(outFrames);
+const color = getColorForLabel(cleanLabel);
 
-  const iconSpan = document.createElement('span');
-  iconSpan.classList.add('entry-icon');
-  iconSpan.textContent = getIconForLabel(label);
+const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${outTimecode}  ${timecodeText}  ${outTimecode}\n\n${label} |C:ResolveColor${color} |M:Edizione |D:1\n`;
 
-  const textSpan = document.createElement('span');
-  textSpan.classList.add('entry-text');
-  textSpan.textContent = `${timecode} - ${label}`;
 
-  textSpan.addEventListener('click', () => {
-    const currentText = textSpan.textContent;
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = currentText;
-    input.classList.add('edit-input');
-    input.style.flex = '1';
+const iconMap = {
+  in: "📍",
+  out: "📍",
+  ripetizione: "🔁",
+  pausa: "⏸️",
+  rumore: "🔊",
+  "errore regia": "⚠️"
+};
 
-    const saveBtn = document.createElement('button');
-    saveBtn.innerText = '💾';
-    saveBtn.classList.add('save-button');
+const icon = iconMap[cleanLabel] || "🔘";
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.innerText = '🗑️';
-    deleteBtn.classList.add('delete-entry');
-    deleteBtn.onclick = () => {
-      entryDiv.remove();
-      updateEDLFromDisplay();
-    };
+// Crea la "scheda" visiva
+const entryDiv = document.createElement('div');
+entryDiv.classList.add('edl-entry');
+entryDiv.dataset.type = 'quick';
+entryDiv.dataset.label = displayLabel;
+entryDiv.dataset.timecode = timecodeText;
+entryDiv.dataset.color = getColorForLabel(cleanLabel);
 
-    const buttonWrapper = document.createElement('div');
-    buttonWrapper.style.display = 'flex';
-    buttonWrapper.style.gap = '6px';
-    buttonWrapper.style.marginLeft = 'auto';
 
-    const saveEdit = () => {
-      textSpan.textContent = input.value;
-      entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
-      entryDiv.replaceChild(textSpan, input);
-      buttonWrapper.remove();
-      updateEDLFromDisplay();
-      entryDiv.classList.add('highlighted');
-      setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
-    };
+const iconSpan = document.createElement('span');
+iconSpan.classList.add('icon');
+iconSpan.textContent = icon;
 
-    input.addEventListener('keydown', e => {
-      if (e.key === 'Enter') saveEdit();
-    });
+const textSpan = document.createElement('span');
+textSpan.classList.add('text');
+textSpan.textContent = `${timecodeText} - ${label}`;
+    textSpan.addEventListener('click', () => {
+  const currentText = textSpan.textContent;
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = currentText;
+  input.classList.add('edit-input');
+  input.style.flex = '1';
 
-    saveBtn.addEventListener('click', saveEdit);
+  const saveBtn = document.createElement('button');
+  saveBtn.innerText = '💾';
+  saveBtn.classList.add('save-button');
 
-    buttonWrapper.appendChild(saveBtn);
-    buttonWrapper.appendChild(deleteBtn);
-    entryDiv.replaceChild(input, textSpan);
-    entryDiv.appendChild(buttonWrapper);
-    input.focus();
-  });
-
-  const deleteBtn = document.createElement('button');
-  deleteBtn.innerText = '🗑️';
-  deleteBtn.classList.add('delete-entry');
-  deleteBtn.onclick = () => {
-    entryDiv.remove();
+  const saveEdit = () => {
+    textSpan.textContent = input.value;
+    entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
+    entryDiv.replaceChild(textSpan, input);
+    saveBtn.remove();
     updateEDLFromDisplay();
   };
 
-  entryDiv.appendChild(iconSpan);
-  entryDiv.appendChild(textSpan);
-  entryDiv.appendChild(deleteBtn);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveEdit();
+  });
 
-  const edlDisplay = document.getElementById('edlDisplay');
-  edlDisplay.prepend(entryDiv);
+  saveBtn.addEventListener('click', saveEdit);
 
-  entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  entryDiv.replaceChild(input, textSpan);
+  entryDiv.appendChild(saveBtn);
+  input.focus();
+});
+
+
+entryDiv.appendChild(iconSpan);
+entryDiv.appendChild(textSpan);
+    const deleteBtn = document.createElement('button');
+deleteBtn.innerText = '✖';
+deleteBtn.classList.add('delete-entry');
+deleteBtn.onclick = () => {
+  entryDiv.remove();
+  updateEDLFromDisplay();
+};
+
+entryDiv.appendChild(deleteBtn);
+elements.outputBox.prepend(entryDiv);
+entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+
+
+  // Salva la riga completa nel contenuto da esportare
+  edlContent += edlLine + '\n';
+
+  counter++;
+  saveToLocalStorage();
 }
-
 
     function saveToLocalStorage() {
   localStorage.setItem('savedEDL', edlContent);
