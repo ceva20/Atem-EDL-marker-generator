@@ -6,17 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v14.1</title>
+  <title>v14.2</title>
   <style>
 
     :root {
+  --lime: #DDF45B;
+  --orange: #F57B23;
+  --blue-dark: #2D436C;
+  --paper: #FFF9F5;
+  --black: #141414;
   --bg: #F7F1EA;
   --bg-start: #f7f1ea;
---bg-end: #fbeee0;  
+  --bg-end: #fbeee0;  
   --primary: #2D436C;
   --accent: #F57B23;
   --focus: #DDF45B;
   --text-dark: #141414;
+  --text: var(--paper);
+  --accent: var(--orange);
+  --highlight: var(--lime);
 }
     
 html, body {
@@ -716,32 +724,62 @@ input[type="text"]::placeholder {
 }
 
 body.dark-mode {
-  background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
-  color: var(--text-dark);
+  background: linear-gradient(to bottom, #141414, #1c1c1c);
+  color: var(--text);
 }
 
 body.dark-mode textarea,
 body.dark-mode input[type="text"] {
-  background-color: #333;
-  color: #eee;
-  border-color: #666;
+  background-color: #1f1f1f;
+  color: var(--text);
+  border: 1px solid #2D436C;
+  box-shadow: 0 0 4px #2D436C;
 }
 
 body.dark-mode .panel-box,
 body.dark-mode #logPanel,
-body.dark-mode #drawerHistory,
-body.dark-mode #projectNameContainer textarea,
-body.dark-mode #timecodeOutput {
-  background-color: #2a2a2a;
-  color: #f5f5f5;
+body.dark-mode #drawerHistory {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #2D436C88;
+}
+
+body.dark-mode .button,
+body.dark-mode button {
+  background-color: var(--accent);
+  color: #141414;
+  border: none;
+  font-weight: bold;
+  box-shadow: 0 0 8px var(--accent);
+  transition: all 0.3s ease;
+}
+
+body.dark-mode .button:hover,
+body.dark-mode button:hover {
+  box-shadow: 0 0 12px var(--highlight);
+  background-color: var(--highlight);
+  color: #141414;
 }
 
 body.dark-mode .edl-entry {
-  background-color: #333;
+  background-color: #222;
+  border-left: 5px solid var(--blue-dark);
+  box-shadow: 0 0 6px #2D436C;
+  color: var(--text);
+}
+    body.dark-mode,
+body.dark-mode .text,
+body.dark-mode .panel-box,
+body.dark-mode .edl-entry,
+body.dark-mode textarea,
+body.dark-mode input {
+  color: var(--text);
 }
 
-body.dark-mode .field-error-message {
-  color: #ff7676;
+body.dark-mode .icon-button,
+body.dark-mode #historyToggle {
+  color: var(--highlight);
+  text-shadow: 0 0 6px var(--highlight);
 }
 
 
