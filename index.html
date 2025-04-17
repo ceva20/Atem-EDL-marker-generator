@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v13</title>
+  <title>v14</title>
   <style>
 
     :root {
@@ -707,11 +707,52 @@ input[type="text"]::placeholder {
   100% { background-color: inherit; }
 }
 
+    body.dark-mode {
+  --bg: #1e1e1e;
+  --bg-start: #1a1a1a;
+  --bg-end: #2a2a2a;
+  --primary: #6ba4f2;
+  --accent: #f0a442;
+  --focus: #444d26;
+  --text-dark: #f5f5f5;
+}
+
+body.dark-mode {
+  background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
+  color: var(--text-dark);
+}
+
+body.dark-mode textarea,
+body.dark-mode input[type="text"] {
+  background-color: #333;
+  color: #eee;
+  border-color: #666;
+}
+
+body.dark-mode .panel-box,
+body.dark-mode #logPanel,
+body.dark-mode #drawerHistory,
+body.dark-mode #projectNameContainer textarea,
+body.dark-mode #timecodeOutput {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+}
+
+body.dark-mode .edl-entry {
+  background-color: #333;
+}
+
+body.dark-mode .field-error-message {
+  color: #ff7676;
+}
+
 
   </style>
 </head>
 <body>
   <h1 id="pageTitle">Edizione Digitale – EDL Generator</h1>
+ <!-- Icona Toggle dark mode -->
+  <button id="toggleDarkMode" class="icon-button" title="Tema scuro/chiaro">🌓</button>
 
   <!-- Icona cronologia -->
   <div id="historyToggle">🕒</div>
@@ -1391,6 +1432,19 @@ document.querySelectorAll('.button-container button').forEach(button => {
       document.getElementById('clearHistoryButton').addEventListener('click', clearHistory);
 document.getElementById('addCustomMessageButton').addEventListener('click', addCustomMessage);
 updateFilePreview();
+
+      const darkToggleBtn = document.getElementById('toggleDarkMode');
+
+darkToggleBtn.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+});
+
+// All'avvio, carica la preferenza
+if (localStorage.getItem('darkMode') === 'true') {
+  document.body.classList.add('dark-mode');
+}
+
 });
   
 function renderDrawerHistory() {
