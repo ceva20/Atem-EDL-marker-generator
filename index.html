@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v14</title>
+  <title>v14.1</title>
   <style>
 
     :root {
@@ -335,16 +335,14 @@ textarea:focus {
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
 }
-    #historyToggle {
-  position: absolute;
-top: 22px;
-  right: 30px;
+   #historyToggle {
   font-size: 1.8rem;
   cursor: pointer;
   user-select: none;
   color: var(--primary);
   transition: transform 0.2s ease;
 }
+
 #historyToggle:hover {
   transform: scale(1.1);
 }
@@ -751,12 +749,12 @@ body.dark-mode .field-error-message {
 </head>
 <body>
   <h1 id="pageTitle">Edizione Digitale – EDL Generator</h1>
- <!-- Icona Toggle dark mode -->
-  <button id="toggleDarkMode" class="icon-button" title="Tema scuro/chiaro">🌓</button>
-
-  <!-- Icona cronologia -->
-  <div id="historyToggle">🕒</div>
   
+<div id="headerIcons" style="position: absolute; top: 22px; right: 30px; display: flex; align-items: center; gap: 12px;">
+  <button id="toggleDarkMode" class="icon-button" title="Tema scuro/chiaro">🌓</button>
+  <div id="historyToggle">🕒</div>
+</div>
+
  <!-- Nome progetto -->
  <div id="projectNameContainer">
   <label for="projectName">Inserisci il nome del progetto:</label><br>
