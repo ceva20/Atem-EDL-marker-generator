@@ -782,6 +782,26 @@ body.dark-mode #toggleDarkMode {
   color: #DDF45B;
   text-shadow: 0 0 6px rgba(221, 244, 91, 0.8);
 }
+.button-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+  margin-right: 6px;
+}
+
+.button-wrapper button {
+  font-size: 14px;
+  padding: 6px 10px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
 
 
 
@@ -1146,10 +1166,7 @@ textSpan.textContent = simpleLine;
     updateEDLFromDisplay();
   };
 
-  const buttonWrapper = document.createElement('div');
-  buttonWrapper.style.display = 'flex';
-  buttonWrapper.style.gap = '6px';
-  buttonWrapper.style.marginLeft = 'auto';
+buttonWrapper.classList.add('button-wrapper'); // usa classe CSS
 
  const saveEdit = () => {
   textSpan.textContent = input.value;
@@ -1271,10 +1288,7 @@ textSpan.textContent = `${timecodeText} - ${label}`;
     updateEDLFromDisplay();
   };
 
-  const buttonWrapper = document.createElement('div');
-  buttonWrapper.style.display = 'flex';
-  buttonWrapper.style.gap = '6px';
-  buttonWrapper.style.marginLeft = 'auto';
+  buttonWrapper.classList.add('button-wrapper'); // usa classe CSS
 
   const saveEdit = () => {
     textSpan.textContent = input.value;
