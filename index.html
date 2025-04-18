@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v15.0.1</title>
+  <title>v15.0.2</title>
   <style>
 
     :root {
@@ -1151,28 +1151,19 @@ textSpan.textContent = simpleLine;
   buttonWrapper.style.gap = '6px';
   buttonWrapper.style.marginLeft = 'auto';
 
-  const saveEdit = () => {
-    textSpan.textContent = input.value;
-    entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
+ const saveEdit = () => {
+  textSpan.textContent = input.value;
+  entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
 
-    entryDiv.replaceChild(textSpan, input);
-    buttonWrapper.remove(); // rimuove entrambi i pulsanti
+  entryDiv.replaceChild(textSpan, input);
+  buttonWrapper.remove(); // rimuove 💾 + 🗑️ in modifica
 
-    // aggiunge il pulsante 🗑️ normale fuori dalla modalità modifica
-    const finalDelete = document.createElement('button');
-    finalDelete.innerText = '🗑️';
-    finalDelete.classList.add('delete-entry');
-    finalDelete.onclick = () => {
-      entryDiv.remove();
-      updateEDLFromDisplay();
-    };
-    entryDiv.appendChild(finalDelete);
+  updateEDLFromDisplay();
 
-    updateEDLFromDisplay();
+  entryDiv.classList.add('highlighted');
+  setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
+};
 
-    entryDiv.classList.add('highlighted');
-    setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
-  };
 
   input.addEventListener('keydown', e => {
     if (e.key === 'Enter') saveEdit();
@@ -1194,6 +1185,14 @@ textSpan.textContent = simpleLine;
 
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
+const deleteBtn = document.createElement('button');
+deleteBtn.innerText = '🗑️';
+deleteBtn.classList.add('delete-entry');
+deleteBtn.onclick = () => {
+  entryDiv.remove();
+  updateEDLFromDisplay();
+};
+entryDiv.appendChild(deleteBtn);
 
 
 elements.outputBox.prepend(entryDiv);
@@ -1320,7 +1319,16 @@ textSpan.textContent = `${timecodeText} - ${label}`;
 
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
-  
+const deleteBtn = document.createElement('button');
+deleteBtn.innerText = '🗑️';
+deleteBtn.classList.add('delete-entry');
+deleteBtn.onclick = () => {
+  entryDiv.remove();
+  updateEDLFromDisplay();
+};
+entryDiv.appendChild(deleteBtn);
+
+    
 elements.outputBox.prepend(entryDiv);
 entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
