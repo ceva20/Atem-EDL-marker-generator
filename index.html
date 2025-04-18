@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v14.3</title>
+  <title>v15.0.1</title>
   <style>
 
     :root {
@@ -1138,22 +1138,41 @@ textSpan.textContent = simpleLine;
   saveBtn.innerText = '💾';
   saveBtn.classList.add('save-button');
 
+  const deleteBtn = document.createElement('button');
+  deleteBtn.innerText = '🗑️';
+  deleteBtn.classList.add('delete-entry');
+  deleteBtn.onclick = () => {
+    entryDiv.remove();
+    updateEDLFromDisplay();
+  };
+
+  const buttonWrapper = document.createElement('div');
+  buttonWrapper.style.display = 'flex';
+  buttonWrapper.style.gap = '6px';
+  buttonWrapper.style.marginLeft = 'auto';
+
   const saveEdit = () => {
-  textSpan.textContent = input.value;
-  entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
-  entryDiv.replaceChild(textSpan, input);
-  saveBtn.remove();
-  updateEDLFromDisplay();
+    textSpan.textContent = input.value;
+    entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
 
-  // aggiungi classe per evidenziare
-  entryDiv.classList.add('highlighted');
+    entryDiv.replaceChild(textSpan, input);
+    buttonWrapper.remove(); // rimuove entrambi i pulsanti
 
-  // rimuovi dopo 2 secondi
-  setTimeout(() => {
-    entryDiv.classList.remove('highlighted');
-  }, 2000);
-};
+    // aggiunge il pulsante 🗑️ normale fuori dalla modalità modifica
+    const finalDelete = document.createElement('button');
+    finalDelete.innerText = '🗑️';
+    finalDelete.classList.add('delete-entry');
+    finalDelete.onclick = () => {
+      entryDiv.remove();
+      updateEDLFromDisplay();
+    };
+    entryDiv.appendChild(finalDelete);
 
+    updateEDLFromDisplay();
+
+    entryDiv.classList.add('highlighted');
+    setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
+  };
 
   input.addEventListener('keydown', e => {
     if (e.key === 'Enter') saveEdit();
@@ -1161,23 +1180,22 @@ textSpan.textContent = simpleLine;
 
   saveBtn.addEventListener('click', saveEdit);
 
+  // Appendi pulsanti affiancati
+  buttonWrapper.appendChild(saveBtn);
+  buttonWrapper.appendChild(deleteBtn);
+
+  // Inserisci campo input e pulsanti al posto del testo
   entryDiv.replaceChild(input, textSpan);
-  entryDiv.appendChild(saveBtn);
+  entryDiv.appendChild(buttonWrapper);
   input.focus();
 });
 
 
+
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
-     const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '✖';
-deleteBtn.classList.add('delete-entry');
-deleteBtn.onclick = () => {
-  entryDiv.remove();
-  updateEDLFromDisplay();
-};
 
-entryDiv.appendChild(deleteBtn);
+
 elements.outputBox.prepend(entryDiv);
 entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -1246,12 +1264,40 @@ textSpan.textContent = `${timecodeText} - ${label}`;
   saveBtn.innerText = '💾';
   saveBtn.classList.add('save-button');
 
+  const deleteBtn = document.createElement('button');
+  deleteBtn.innerText = '🗑️';
+  deleteBtn.classList.add('delete-entry');
+  deleteBtn.onclick = () => {
+    entryDiv.remove();
+    updateEDLFromDisplay();
+  };
+
+  const buttonWrapper = document.createElement('div');
+  buttonWrapper.style.display = 'flex';
+  buttonWrapper.style.gap = '6px';
+  buttonWrapper.style.marginLeft = 'auto';
+
   const saveEdit = () => {
     textSpan.textContent = input.value;
     entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
+
     entryDiv.replaceChild(textSpan, input);
-    saveBtn.remove();
+    buttonWrapper.remove(); // rimuove entrambi i pulsanti
+
+    // aggiunge il pulsante 🗑️ normale fuori dalla modalità modifica
+    const finalDelete = document.createElement('button');
+    finalDelete.innerText = '🗑️';
+    finalDelete.classList.add('delete-entry');
+    finalDelete.onclick = () => {
+      entryDiv.remove();
+      updateEDLFromDisplay();
+    };
+    entryDiv.appendChild(finalDelete);
+
     updateEDLFromDisplay();
+
+    entryDiv.classList.add('highlighted');
+    setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
   };
 
   input.addEventListener('keydown', e => {
@@ -1260,23 +1306,21 @@ textSpan.textContent = `${timecodeText} - ${label}`;
 
   saveBtn.addEventListener('click', saveEdit);
 
+  // Appendi pulsanti affiancati
+  buttonWrapper.appendChild(saveBtn);
+  buttonWrapper.appendChild(deleteBtn);
+
+  // Inserisci campo input e pulsanti al posto del testo
   entryDiv.replaceChild(input, textSpan);
-  entryDiv.appendChild(saveBtn);
+  entryDiv.appendChild(buttonWrapper);
   input.focus();
 });
 
 
+
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
-    const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '✖';
-deleteBtn.classList.add('delete-entry');
-deleteBtn.onclick = () => {
-  entryDiv.remove();
-  updateEDLFromDisplay();
-};
-
-entryDiv.appendChild(deleteBtn);
+  
 elements.outputBox.prepend(entryDiv);
 entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
