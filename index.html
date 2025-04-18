@@ -1194,13 +1194,7 @@ textSpan.textContent = simpleLine;
 
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
-     const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '✖';
-deleteBtn.classList.add('delete-entry');
-deleteBtn.onclick = () => {
-  entryDiv.remove();
-  updateEDLFromDisplay();
-};
+
 
 elements.outputBox.prepend(entryDiv);
 entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1326,14 +1320,7 @@ textSpan.textContent = `${timecodeText} - ${label}`;
 
 entryDiv.appendChild(iconSpan);
 entryDiv.appendChild(textSpan);
-    const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '✖';
-deleteBtn.classList.add('delete-entry');
-deleteBtn.onclick = () => {
-  entryDiv.remove();
-  updateEDLFromDisplay();
-};
-
+  
 elements.outputBox.prepend(entryDiv);
 entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
