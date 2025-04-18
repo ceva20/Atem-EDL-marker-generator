@@ -1483,6 +1483,50 @@ if (localStorage.getItem('darkMode') === 'true') {
   document.body.classList.add('dark-mode');
 }
 
+        // 🔤 Shortcuts da tastiera
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.altKey) {
+      switch (e.key) {
+        case '1':
+          generateFormattedText('IN');
+          break;
+        case '2':
+          generateFormattedText('RIPETIZIONE');
+          break;
+        case '3':
+          generateFormattedText('PAUSA');
+          break;
+        case '4':
+          generateFormattedText('OUT');
+          break;
+        case '5':
+          generateFormattedText('RUMORE');
+          break;
+        case '6':
+          generateFormattedText('ERRORE REGIA');
+          break;
+        case '7':
+          addCustomMessage();
+          break;
+        case '8':
+          startTimer();
+          break;
+        case '9':
+          pauseTimer();
+          break;
+        case '0':
+          stopAndResetTimer();
+          break;
+        case 'è':
+          startTimecode();
+          break;
+        case 'ò':
+          stopTimecode();
+          break;
+      }
+    }
+  });
+
 });
   
 function renderDrawerHistory() {
