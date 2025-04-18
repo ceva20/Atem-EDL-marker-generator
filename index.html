@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v15.0.3</title>
+  <title>v15.0.4</title>
   <style>
 
     :root {
@@ -805,6 +805,10 @@ body.dark-mode #toggleDarkMode {
   transition: background-color 0.2s ease;
 }
 
+.edl-entry {
+  align-items: center;
+  flex-wrap: wrap;
+}
 
 
 
@@ -920,7 +924,16 @@ body.dark-mode #toggleDarkMode {
   </div>
 
   <script>
-    
+
+    function getCurrentTimecode() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const frames = '00'; // opzionalmente calcolabile con fps
+  return `${hours}:${minutes}:${seconds}:${frames}`;
+}
+
  let isTimerRunning = false;
 
 
@@ -1093,7 +1106,7 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
     }
 
 
-                      function addCustomMessage() {
+    function addCustomMessage() {
   const customMessageInput = document.getElementById('customMessage');
   const message = customMessageInput.value.trim();
   if (!message) return;
@@ -1118,7 +1131,6 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
   textSpan.classList.add('entry-text');
   textSpan.textContent = edlLine;
 
-  // ✅ Pulsante statico visibile sempre
   const staticDelete = document.createElement('button');
   staticDelete.innerText = '🗑️';
   staticDelete.classList.add('delete-entry');
@@ -1128,7 +1140,7 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
   };
 
   textSpan.addEventListener('click', () => {
-    // Rimuove temporaneamente il cestino fisso
+    // ✅ Rimuovi il pulsante fisso
     const existing = entryDiv.querySelector('.delete-entry');
     if (existing) existing.remove();
 
@@ -1158,8 +1170,10 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
     const saveEdit = () => {
       textSpan.textContent = input.value;
       entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
-      entryDiv.replaceChild(textSpan, input);
+      input.replaceWith(textSpan);
       buttonWrapper.remove();
+
+      // ✅ Riaggiungi pulsante fisso
       entryDiv.appendChild(staticDelete);
       updateEDLFromDisplay();
       entryDiv.classList.add('highlighted');
@@ -1171,7 +1185,7 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
     });
     saveBtn.addEventListener('click', saveEdit);
 
-    entryDiv.replaceChild(input, textSpan);
+    textSpan.replaceWith(input);
     entryDiv.appendChild(buttonWrapper);
     input.focus();
   });
@@ -1183,6 +1197,7 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
   customMessageInput.value = '';
   entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
 
 
    
@@ -1206,7 +1221,6 @@ function generateFormattedText(label) {
   textSpan.classList.add('entry-text');
   textSpan.textContent = edlLine;
 
-  // ✅ Pulsante statico visibile sempre
   const staticDelete = document.createElement('button');
   staticDelete.innerText = '🗑️';
   staticDelete.classList.add('delete-entry');
@@ -1245,7 +1259,7 @@ function generateFormattedText(label) {
     const saveEdit = () => {
       textSpan.textContent = input.value;
       entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
-      entryDiv.replaceChild(textSpan, input);
+      input.replaceWith(textSpan);
       buttonWrapper.remove();
       entryDiv.appendChild(staticDelete);
       updateEDLFromDisplay();
@@ -1258,7 +1272,7 @@ function generateFormattedText(label) {
     });
     saveBtn.addEventListener('click', saveEdit);
 
-    entryDiv.replaceChild(input, textSpan);
+    textSpan.replaceWith(input);
     entryDiv.appendChild(buttonWrapper);
     input.focus();
   });
@@ -1269,6 +1283,8 @@ function generateFormattedText(label) {
   document.getElementById('edlDisplay').prepend(entryDiv);
   entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+
 
 
     function saveToLocalStorage() {
