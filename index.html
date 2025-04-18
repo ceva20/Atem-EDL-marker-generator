@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v15.0.5</title>
+  <title>v15</title>
   <style>
 
     :root {
@@ -1118,17 +1118,8 @@ function addCustomMessage() {
       entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
       entryDiv.replaceChild(textSpan, input);
       buttonWrapper.remove();
-
-      const finalDelete = document.createElement('button');
-      finalDelete.innerText = '🗑️';
-      finalDelete.classList.add('delete-entry');
-      finalDelete.onclick = () => {
-        entryDiv.remove();
-        updateEDLFromDisplay();
-      };
-      entryDiv.appendChild(finalDelete);
-
       updateEDLFromDisplay();
+
       entryDiv.classList.add('highlighted');
       setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
     };
@@ -1149,20 +1140,15 @@ function addCustomMessage() {
   entryDiv.appendChild(iconSpan);
   entryDiv.appendChild(textSpan);
 
-  const deleteBtn = document.createElement('button');
-  deleteBtn.innerText = '🗑️';
-  deleteBtn.classList.add('delete-entry');
-  deleteBtn.onclick = () => {
-    entryDiv.remove();
-    updateEDLFromDisplay();
-  };
-  entryDiv.appendChild(deleteBtn);
-
   const edlDisplay = document.getElementById('edlDisplay');
   edlDisplay.prepend(entryDiv);
   customMessageInput.value = '';
+
   entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+
+
    
 function generateFormattedText(label) {
   const timecode = getCurrentTimecode();
@@ -1214,17 +1200,8 @@ function generateFormattedText(label) {
       entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
       entryDiv.replaceChild(textSpan, input);
       buttonWrapper.remove();
-
-      const finalDelete = document.createElement('button');
-      finalDelete.innerText = '🗑️';
-      finalDelete.classList.add('delete-entry');
-      finalDelete.onclick = () => {
-        entryDiv.remove();
-        updateEDLFromDisplay();
-      };
-      entryDiv.appendChild(finalDelete);
-
       updateEDLFromDisplay();
+
       entryDiv.classList.add('highlighted');
       setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
     };
@@ -1245,21 +1222,11 @@ function generateFormattedText(label) {
   entryDiv.appendChild(iconSpan);
   entryDiv.appendChild(textSpan);
 
-  const deleteBtn = document.createElement('button');
-  deleteBtn.innerText = '🗑️';
-  deleteBtn.classList.add('delete-entry');
-  deleteBtn.onclick = () => {
-    entryDiv.remove();
-    updateEDLFromDisplay();
-  };
-  entryDiv.appendChild(deleteBtn);
-
   const edlDisplay = document.getElementById('edlDisplay');
   edlDisplay.prepend(entryDiv);
+
   entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
-
 
 
     function saveToLocalStorage() {
