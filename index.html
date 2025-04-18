@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <title>v15.0.2</title>
+  <title>v15.0.3</title>
   <style>
 
     :root {
@@ -789,7 +789,7 @@ body.dark-mode #toggleDarkMode {
   justify-content: flex-end;
   gap: 8px;
   margin-left: auto;
-  margin-right: 6px;
+  margin-top: 8px;
 }
 
 .button-wrapper button {
@@ -799,8 +799,12 @@ body.dark-mode #toggleDarkMode {
   min-width: 32px;
   border-radius: 6px;
   border: none;
+  background-color: var(--accent, #F57B23);
+  color: #fff;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
+
 
 
 
@@ -1089,271 +1093,183 @@ Rumore - Purple, Pausa - Sky, Ripete - Red, In/Out - Cream  |C:ResolveColorPink 
     }
 
 
-   function addCustomMessage() {
-  const customMessage = elements.customMessage.value.trim();
+                      function addCustomMessage() {
+  const customMessageInput = document.getElementById('customMessage');
+  const message = customMessageInput.value.trim();
+  if (!message) return;
 
-if (!customMessage) {
-  elements.customMessage.classList.add('input-error');
-  elements.customMessage.classList.add('hide-placeholder'); // nasconde placeholder
+  const timecode = getCurrentTimecode();
+  const label = message;
+  const edlLine = `${timecode} - ${label}`;
+  edlLines.unshift(edlLine);
+  updateEDLPreview();
 
-  const err = document.getElementById('customMessageError');
-  err.classList.add('active');
+  const entryDiv = document.createElement('div');
+  entryDiv.classList.add('edl-entry');
+  entryDiv.dataset.label = label;
+  entryDiv.dataset.timecode = timecode;
+  entryDiv.dataset.color = 'Blue';
 
-  setTimeout(() => {
-    elements.customMessage.classList.remove('input-error');
-    err.classList.remove('active');
+  const iconSpan = document.createElement('span');
+  iconSpan.classList.add('entry-icon');
+  iconSpan.textContent = '💬';
 
-    // riporta il placeholder con fade
-    elements.customMessage.classList.remove('hide-placeholder');
-  }, 2000);
-  return;
-}
+  const textSpan = document.createElement('span');
+  textSpan.classList.add('entry-text');
+  textSpan.textContent = edlLine;
 
- else {
-  document.getElementById('customMessageError').classList.remove('active');
-}
-
-
-  const correspondingTimecodeFrames = Math.floor(timeInSeconds * frameRate);
-  const timecodeText = formatTimecode(correspondingTimecodeFrames);
-  const sequenceNumber = String(counter).padStart(3, '0');
-
-  // Riga semplificata per visualizzazione
-  const simpleLine = `${timecodeText} - ${customMessage}`;
-
-  // Riga completa per il file EDL
- const outFrames = Math.floor(timeInSeconds * frameRate) + 1;
-const outTimecode = formatTimecode(outFrames);
-
-const color = 'Blue'; // fisso per i messaggi personalizzati
-const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${outTimecode}  ${timecodeText}  ${outTimecode}\n\n${customMessage} |C:ResolveColor${color} |M:Edizione |D:1\n`;
-
- // Mostra come scheda (come gli altri eventi)
-const entryDiv = document.createElement('div');
-entryDiv.classList.add('edl-entry');
-entryDiv.dataset.type = 'custom';
-entryDiv.dataset.label = customMessage;
-entryDiv.dataset.timecode = timecodeText;
-entryDiv.dataset.color = 'Blue';
-entryDiv.style.backgroundColor = "#FFF9F5";
-
-     
-
-const iconSpan = document.createElement('span');
-iconSpan.classList.add('icon');
-iconSpan.textContent = "💬";
-
-const textSpan = document.createElement('span');
-textSpan.classList.add('text');
-textSpan.textContent = simpleLine;
-     textSpan.addEventListener('click', () => {
-  const currentText = textSpan.textContent;
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.value = currentText;
-  input.classList.add('edit-input');
-  input.style.flex = '1';
-
-  const saveBtn = document.createElement('button');
-  saveBtn.innerText = '💾';
-  saveBtn.classList.add('save-button');
-
-  const deleteBtn = document.createElement('button');
-  deleteBtn.innerText = '🗑️';
-  deleteBtn.classList.add('delete-entry');
-  deleteBtn.onclick = () => {
+  // ✅ Pulsante statico visibile sempre
+  const staticDelete = document.createElement('button');
+  staticDelete.innerText = '🗑️';
+  staticDelete.classList.add('delete-entry');
+  staticDelete.onclick = () => {
     entryDiv.remove();
     updateEDLFromDisplay();
   };
 
-buttonWrapper.classList.add('button-wrapper'); // usa classe CSS
+  textSpan.addEventListener('click', () => {
+    // Rimuove temporaneamente il cestino fisso
+    const existing = entryDiv.querySelector('.delete-entry');
+    if (existing) existing.remove();
 
- const saveEdit = () => {
-  textSpan.textContent = input.value;
-  entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = textSpan.textContent;
+    input.classList.add('edit-input');
+    input.style.flex = '1';
 
-  entryDiv.replaceChild(textSpan, input);
-  buttonWrapper.remove(); // rimuove 💾 + 🗑️ in modifica
+    const saveBtn = document.createElement('button');
+    saveBtn.innerText = '💾';
+    saveBtn.classList.add('save-button');
 
-  updateEDLFromDisplay();
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerText = '🗑️';
+    deleteBtn.classList.add('delete-entry');
+    deleteBtn.onclick = () => {
+      entryDiv.remove();
+      updateEDLFromDisplay();
+    };
 
-  entryDiv.classList.add('highlighted');
-  setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
-};
+    const buttonWrapper = document.createElement('div');
+    buttonWrapper.classList.add('button-wrapper');
+    buttonWrapper.appendChild(saveBtn);
+    buttonWrapper.appendChild(deleteBtn);
 
+    const saveEdit = () => {
+      textSpan.textContent = input.value;
+      entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
+      entryDiv.replaceChild(textSpan, input);
+      buttonWrapper.remove();
+      entryDiv.appendChild(staticDelete);
+      updateEDLFromDisplay();
+      entryDiv.classList.add('highlighted');
+      setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
+    };
 
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') saveEdit();
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') saveEdit();
+    });
+    saveBtn.addEventListener('click', saveEdit);
+
+    entryDiv.replaceChild(input, textSpan);
+    entryDiv.appendChild(buttonWrapper);
+    input.focus();
   });
 
-  saveBtn.addEventListener('click', saveEdit);
-
-  // Appendi pulsanti affiancati
-  buttonWrapper.appendChild(saveBtn);
-  buttonWrapper.appendChild(deleteBtn);
-
-  // Inserisci campo input e pulsanti al posto del testo
-  entryDiv.replaceChild(input, textSpan);
-  entryDiv.appendChild(buttonWrapper);
-  input.focus();
-});
-
-
-
-entryDiv.appendChild(iconSpan);
-entryDiv.appendChild(textSpan);
-const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '🗑️';
-deleteBtn.classList.add('delete-entry');
-deleteBtn.onclick = () => {
-  entryDiv.remove();
-  updateEDLFromDisplay();
-};
-entryDiv.appendChild(deleteBtn);
-
-
-elements.outputBox.prepend(entryDiv);
-entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-
-  edlContent += edlLine + '\n';
-
-  elements.customMessage.value = '';
-  counter++;
-
-  saveToLocalStorage();
+  entryDiv.appendChild(iconSpan);
+  entryDiv.appendChild(textSpan);
+  entryDiv.appendChild(staticDelete);
+  document.getElementById('edlDisplay').prepend(entryDiv);
+  customMessageInput.value = '';
+  entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 
    
-  function generateFormattedText(label) {
-    const cleanLabel = label.trim().toLowerCase();
-const displayLabel = label.trim(); // per visualizzare come scritto nel bottone
-  const timecodeText = formatTimecode(Math.floor(timeInSeconds * frameRate));
-  const sequenceNumber = String(counter).padStart(3, '0');
-    
+function generateFormattedText(label) {
+  const timecode = getCurrentTimecode();
+  const edlLine = `${timecode} - ${label}`;
+  edlLines.unshift(edlLine);
+  updateEDLPreview();
 
-  // Riga completa per il file EDL
-const outFrames = Math.floor(timeInSeconds * frameRate) + 1;
-const outTimecode = formatTimecode(outFrames);
-const color = getColorForLabel(cleanLabel);
+  const entryDiv = document.createElement('div');
+  entryDiv.classList.add('edl-entry');
+  entryDiv.dataset.label = label;
+  entryDiv.dataset.timecode = timecode;
+  entryDiv.dataset.color = getColorForLabel(label);
 
-const edlLine = `${sequenceNumber}  C  V  ${timecodeText}  ${outTimecode}  ${timecodeText}  ${outTimecode}\n\n${label} |C:ResolveColor${color} |M:Edizione |D:1\n`;
+  const iconSpan = document.createElement('span');
+  iconSpan.classList.add('entry-icon');
+  iconSpan.textContent = getIconForLabel(label);
 
+  const textSpan = document.createElement('span');
+  textSpan.classList.add('entry-text');
+  textSpan.textContent = edlLine;
 
-const iconMap = {
-  in: "📍",
-  out: "📍",
-  ripetizione: "🔁",
-  pausa: "⏸️",
-  rumore: "🔊",
-  "errore regia": "⚠️"
-};
-
-const icon = iconMap[cleanLabel] || "🔘";
-
-// Crea la "scheda" visiva
-const entryDiv = document.createElement('div');
-entryDiv.classList.add('edl-entry');
-entryDiv.dataset.type = 'quick';
-entryDiv.dataset.label = displayLabel;
-entryDiv.dataset.timecode = timecodeText;
-entryDiv.dataset.color = getColorForLabel(cleanLabel);
-
-
-const iconSpan = document.createElement('span');
-iconSpan.classList.add('icon');
-iconSpan.textContent = icon;
-
-const textSpan = document.createElement('span');
-textSpan.classList.add('text');
-textSpan.textContent = `${timecodeText} - ${label}`;
-    textSpan.addEventListener('click', () => {
-  const currentText = textSpan.textContent;
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.value = currentText;
-  input.classList.add('edit-input');
-  input.style.flex = '1';
-
-  const saveBtn = document.createElement('button');
-  saveBtn.innerText = '💾';
-  saveBtn.classList.add('save-button');
-
-  const deleteBtn = document.createElement('button');
-  deleteBtn.innerText = '🗑️';
-  deleteBtn.classList.add('delete-entry');
-  deleteBtn.onclick = () => {
+  // ✅ Pulsante statico visibile sempre
+  const staticDelete = document.createElement('button');
+  staticDelete.innerText = '🗑️';
+  staticDelete.classList.add('delete-entry');
+  staticDelete.onclick = () => {
     entryDiv.remove();
     updateEDLFromDisplay();
   };
 
-  buttonWrapper.classList.add('button-wrapper'); // usa classe CSS
+  textSpan.addEventListener('click', () => {
+    const existing = entryDiv.querySelector('.delete-entry');
+    if (existing) existing.remove();
 
-  const saveEdit = () => {
-    textSpan.textContent = input.value;
-    entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = textSpan.textContent;
+    input.classList.add('edit-input');
+    input.style.flex = '1';
 
-    entryDiv.replaceChild(textSpan, input);
-    buttonWrapper.remove(); // rimuove entrambi i pulsanti
+    const saveBtn = document.createElement('button');
+    saveBtn.innerText = '💾';
+    saveBtn.classList.add('save-button');
 
-    // aggiunge il pulsante 🗑️ normale fuori dalla modalità modifica
-    const finalDelete = document.createElement('button');
-    finalDelete.innerText = '🗑️';
-    finalDelete.classList.add('delete-entry');
-    finalDelete.onclick = () => {
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerText = '🗑️';
+    deleteBtn.classList.add('delete-entry');
+    deleteBtn.onclick = () => {
       entryDiv.remove();
       updateEDLFromDisplay();
     };
-    entryDiv.appendChild(finalDelete);
 
-    updateEDLFromDisplay();
+    const buttonWrapper = document.createElement('div');
+    buttonWrapper.classList.add('button-wrapper');
+    buttonWrapper.appendChild(saveBtn);
+    buttonWrapper.appendChild(deleteBtn);
 
-    entryDiv.classList.add('highlighted');
-    setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
-  };
+    const saveEdit = () => {
+      textSpan.textContent = input.value;
+      entryDiv.dataset.label = input.value.split(' - ')[1] || input.value;
+      entryDiv.replaceChild(textSpan, input);
+      buttonWrapper.remove();
+      entryDiv.appendChild(staticDelete);
+      updateEDLFromDisplay();
+      entryDiv.classList.add('highlighted');
+      setTimeout(() => entryDiv.classList.remove('highlighted'), 2000);
+    };
 
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') saveEdit();
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') saveEdit();
+    });
+    saveBtn.addEventListener('click', saveEdit);
+
+    entryDiv.replaceChild(input, textSpan);
+    entryDiv.appendChild(buttonWrapper);
+    input.focus();
   });
 
-  saveBtn.addEventListener('click', saveEdit);
-
-  // Appendi pulsanti affiancati
-  buttonWrapper.appendChild(saveBtn);
-  buttonWrapper.appendChild(deleteBtn);
-
-  // Inserisci campo input e pulsanti al posto del testo
-  entryDiv.replaceChild(input, textSpan);
-  entryDiv.appendChild(buttonWrapper);
-  input.focus();
-});
-
-
-
-entryDiv.appendChild(iconSpan);
-entryDiv.appendChild(textSpan);
-const deleteBtn = document.createElement('button');
-deleteBtn.innerText = '🗑️';
-deleteBtn.classList.add('delete-entry');
-deleteBtn.onclick = () => {
-  entryDiv.remove();
-  updateEDLFromDisplay();
-};
-entryDiv.appendChild(deleteBtn);
-
-    
-elements.outputBox.prepend(entryDiv);
-entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-
-
-  // Salva la riga completa nel contenuto da esportare
-  edlContent += edlLine + '\n';
-
-  counter++;
-  saveToLocalStorage();
+  entryDiv.appendChild(iconSpan);
+  entryDiv.appendChild(textSpan);
+  entryDiv.appendChild(staticDelete);
+  document.getElementById('edlDisplay').prepend(entryDiv);
+  entryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
 
     function saveToLocalStorage() {
   localStorage.setItem('savedEDL', edlContent);
