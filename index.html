@@ -1485,44 +1485,45 @@ if (localStorage.getItem('darkMode') === 'true') {
 
         // 🔤 Shortcuts da tastiera
   document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.altKey) {
-      switch (e.key) {
-        case '1':
-          generateFormattedText('IN');
-          break;
-        case '2':
-          generateFormattedText('RIPETIZIONE');
-          break;
-        case '3':
-          generateFormattedText('PAUSA');
-          break;
-        case '4':
-          generateFormattedText('OUT');
-          break;
-        case '5':
-          generateFormattedText('RUMORE');
-          break;
-        case '6':
-          generateFormattedText('ERRORE REGIA');
-          break;
-           case '7':
-          startTimer();
-          break;
-        case '8':
-          pauseTimer();
-          break;
-        case '9':
-          stopAndResetTimer();
-          break;
-        case '0':
-          startTimecode();
-          break;
-        case 'r':
-          stopTimecode();
-          break;
-      }
+  if (e.ctrlKey && e.altKey) {
+    switch (e.key.toLowerCase()) {
+      case '1':
+        generateFormattedText('IN');
+        break;
+      case '2':
+        generateFormattedText('RIPETIZIONE');
+        break;
+      case '3':
+        generateFormattedText('PAUSA');
+        break;
+      case '4':
+        generateFormattedText('OUT');
+        break;
+      case '5':
+        generateFormattedText('RUMORE');
+        break;
+      case '6':
+        generateFormattedText('ERRORE REGIA');
+        break;
+      case '7':
+        startTimer(); // TIMER PLAY
+        break;
+      case '8':
+        pauseTimer(); // TIMER PAUSA
+        break;
+      case '9':
+        stopAndResetTimer(); // TIMER STOP
+        break;
+      case '0':
+        startTimecode(); // TIMECODE PLAY
+        break;
+      case 'r':
+        stopTimecode(); // TIMECODE STOP
+        break;
     }
-  });
+  }
+});
+
 
 });
   
